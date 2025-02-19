@@ -1,0 +1,70 @@
+.Upgrade{
+  width:100%;
+  border-radius:15px;
+  padding: 0 10px 10px 10px;
+  height:100px;
+  user-select: none;
+  cursor: pointer;
+  display:flex;
+  gap:20px;
+  box-sizing: border-box;
+  background-image: url(../assets/Upgrades/upgrade__background.png);
+  background-position: center;
+  background-size: cover;
+  color:white;
+}
+
+.Upgrade__tooltip {
+  font-size:18px;
+  position: absolute;
+  right:102%;
+  width:200px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  text-align: justify;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.Upgrade--nonavailable{
+  color:rgb(207, 19, 19) !important;
+}
+
+.Upgrade__title{
+  font-size:30px;
+  margin:0;
+  font-weight: bold;
+}
+
+.Upgrade__benefit{
+  color:rgb(7, 191, 50);
+}
+
+.Upgrade__max-level{
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.Upgrade__img{
+  margin-top: 10px;
+  width:100px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.Upgrade__price-block{
+  font-size:25px;
+  height:23px;
+  width:100%;
+  display:flex;
+  align-items: center;
+  justify-content:left;
+  gap:10px;
+  color:rgb(7, 191, 50)
+}
+
+.Upgrade__price-block img{
+  width:25px;
+}

@@ -1,0 +1,31 @@
+.Client{
+  position:absolute;
+  left:0;
+  width:140px;
+  height:242px;
+  opacity:1;
+  transition: 1s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.Client img{
+  width:100%;
+  height:210px;
+  pointer-events: none; 
+  user-select: none;
+}
+
+.Client__progressbar{
+  height:32px;
+  margin:3px 5px;
+  border:3px solid black;
+}
+
+.Client__progress{
+  width:0%;
+  height:100%;
+  background-color: green;
+  box-sizing: border-box;
+  border:2px solid white;
+}

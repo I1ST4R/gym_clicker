@@ -1,0 +1,36 @@
+.Upgrades{
+  position:absolute;
+  right:0;
+  top:100px;
+  width:400px;
+  height:800px;
+  border:2px solid black;
+  background-color:rgb(236, 234, 234);
+  border-radius:15px;
+  padding:10px;
+  transition: 0.5s;
+}
+
+.Upgrades--visible{
+  right:20px;
+}
+
+.Upgrades__title{
+  font-size: 30px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.Upgrades__title p{
+  margin: 0;
+}
+
+.Upgrades__arrow--rotated{
+  transform:rotate(0deg);
+}
+
+.Upgrades__container{
+  display:flex;
+  flex-direction: column;
+  gap:15px;
+}
