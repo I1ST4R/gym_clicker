@@ -19,6 +19,8 @@ function Upgrade({
   onLevelTrainerChange,
   onCounterChange,
   count,
+  isHidden,
+  isInvisible, 
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const price = Math.floor(initialPrice * Math.pow(increase * 2, level));
@@ -52,13 +54,14 @@ function Upgrade({
     level + 1 === maxLvl && maxLvlText ? alert(maxLvlText) : ""
   };
 
-  console.log(benefit)
-
   return (
     <div
-      className={`Upgrade ${!isEnoughMoney || isMaxLevel ? 'Upgrade--nonavailable' : ''}`}
+      className={`Upgrade 
+        ${!isEnoughMoney || isMaxLevel ? 'Upgrade--nonavailable' : ''} 
+        ${isHidden ? 'Upgrade--hidden' : ''}
+        ${isInvisible ? 'Upgrade--invisible' : ''}`}
       onClick={handleUpgradeClick}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => setIsHovered(false)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <img

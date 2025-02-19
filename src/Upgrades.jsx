@@ -4,7 +4,6 @@ import Upgrade from './Upgrade.jsx';
 import UpgradesParams from './js/UpgradesParams.js';
 
 function Upgrades({ onTotalMultiplierChange, onLevelTrainerChange, onCounterChange, count }) {
-  const [isVisible, setIsVisible] = useState(false);
   const [upgrades, setUpgrades] = useState(UpgradesParams);
 
   // Calculate the total multiplier func
@@ -20,18 +19,25 @@ function Upgrades({ onTotalMultiplierChange, onLevelTrainerChange, onCounterChan
   }, [upgrades]);
 
   const handleUpgradeLevelChange = (id) => {
-    setUpgrades((prevUpgrades) => {
-      const updatedUpgrades = [...prevUpgrades]; 
-      const index = updatedUpgrades.findIndex((upgrade) => upgrade.id === id);
-  
-      if (index !== -1) {
-        updatedUpgrades[index] = {...updatedUpgrades[index]}
-        updatedUpgrades[index].level+=1
-      }
-  
-      return updatedUpgrades;
-    })
-  }
+    setUpgrades((prevUpgrades) =>
+      prevUpgrades.map((upgrade, index, array) => {
+        if (upgrade.id === id) {
+          const updatedUpgrade = { ...upgrade, level: upgrade.level + 1 };
+
+          index + 1 < array.length 
+          ? array[index + 1].isHidden = !(updatedUpgrade.level > 0)
+          :""
+
+          index + 2 < array.length 
+          ? array[index + 2].isInvisible = !(updatedUpgrade.level > 0)
+          :""
+        
+          return updatedUpgrade;
+        }
+        return upgrade;
+      })
+    );
+  };
 
   return (
     <div className="Upgrades">

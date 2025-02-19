@@ -13,6 +13,8 @@ const UpgradesParams = [
     images: TrainerLevels,
     maxLvl: 4,
     level: 0,
+    isHidden: false,
+    isInvisible: false,
   },
   {
     id: 2,
@@ -26,6 +28,8 @@ const UpgradesParams = [
     images: false,
     maxLvl: 7,
     level: 0,
+    isHidden: true,
+    isInvisible: false,
   },
   {
     id: 3,
@@ -39,6 +43,8 @@ const UpgradesParams = [
     images: false,
     maxLvl: 7,
     level: 0,
+    isHidden: true,
+    isInvisible: true,
   },
   {
     id: 4,
@@ -52,6 +58,8 @@ const UpgradesParams = [
     images: false,
     maxLvl: 7,
     level: 0,
+    isHidden: true,
+    isInvisible: true,
   },
   // other upgrades
 ];

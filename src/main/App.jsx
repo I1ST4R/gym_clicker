@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Trainer from '../Trainer.jsx';
-import Counter from '../Counter.jsx';
+import Counter from '../Counters.jsx';
 import Upgrades from '../Upgrades.jsx';
 import Client from '../Client.jsx';
 import '../css/App.css';
 
 function App() {
-  const [count, setCount] = useState(10000000);
+  const [count, setCount] = useState(0);
   const [trainerImage, setTrainerImage] = useState("src/assets/Trainer/img1.png");
   const [totalMultiplier, setTotalMultiplier] = useState(1);
 
