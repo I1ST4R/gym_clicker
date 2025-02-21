@@ -1,23 +1,39 @@
 .Upgrade{
+  position:relative;
   width:100%;
   border-radius:15px;
   padding: 0 10px 10px 10px;
   height:100px;
   user-select: none;
   cursor: pointer;
-  display:flex;
+  display:grid;
+  grid-template-columns: 100px auto;
   gap:20px;
   box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.2);
   background-image: url(../assets/Upgrades/upgrade__background.png);
-  background-position: center;
-  background-size: cover;
   color:white;
+}
+
+.Upgrade:before{
+  content:"";
+  position:absolute;
+  left:0;
+  width:100%;
+  height:100%;
+  border-radius:15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition:.3s;
+}
+
+.Upgrade:hover:before {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .Upgrade__tooltip {
   font-size:18px;
   position: absolute;
-  right:102%;
+  right:104%;
   width:200px;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
@@ -27,18 +43,27 @@
   z-index: 10;
 }
 
-.Upgrade--nonavailable{
-  color:rgb(207, 19, 19);
+.Upgrade--nonavailable:before{
+  content:"";
+  position:absolute;
+  left:0;
+  width:100%;
+  height:100%;
+  border-radius:15px;
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
-.Upgrade--nonavailable .Upgrade__price{
-  color:rgb(207, 19, 19);
+.Upgrade__info{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .Upgrade__title{
   font-size:30px;
   margin:0;
   font-weight: bold;
+  text-align: left;
 }
 
 .Upgrade__benefit{
@@ -53,6 +78,7 @@
 .Upgrade__img{
   margin-top: 10px;
   width:100px;
+  height:81px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -78,26 +104,20 @@
   pointer-events: none; 
 }
 
-.Upgrade--hidden .Upgrade__info{
-  opacity: 0.2;
-}
-
 .Upgrade--hidden .Upgrade__img{
-  opacity: 0.2;
-}
-
-.Upgrade--hidden:after {
-  content:"";
-  position:absolute;
-  width:100%;
-  height: 100%; 
-  border-radius: 15px;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index:2;
-  top:0;
-  right:0;
+  opacity: 0;
 }
 
 .Upgrade--invisible{
   display:none;
+}
+
+.Upgrade__price-level{
+  display:flex;
+  align-items: center;
+}
+
+.Upgrade__level{
+  margin:0;
+  font-size:34px;
 }

@@ -14,7 +14,6 @@ function Upgrade({
   initialIncrease,
   level,
   isIncreaseMoney,
-  maxLvlText,
   onUpgradeLevelChange,
   onLevelTrainerChange,
   onCounterMoneyChange, 
@@ -27,31 +26,17 @@ function Upgrade({
   const isMaxLevel = level >= maxLvl;
   const isEnoughMoney = countMoney >= price;
 
-  const postErrorMessage = (message) => {
-    new Audio(error).play();
-    setTimeout(() => alert(message), 50);
-  };
 
   const handleUpgradeClick = () => {
-    if (isMaxLevel) {
-      postErrorMessage("Ты улучшил эту карточку до максимального уровня");
-      return;
+    if(isEnoughMoney && !isMaxLevel){
+      onUpgradeLevelChange(id);
+      if (id === 1) {
+        onLevelTrainerChange(images(level + 1)); 
+      }
+      onCounterMoneyChange(countMoney - price);
+      new Audio(upgradeLevelUp).play();
     }
-
-    if (!isEnoughMoney) {
-      postErrorMessage("Не достаточно денег.");
-      return;
-    }
-
-    onUpgradeLevelChange(id);
-    if (id === 1) {
-      onLevelTrainerChange(images(level + 1)); // Используем функцию images
-    }
-    onCounterMoneyChange(countMoney - price);
-
-    new Audio(upgradeLevelUp).play();
-
-    level + 1 === maxLvl && maxLvlText ? alert(maxLvlText) : ""
+    
   };
 
   return (
@@ -71,16 +56,20 @@ function Upgrade({
       />
       <div className="Upgrade__info"> 
         <p className="Upgrade__title">{title}</p>
-        {isMaxLevel ? (
-          <p className="Upgrade__max-level">максимальный уровень</p>
-        ) : (
-          <>
-            <div className="Upgrade__price-block">
-              <p className="Upgrade__price">{price}</p>
-              <img src="src/assets/money.png" alt="" />
-            </div>
-          </>
-        )}
+        <div className="Upgrade__price-level">
+          {isMaxLevel ? (
+            <p className="Upgrade__max-level">максимальный уровень</p>
+          ) : (
+            <>
+              <div className="Upgrade__price-block">
+                <p className="Upgrade__price">{price}</p>
+                <img src="src/assets/money.png" alt="" />
+              </div>
+            </>
+          )}
+          <p className="Upgrade__level">{level === 0 ? "": level}</p>
+        </div>
+        
       </div>
       
       {isHovered && (
