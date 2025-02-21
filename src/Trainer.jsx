@@ -13,13 +13,11 @@ function Trainer({ onClick, trainerImage }) {
 
     new Audio(moneyClick).play()
 
-    // Получаем координаты клика относительно страницы
     const clickX = event.clientX - 20;
     const clickY = event.clientY - 40;
 
-    // Добавляем новую монетку с уникальным ID и координатами клика
     const newCoin = {
-      id: Date.now(), // Уникальный ID для каждой монетки
+      id: Date.now(), 
       x: clickX,
       y: clickY,
     };

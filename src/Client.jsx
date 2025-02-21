@@ -11,7 +11,7 @@ function Client({
   maxDelay,
   numOfClicks,
   waitingTime,
-  incrementCount,
+  incrementCountMoney,
 }) {
   const [image, setImage] = useState('');
   const [progress, setProgress] = useState(0);
@@ -67,7 +67,7 @@ function Client({
         setIsClientUpgraded(true);
         new Audio(clientThanksgiving).play();
         setTimeout(() => { setIsVisible(false)}, 2000)
-        incrementCount(100); 
+        incrementCountMoney(100); 
       }
       new Audio(clientClick).play();
       setProgress((prevProgress) => prevProgress + step);

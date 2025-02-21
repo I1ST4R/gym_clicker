@@ -1,36 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Trainer from '../Trainer.jsx';
-import Counter from '../Counters.jsx';
+import Counters from '../Counters.jsx';
 import Upgrades from '../Upgrades.jsx';
 import Client from '../Client.jsx';
 import '../css/App.css';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [countMoney, setCountMoney] = useState(10000000);
   const [trainerImage, setTrainerImage] = useState("src/assets/Trainer/img1.png");
-  const [totalMultiplier, setTotalMultiplier] = useState(1);
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(0);
+  const [actIncreaseMoney, setActIncreaseMoney] = useState(1);
 
-  const incrementCount = (amount = 1) => {
-    setCount((prevCount) => Math.floor(prevCount + amount * totalMultiplier));
-  };
+  const incrementCountMoneyForClick = () => {
+    setCountMoney(countMoney + actIncreaseMoney);
+  }
+
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountMoney((prevCountMoney) => prevCountMoney + pasIncreaseMoney);
+    }, 1000); 
+    return () => clearInterval(interval);
+  }, [pasIncreaseMoney]); 
+  
 
   return (
     <>
-
       <Client
         minDelay={10000}
         maxDelay={20000}
         numOfClicks={15}
         waitingTime={10000}
-        incrementCount={incrementCount}
+        incrementCountMoney={incrementCountMoneyForClick}
       />
-      <Trainer trainerImage={trainerImage} onClick={() => incrementCount()} />
-      <Counter count={count} />
+      <Trainer trainerImage={trainerImage} onClick={() => incrementCountMoneyForClick()} />
+      <Counters countMoney={countMoney} pasIncreaseMoney={pasIncreaseMoney} />
       <Upgrades
-        onTotalMultiplierChange={setTotalMultiplier}
+        onPasIncreaseMoneyChange={setPasIncreaseMoney}
+        pasIncreaseMoney={pasIncreaseMoney}
+        onActIncreaseMoneyChange={setActIncreaseMoney}
+        actIncreaseMoney={actIncreaseMoney}
         onLevelTrainerChange={(newImage) => setTrainerImage(newImage)}
-        onCounterChange={setCount}
-        count={count}
+        onCounterMoneyChange={setCountMoney}
+        countMoney={countMoney}
       />
     </>
   );

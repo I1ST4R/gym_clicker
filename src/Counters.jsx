@@ -1,11 +1,17 @@
 import React from 'react';
-import './css/Counter.css'; // Импортируем стили для монетки
+import './css/Counters.css'; // Импортируем стили для монетки
 
-function Counter({ count }) {
+function Counter({ countMoney, pasIncreaseMoney }) {
   return (
-    <div className="Counter">
-      <span>{count}</span>
-      <img className="Counter__img" src="src/assets/money.png" alt="" />
+    <div className="Counters">
+      <div className="Counter">
+        <span>{pasIncreaseMoney}</span>
+        <img className="Counter__clients__img" src="src/assets/client.png" alt="" />
+      </div>
+      <div className="Counter">
+        <span>{countMoney}</span>
+        <img className="Counter__money__img" src="src/assets/money.png" alt="" />
+      </div>
     </div>
   );
 }

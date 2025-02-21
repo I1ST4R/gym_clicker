@@ -9,23 +9,25 @@ function Upgrade({
   img,
   desc,
   initialPrice,
-  increase,
-  images,
+  images, 
   maxLvl,
+  initialIncrease,
   level,
-  benefit,
+  isIncreaseMoney,
   maxLvlText,
   onUpgradeLevelChange,
   onLevelTrainerChange,
-  onCounterChange,
-  count,
+  onCounterMoneyChange, 
+  countMoney,
+  onCounterClientChange, 
+  countClient,
   isHidden,
   isInvisible, 
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const price = Math.floor(initialPrice * Math.pow(increase * 2, level));
+  const price = Math.floor(initialPrice);
   const isMaxLevel = level >= maxLvl;
-  const isEnoughMoney = count >= price;
+  const isEnoughMoney = countMoney >= price;
 
   const postErrorMessage = (message) => {
     new Audio(error).play();
@@ -45,9 +47,9 @@ function Upgrade({
 
     onUpgradeLevelChange(id);
     if (id === 1) {
-      onLevelTrainerChange(images[(level + 1) % images.length]);
+      onLevelTrainerChange(images(level + 1)); // Используем функцию images
     }
-    onCounterChange(count - price);
+    onCounterMoneyChange(countMoney - price);
 
     new Audio(upgradeLevelUp).play();
 
@@ -61,12 +63,12 @@ function Upgrade({
         ${isHidden ? 'Upgrade--hidden' : ''}
         ${isInvisible ? 'Upgrade--invisible' : ''}`}
       onClick={handleUpgradeClick}
-      onMouseEnter={() => setIsHovered(false)}
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <img
         className="Upgrade__img"
-        src={`${images ? images[(level + 1) % images.length] : img}`}
+        src={images(0) ? images(level) : img} 
         alt={title}
       />
       <div className="Upgrade__info"> 
@@ -86,7 +88,10 @@ function Upgrade({
       {isHovered && (
         <div className="Upgrade__tooltip">
           <p>{desc}</p>
-          <p className="Upgrade__benefit">{benefit}</p>
+          <p className="Upgrade__benefit">{`
+          + ${Math.floor(initialIncrease)} 
+          ${isIncreaseMoney ? "за клик" : "в секунду"}
+          `}</p>
         </div>
       )}
     </div>
