@@ -22,6 +22,10 @@ a:hover {
   color: #535bf2;
 }
 
+p{
+  margin:0px;
+}
+
 @font-face {
 	font-family: 'Bou';
 	src: url('../assets/Bou_Collegiate.ttf');
@@ -37,7 +41,6 @@ body {
   width: 100vw !important;
   height:100vh;
   overflow-x: hidden;
-  overflow-y: hidden;
 }
 
 h1 {

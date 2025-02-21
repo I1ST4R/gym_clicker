@@ -19,16 +19,17 @@ function Upgrade({
   onCounterMoneyChange, 
   countMoney,
   isHidden,
-  isInvisible, 
+  isInvisible,
+  requirements, 
+  pasIncreaseMoney,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const price = Math.floor(initialPrice);
   const isMaxLevel = level >= maxLvl;
   const isEnoughMoney = countMoney >= price;
 
-
   const handleUpgradeClick = () => {
-    if(isEnoughMoney && !isMaxLevel){
+    if(isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements){
       onUpgradeLevelChange(id);
       if (id === 1) {
         onLevelTrainerChange(images(level + 1)); 
@@ -56,6 +57,18 @@ function Upgrade({
       />
       <div className="Upgrade__info"> 
         <p className="Upgrade__title">{title}</p>
+        {requirements > 0 && level === 0 ? (
+          <div className="Upgrade__requirements">
+            <p className="Upgrade__requirements-text">
+              <span>Условия: </span>
+              {requirements}
+            </p>
+            <img className="Upgrade__requirement-img" src="src/assets/client.png" alt="" />
+          </div>
+          
+        ) : (
+            <></>
+        )}
         <div className="Upgrade__price-level">
           {isMaxLevel ? (
             <p className="Upgrade__max-level">максимальный уровень</p>

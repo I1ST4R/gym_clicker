@@ -3,7 +3,7 @@
   width:100%;
   border-radius:15px;
   padding: 0 10px 10px 10px;
-  height:100px;
+  height:110px;
   user-select: none;
   cursor: pointer;
   display:grid;
@@ -114,10 +114,32 @@
 
 .Upgrade__price-level{
   display:flex;
-  align-items: center;
+  align-items:end;
 }
 
 .Upgrade__level{
-  margin:0;
+  margin:0 !important;
+  line-height: 30px;
   font-size:34px;
+}
+
+.Upgrade__requirements{
+  display:flex;
+  gap: 2px;
+  align-items:center;
+}
+
+.Upgrade__requirements-text{
+  font-size:23px;
+  text-align:left;
+  color:rgb(68, 164, 236);
+}
+
+.Upgrade__requirements-text span{
+  color:white;
+}
+
+.Upgrade__requirement-img{
+  width:16px;
+  height:16px;
 }

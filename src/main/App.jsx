@@ -6,7 +6,7 @@ import Client from '../Client.jsx';
 import '../css/App.css';
 
 function App() {
-  const [countMoney, setCountMoney] = useState(150);
+  const [countMoney, setCountMoney] = useState(10000000000);
   const [trainerImage, setTrainerImage] = useState("src/assets/Trainer/img1.png");
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(0);
   const [actIncreaseMoney, setActIncreaseMoney] = useState(1);
