@@ -19,8 +19,6 @@ function Upgrade({
   onLevelTrainerChange,
   onCounterMoneyChange, 
   countMoney,
-  onCounterClientChange, 
-  countClient,
   isHidden,
   isInvisible, 
 }) {
