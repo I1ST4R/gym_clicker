@@ -11,7 +11,10 @@ function Client({
   maxDelay,
   numOfClicks,
   waitingTime,
-  incrementCountMoney,
+  onCounterMoneyChange,
+  countMoney,
+  pasIncreaseMoney,
+  actIncreaseMoney,
 }) {
   const [image, setImage] = useState('');
   const [progress, setProgress] = useState(0);
@@ -22,9 +25,14 @@ function Client({
 
   const step = Math.floor(100 / numOfClicks);
 
-  const getRandomRange = (min, max) => {
+  function getRandomRange(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
+
+  function getRandomRangeWithExceptions(min, max, minExcept, maxExcept) {
+    if(Math.random() > 0.5) return getRandomRange(min, minExcept)
+    return getRandomRange(maxExcept, max)
+  }
  
   const loadImage = (src) => {
     return new Promise((resolve, reject) => {
@@ -46,8 +54,25 @@ function Client({
       } catch (error) {
         console.error("Error loading image:", error);
       }
-      setX(getRandomRange(100, window.innerWidth - 200));
-      setY(getRandomRange(100, window.innerHeight - 300));
+      const trainerBlock = document.querySelector(".Trainer")
+      const rect = trainerBlock.getBoundingClientRect()
+      setX(
+        getRandomRangeWithExceptions(
+          100, 
+          window.innerWidth - 550, 
+          document.querySelector(".Trainer"), 
+          rect.left - 150,
+          rect.left + trainerBlock.width,
+        )
+      )
+      setY(
+        getRandomRangeWithExceptions(
+          100, 
+          window.innerHeight - 300, 
+          rect.top - 300,
+          rect.top + trainerBlock.height,
+        )
+      )
       setIsVisible(true);
       setIsClientUpgraded(false);
       setProgress(0);
@@ -67,7 +92,8 @@ function Client({
         setIsClientUpgraded(true);
         new Audio(clientThanksgiving).play();
         setTimeout(() => { setIsVisible(false)}, 2000)
-        incrementCountMoney(100); 
+        const bonus = (pasIncreaseMoney +actIncreaseMoney) * 100
+        onCounterMoneyChange(countMoney + bonus)
       }
       new Audio(clientClick).play();
       setProgress((prevProgress) => prevProgress + step);

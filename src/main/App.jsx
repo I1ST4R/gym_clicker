@@ -31,7 +31,10 @@ function App() {
         maxDelay={20000}
         numOfClicks={15}
         waitingTime={10000}
-        incrementCountMoney={incrementCountMoneyForClick}
+        onCounterMoneyChange={setCountMoney}
+        countMoney={countMoney}
+        pasIncreaseMoney={pasIncreaseMoney}
+        actIncreaseMoney={actIncreaseMoney}
       />
       <Trainer trainerImage={trainerImage} onClick={() => incrementCountMoneyForClick()} />
       <Counters countMoney={countMoney} pasIncreaseMoney={pasIncreaseMoney} />
