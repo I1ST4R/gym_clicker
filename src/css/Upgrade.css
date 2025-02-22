@@ -2,12 +2,11 @@
   position:relative;
   width:100%;
   border-radius: 5px;
-  padding: 0 10px 10px 10px;
   height:135px;
   user-select: none;
   cursor: pointer;
   display:grid;
-  grid-template-columns: 100px auto;
+  grid-template-columns: 110px auto;
   gap:20px;
   box-sizing: border-box;
   background-image: url("../assets/Upgrades/upgrade-back.jpg");
@@ -67,9 +66,8 @@
 }
 
 .Upgrade__img{
-  margin-top: 10px;
-  width:100px;
-  height:81px;
+  width:120px;
+  height:111px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
