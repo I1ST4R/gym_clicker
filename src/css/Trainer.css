@@ -5,7 +5,8 @@
   cursor: pointer;
   user-select: none;
   font-size:40px;
-  margin: 300px auto;
+  margin-top:400px;
+  margin-inline:auto;
 }
 
 

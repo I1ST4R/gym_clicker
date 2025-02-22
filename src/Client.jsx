@@ -55,22 +55,21 @@ function Client({
         console.error("Error loading image:", error);
       }
       const trainerBlock = document.querySelector(".Trainer")
-      const rect = trainerBlock.getBoundingClientRect()
+      const rectTrainer = trainerBlock.getBoundingClientRect()
       setX(
         getRandomRangeWithExceptions(
           100, 
           window.innerWidth - 550, 
-          document.querySelector(".Trainer"), 
-          rect.left - 150,
-          rect.left + trainerBlock.width,
+          rectTrainer.left - 150,
+          rectTrainer.left + trainerBlock.width,
         )
       )
       setY(
         getRandomRangeWithExceptions(
           100, 
           window.innerHeight - 300, 
-          rect.top - 300,
-          rect.top + trainerBlock.height,
+          rectTrainer.top - 300,
+          rectTrainer.top + trainerBlock.height,
         )
       )
       setIsVisible(true);
