@@ -11,11 +11,12 @@ function Upgrades({
   pasIncreaseMoney,
   onActIncreaseMoneyChange,
   actIncreaseMoney,
+  onCounterUpgradesChange,
+  upgrades,
  }) {
-  const [upgrades, setUpgrades] = useState(UpgradesParams);
 
   const handleUpgradeLevelChange = (id) => {
-    setUpgrades((prevUpgrades) =>
+    onCounterUpgradesChange((prevUpgrades) =>
       prevUpgrades.map((upgrade, index, array) => {
         if (upgrade.id === id) {
           const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney)
@@ -29,6 +30,7 @@ function Upgrades({
             level: upgrade.level + 1,
             initialIncrease: increase,
             initialPrice: upgrade.initialPrice * 1.16,
+            
           }
 
           index + 1 < array.length 
