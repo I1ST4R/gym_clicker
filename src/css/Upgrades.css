@@ -1,14 +1,15 @@
 .Upgrades{
   position:absolute;
   right:0;
-  top:100px;
-  width:400px;
-  height:800px;
-  border:2px solid black;
-  background-color:rgb(236, 234, 234);
-  border-radius:15px;
-  padding:10px;
+  top:0px;
+  width:420px;
+  height:100%;
+  padding: 10px 30px 0 20px;
   transition: 0.5s;
+  background-image: url(../assets/Upgrades/upgrades-back.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .Upgrades--visible{
@@ -16,8 +17,7 @@
 }
 
 .Upgrades__title{
-  font-size: 30px;
-  text-transform: uppercase;
+  font-size: 40px;
   margin-bottom: 10px;
 }
 
@@ -32,5 +32,5 @@
 .Upgrades__container{
   display:flex;
   flex-direction: column;
-  gap:15px;
+  gap:5px;
 }

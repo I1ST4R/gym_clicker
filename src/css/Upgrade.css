@@ -1,33 +1,24 @@
 .Upgrade{
   position:relative;
   width:100%;
-  border-radius:15px;
+  border-radius: 5px;
   padding: 0 10px 10px 10px;
-  height:110px;
+  height:135px;
   user-select: none;
   cursor: pointer;
   display:grid;
   grid-template-columns: 100px auto;
   gap:20px;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.2);
-  background-image: url(../assets/Upgrades/upgrade__background.png);
+  background-image: url("../assets/Upgrades/upgrade-back.jpg");
+  background-size: cover;
   color:white;
-}
-
-.Upgrade:before{
-  content:"";
-  position:absolute;
-  left:0;
-  width:100%;
-  height:100%;
-  border-radius:15px;
-  background-color: rgba(0, 0, 0, 0.1);
+  border: 12px solid rgb(134, 134, 134);
   transition:.3s;
 }
 
-.Upgrade:hover:before {
-  background-color: rgba(0, 0, 0, 0);
+.Upgrade:hover{
+  border: 12px solid rgb(229, 229, 229);
 }
 
 .Upgrade__tooltip {
@@ -115,6 +106,7 @@
 .Upgrade__price-level{
   display:flex;
   align-items:end;
+  justify-content: space-between;
 }
 
 .Upgrade__level{

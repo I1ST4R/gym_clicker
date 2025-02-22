@@ -2,7 +2,8 @@
   font-size:30px;
   position:absolute;
   top:20px;
-  right:20px;
+  left: 50%;
+  transform: translateX(-50%);
   user-select:none;
   display:flex;
   gap:15px;
