@@ -81,7 +81,7 @@ const UpgradesParams = [
     id: 5,
     title: "подвальная качалка",
     img: "src/assets/Upgrades/upgrade5.png",
-    resultImg: "src/assets/Upgrades/upgradeResult5.png",
+    resultImg: "src/assets/Upgrades/upgradeResult5.jpg",
     resultImgPositionX: 1230,
     resultImgPositionY: 550,
     resultImgWidth: 200,
