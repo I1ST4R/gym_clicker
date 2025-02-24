@@ -3,13 +3,15 @@
   right:0;
   top:0px;
   width:420px;
-  height:100%;
+  height:100vh;
   padding: 10px 30px 0 20px;
   transition: 0.5s;
   background-image: url(../assets/Upgrades/upgrades-back.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  overflow-y:auto;
+  overflow-x: visible;
 }
 
 .Upgrades--visible{

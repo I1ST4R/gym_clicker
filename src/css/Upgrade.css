@@ -14,6 +14,7 @@
   color:white;
   border: 12px solid rgb(134, 134, 134);
   transition:.3s;
+  overflow-x: visible;
 }
 
 .Upgrade:hover{
@@ -21,16 +22,15 @@
 }
 
 .Upgrade__tooltip {
-  font-size:18px;
-  position: absolute;
-  right:104%;
-  width:200px;
+  font-size: 18px;
+  position: fixed; 
+  width: 200px;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 10px;
   text-align: justify;
   border-radius: 5px;
-  z-index: 10;
+  z-index: 10; 
 }
 
 .Upgrade--nonavailable:before{

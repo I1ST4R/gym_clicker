@@ -24,12 +24,27 @@ function Upgrade({
   pasIncreaseMoney,
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+
+  const handleMouseEnter = (event) => {
+    const cardRect = event.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      top: cardRect.top, 
+      left: cardRect.left - 240, 
+    });
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   const price = Math.floor(initialPrice);
   const isMaxLevel = level >= maxLvl;
   const isEnoughMoney = countMoney >= price;
 
   const handleUpgradeClick = () => {
-    if(isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements){
+    if (isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements) {
       onUpgradeLevelChange(id);
       if (id === 1) {
         onLevelTrainerChange(images(level + 1)); 
@@ -37,7 +52,6 @@ function Upgrade({
       onCounterMoneyChange(countMoney - price);
       new Audio(upgradeLevelUp).play();
     }
-    
   };
 
   return (
@@ -47,8 +61,8 @@ function Upgrade({
         ${isHidden ? 'Upgrade--hidden' : ''}
         ${isInvisible ? 'Upgrade--invisible' : ''}`}
       onClick={handleUpgradeClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter} 
+      onMouseLeave={handleMouseLeave} 
     >
       <img
         className="Upgrade__img"
@@ -65,9 +79,8 @@ function Upgrade({
             </p>
             <img className="Upgrade__requirement-img" src="src/assets/client.png" alt="" />
           </div>
-          
         ) : (
-            <></>
+          <></>
         )}
         <div className="Upgrade__price-level">
           {isMaxLevel ? (
@@ -80,17 +93,22 @@ function Upgrade({
               </div>
             </>
           )}
-          <p className="Upgrade__level">{level === 0 ? "": level}</p>
+          <p className="Upgrade__level">{level === 0 ? "" : level}</p>
         </div>
-        
       </div>
       
       {isHovered && (
-        <div className="Upgrade__tooltip">
+        <div
+          className="Upgrade__tooltip"
+          style={{
+            top: `${tooltipPosition.top}px`,
+            left: `${tooltipPosition.left}px`,
+          }}
+        >
           <p>{desc}</p>
           <p className="Upgrade__benefit">{`
-          + ${abbreviateNum(Math.floor(initialIncrease))} 
-          ${isIncreaseMoney ? "за клик" : "в секунду"}
+            + ${abbreviateNum(Math.floor(initialIncrease))} 
+            ${isIncreaseMoney ? "за клик" : "в секунду"}
           `}</p>
         </div>
       )}
