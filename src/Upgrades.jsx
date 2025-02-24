@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './css/Upgrades.css';
 import Upgrade from './Upgrade.jsx';
-import UpgradesParams from './js/UpgradesParams.js';
 
 function Upgrades({ 
   onLevelTrainerChange, 

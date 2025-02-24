@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './css/Upgrade.css';
 import upgradeLevelUp from './assets/sounds/upgradeLevelUp.mp3';
-import error from './assets/sounds/error.mp3';
+import abbreviateNum from './js/numberAbbreviator.js';
 
 function Upgrade({
   id,
@@ -61,7 +61,7 @@ function Upgrade({
           <div className="Upgrade__requirements">
             <p className="Upgrade__requirements-text">
               <span>Условия: </span>
-              {requirements}
+              {abbreviateNum(requirements)}
             </p>
             <img className="Upgrade__requirement-img" src="src/assets/client.png" alt="" />
           </div>
@@ -75,7 +75,7 @@ function Upgrade({
           ) : (
             <>
               <div className="Upgrade__price-block">
-                <p className="Upgrade__price">{price}</p>
+                <p className="Upgrade__price">{abbreviateNum(price)}</p>
                 <img src="src/assets/money.png" alt="" />
               </div>
             </>
@@ -89,7 +89,7 @@ function Upgrade({
         <div className="Upgrade__tooltip">
           <p>{desc}</p>
           <p className="Upgrade__benefit">{`
-          + ${Math.floor(initialIncrease)} 
+          + ${abbreviateNum(Math.floor(initialIncrease))} 
           ${isIncreaseMoney ? "за клик" : "в секунду"}
           `}</p>
         </div>

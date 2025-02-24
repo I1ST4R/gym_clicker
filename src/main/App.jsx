@@ -11,7 +11,7 @@ function App() {
   const [trainerImage, setTrainerImage] = useState("src/assets/Trainer/img1.png");
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(0);
   const [actIncreaseMoney, setActIncreaseMoney] = useState(1);
-  const [resultImages, setResultImages] = useState([]); // Массив для хранения картинок
+  const [resultImages, setResultImages] = useState([]); 
   const [upgrades, setUpgrades] = useState(UpgradesParams);
 
   const incrementCountMoneyForClick = () => {
