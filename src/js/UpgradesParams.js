@@ -1,4 +1,4 @@
-import getTrainerImage from './TrainerLevels';
+import getTrainerImage from './TrainerLevels.js';
 
 const UpgradesParams = [
   {
@@ -11,7 +11,7 @@ const UpgradesParams = [
     initialIncrease: 1,
     isIncreaseMoney: true,
     images: getTrainerImage, 
-    maxLvl: 20,
+    maxLvl: 25,
     isHidden: false,
     isInvisible: false,
     requirements: 0,

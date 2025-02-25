@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/Upgrade.css';
 import upgradeLevelUp from './assets/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
+import UpgradesParams from './js/UpgradesParams.js';
 
 function Upgrade({
   id,
@@ -12,7 +13,7 @@ function Upgrade({
   images, 
   maxLvl,
   initialIncrease,
-  level,
+  level: propLevel,
   isIncreaseMoney,
   onUpgradeLevelChange,
   onLevelTrainerChange,
@@ -26,6 +27,17 @@ function Upgrade({
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
+  const [level, setLevel] = useState(() => {
+    const savedLevel = localStorage.getItem(`upgrade_${id}_level`);
+    return savedLevel ? parseInt(savedLevel, 10) : propLevel;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(`upgrade_${id}_level`, level.toString());
+  }, [id, level]);
+
+
+  
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
@@ -45,12 +57,14 @@ function Upgrade({
 
   const handleUpgradeClick = () => {
     if (isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements) {
+      const newLevel = level + 1;
+      setLevel(newLevel); 
       onUpgradeLevelChange(id);
-      if (id === 1) {
-        onLevelTrainerChange(images(level + 1)); 
-      }
       onCounterMoneyChange(countMoney - price);
       new Audio(upgradeLevelUp).play();
+      if (id === 1) {
+        onLevelTrainerChange(UpgradesParams[0].images(level + 1)); 
+      }
     }
   };
 
@@ -66,7 +80,7 @@ function Upgrade({
     >
       <img
         className="Upgrade__img"
-        src={images(0) ? images(level) : img} 
+        src={id === 1 ? UpgradesParams[0].images(level) : img}  
         alt={title}
       />
       <div className="Upgrade__info"> 

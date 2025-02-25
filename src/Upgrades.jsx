@@ -11,40 +11,51 @@ function Upgrades({
   onActIncreaseMoneyChange,
   actIncreaseMoney,
   onCounterUpgradesChange,
-  upgrades,
+  upgrades: propUpgrades, 
  }) {
 
+  const [upgrades, setUpgrades] = useState(() => {
+    const savedUpgrades = localStorage.getItem('upgrades');
+    return savedUpgrades ? JSON.parse(savedUpgrades) : propUpgrades;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('upgrades', JSON.stringify(upgrades));
+  }, [upgrades]);
+
+
+
   const handleUpgradeLevelChange = (id) => {
-    onCounterUpgradesChange((prevUpgrades) =>
-      prevUpgrades.map((upgrade, index, array) => {
-        if (upgrade.id === id) {
-          const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney)
-          const pasIncrease = Math.floor(upgrade.initialIncrease * !upgrade.isIncreaseMoney)
-          onActIncreaseMoneyChange(actIncreaseMoney + actIncrease)
-          onPasIncreaseMoneyChange(pasIncreaseMoney + pasIncrease)
-          const difference = !upgrade.isIncreaseMoney * 0.035
-          const increase = upgrade.initialIncrease * (1.15 - difference)
-          const updatedUpgrade = {
-            ...upgrade, 
-            level: upgrade.level + 1,
-            initialIncrease: increase,
-            initialPrice: upgrade.initialPrice * 1.16,
-            
-          }
-
-          index + 1 < array.length 
-          ? array[index + 1].isHidden = !(updatedUpgrade.level > 0)
-          :""
-
-          index + 2 < array.length 
-          ? array[index + 2].isInvisible = !(updatedUpgrade.level > 0)
-          :""
-        
-          return updatedUpgrade;
+    const updatedUpgrades = upgrades.map((upgrade, index, array) => {
+      if (upgrade.id === id) {
+        const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney)
+        const pasIncrease = Math.floor(upgrade.initialIncrease * !upgrade.isIncreaseMoney)
+        onActIncreaseMoneyChange(actIncreaseMoney + actIncrease)
+        onPasIncreaseMoneyChange(pasIncreaseMoney + pasIncrease)
+        const difference = !upgrade.isIncreaseMoney * 0.035
+        const increase = upgrade.initialIncrease * (1.15 - difference)
+        const updatedUpgrade = {
+          ...upgrade, 
+          level: upgrade.level + 1,
+          initialIncrease: increase,
+          initialPrice: upgrade.initialPrice * 1.16,
         }
-        return upgrade;
-      })
-    );
+
+        index + 1 < array.length 
+        ? array[index + 1].isHidden = !(updatedUpgrade.level > 0)
+        :""
+
+        index + 2 < array.length 
+        ? array[index + 2].isInvisible = !(updatedUpgrade.level > 0)
+        :""
+      
+        return updatedUpgrade;
+      }
+      return upgrade;
+    });
+
+    setUpgrades(updatedUpgrades); 
+    onCounterUpgradesChange(updatedUpgrades); 
   };
 
   return (

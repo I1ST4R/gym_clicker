@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/Trainer.css';
 import moneyClick from './assets/sounds/moneyClick.mp3';
 import Coin from './Coin';
 
 function Trainer({ onClick, trainerImage }) {
   const [isJumping, setIsJumping] = useState(false);
-  const [coins, setCoins] = useState([]);
+  const [coins, setCoins] = useState([])
+
+  
 
   const handleClick = (event) => {
     setIsJumping(true);

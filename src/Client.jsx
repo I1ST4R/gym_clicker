@@ -18,11 +18,21 @@ function Client({
 }) {
   const [image, setImage] = useState('');
   const [progress, setProgress] = useState(0);
-  const [isClientUpgraded, setIsClientUpgraded] = useState(false);
+  const [isClientUpgraded, setIsClientUpgraded] = useState(() => {
+    const savedIsClientUpgraded = localStorage.getItem('isClientUpgraded');
+    return savedIsClientUpgraded === 'true';
+  });
   const [x, setX] = useState(0); 
   const [y, setY] = useState(0);
   const [isVisible, setIsVisible] = useState(false); 
 
+  // Сохранение isClientUpgraded в localStorage
+  useEffect(() => {
+    localStorage.setItem('isClientUpgraded', isClientUpgraded.toString());
+  }, [isClientUpgraded]);
+
+
+  
   const step = Math.floor(100 / numOfClicks);
 
   function getRandomRange(min, max){

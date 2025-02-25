@@ -7,12 +7,58 @@ import UpgradesParams from '../js/UpgradesParams.js';
 import '../css/App.css';
 
 function App() {
-  const [countMoney, setCountMoney] = useState(1000000000000);
-  const [trainerImage, setTrainerImage] = useState("src/assets/Trainer/img1.png");
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(1000000000);
-  const [actIncreaseMoney, setActIncreaseMoney] = useState(1);
-  const [resultImages, setResultImages] = useState([]); 
-  const [upgrades, setUpgrades] = useState(UpgradesParams);
+ 
+  const [countMoney, setCountMoney] = useState(() => {
+    const savedCountMoney = localStorage.getItem('countMoney');
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000;
+  });
+
+  const [trainerImage, setTrainerImage] = useState(() => {
+    const savedTrainerImage = localStorage.getItem('trainerImage');
+    return savedTrainerImage || "src/assets/Trainer/img1.png";
+  });
+
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
+    const savedPasIncreaseMoney = localStorage.getItem('pasIncreaseMoney');
+    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 1000000000;
+  });
+
+  const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
+    const savedActIncreaseMoney = localStorage.getItem('actIncreaseMoney');
+    return savedActIncreaseMoney ? parseInt(savedActIncreaseMoney, 10) : 1;
+  });
+
+  const [resultImages, setResultImages] = useState(() => {
+    const savedResultImages = localStorage.getItem('resultImages');
+    return savedResultImages ? JSON.parse(savedResultImages) : [];
+  });
+
+  const [upgrades, setUpgrades] = useState(() => {
+    const savedUpgrades = localStorage.getItem('upgrades');
+    return savedUpgrades ? JSON.parse(savedUpgrades) : UpgradesParams;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('countMoney', countMoney.toString());
+  }, [countMoney]);
+
+  useEffect(() => {
+    localStorage.setItem('trainerImage', trainerImage);
+  }, [trainerImage]);
+
+  useEffect(() => {
+    localStorage.setItem('pasIncreaseMoney', pasIncreaseMoney.toString());
+  }, [pasIncreaseMoney]);
+
+  useEffect(() => {
+    localStorage.setItem('actIncreaseMoney', actIncreaseMoney.toString());
+  }, [actIncreaseMoney]);
+
+  useEffect(() => {
+    localStorage.setItem('resultImages', JSON.stringify(resultImages));
+  }, [resultImages]);
+
+
 
   const incrementCountMoneyForClick = () => {
     setCountMoney(countMoney + actIncreaseMoney);
