@@ -33,6 +33,13 @@ p{
 	font-display: swap;
 }
 
+@font-face {
+	font-family: 'Bleeker';
+	src: url('../assets/BleekerCyrillic.ttf');
+	font-style: normal;
+	font-display: swap;
+}
+
 body {
   font-family: 'Bou';
   position:absolute;

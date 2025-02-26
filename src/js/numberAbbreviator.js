@@ -1,6 +1,8 @@
 function abbreviateNum(n) {
 
-  const units = ["k", "M", "B", "T", "Qa"];
+  const units = [
+    "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", 
+  ]
   const unitIndex = Math.floor(Math.log10(n) / 3) - 1;
   const unit = units[unitIndex];
 

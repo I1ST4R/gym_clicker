@@ -120,7 +120,7 @@ function Upgrade({
           }}
         >
           <p>{desc}</p>
-          <p className="Upgrade__benefit">{`
+          <p className="Upgrade__upgrade-info">{`Улучшение
             + ${abbreviateNum(Math.floor(initialIncrease))} 
             ${isIncreaseMoney ? "за клик" : "в секунду"}
           `}</p>

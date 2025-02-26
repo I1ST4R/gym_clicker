@@ -26,13 +26,12 @@ function Client({
   const [y, setY] = useState(0);
   const [isVisible, setIsVisible] = useState(false); 
 
-  // Сохранение isClientUpgraded в localStorage
   useEffect(() => {
     localStorage.setItem('isClientUpgraded', isClientUpgraded.toString());
   }, [isClientUpgraded]);
 
 
-  
+
   const step = Math.floor(100 / numOfClicks);
 
   function getRandomRange(min, max){

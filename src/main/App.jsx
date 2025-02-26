@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Trainer from '../Trainer.jsx';
 import Counters from '../Counters.jsx';
-import Upgrades from '../Upgrades.jsx';
+import Busters from '../Busters.jsx';
 import Client from '../Client.jsx';
+import Upgrades from '../Upgrades.jsx';
+import BustersParams from '../js/BustersParams.js';
 import UpgradesParams from '../js/UpgradesParams.js';
 import '../css/App.css';
 
@@ -10,7 +12,7 @@ function App() {
  
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 0;
   });
 
   const [trainerImage, setTrainerImage] = useState(() => {
@@ -38,6 +40,11 @@ function App() {
     return savedUpgrades ? JSON.parse(savedUpgrades) : UpgradesParams;
   });
 
+  const [busters, setBusters] = useState(() => {
+    const savedBusters = localStorage.getItem('busters');
+    return savedBusters ? JSON.parse(savedBusters) : BustersParams;
+  });
+
   useEffect(() => {
     localStorage.setItem('countMoney', countMoney.toString());
   }, [countMoney]);
@@ -58,10 +65,9 @@ function App() {
     localStorage.setItem('resultImages', JSON.stringify(resultImages));
   }, [resultImages]);
 
-
-
   const incrementCountMoneyForClick = () => {
     setCountMoney(countMoney + actIncreaseMoney);
+    console.log(actIncreaseMoney)
   };
 
   useEffect(() => {
@@ -112,6 +118,16 @@ function App() {
         countMoney={countMoney}
         onCounterUpgradesChange={setUpgrades}
         upgrades={upgrades}
+      />
+      <Busters
+        onPasIncreaseMoneyChange={setPasIncreaseMoney}
+        pasIncreaseMoney={pasIncreaseMoney}
+        onActIncreaseMoneyChange={setActIncreaseMoney}
+        actIncreaseMoney={actIncreaseMoney}
+        onCounterMoneyChange={setCountMoney}
+        countMoney={countMoney}
+        onCounterBustersChange={setBusters}
+        busters={busters}
       />
       {resultImages.map((image, index) => (
         <img

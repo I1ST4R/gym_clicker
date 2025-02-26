@@ -1,8 +1,8 @@
-.Upgrades{
+.Busters{
   position:absolute;
-  right:0;
+  left:0;
   top:0px;
-  width:350px;
+  width:400px;
   height:100vh;
   padding: 10px 30px 30px 20px;
   transition: 0.5s;
@@ -14,25 +14,17 @@
   overflow-x: visible;
 }
 
-.Upgrades--visible{
-  right:20px;
-}
-
-.Upgrades__title{
+.Busters__title{
   color:black;
   font-size: 40px;
   margin-bottom: 10px;
 }
 
-.Upgrades__title p{
+.Busters__title p{
   margin: 0;
 }
 
-.Upgrades__arrow--rotated{
-  transform:rotate(0deg);
-}
-
-.Upgrades__container{
+.Busters__container{
   display:flex;
   flex-direction: column;
   gap:5px;

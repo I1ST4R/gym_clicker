@@ -1,4 +1,4 @@
-.Upgrade{
+.Buster{
   position:relative;
   width:100%;
   border-radius: 5px;
@@ -6,22 +6,30 @@
   user-select: none;
   cursor: pointer;
   display:grid;
-  grid-template-columns: 110px auto;
-  gap:20px;
+  grid-template-columns: 100px auto 70px;
+  gap:10px;
   box-sizing: border-box;
   background-image: url("../assets/Upgrades/upgrade-back.jpg");
   background-size: cover;
   color:white;
-  border: 12px solid rgb(134, 134, 134);
+  border: 12px solid rgb(253, 206, 103);
   transition:.3s;
   overflow-x: visible;
 }
 
-.Upgrade:hover{
+.Buster:hover{
+  border: 12px solid rgb(255, 174, 0);
+}
+
+.Buster--nonavailable{
+  border: 12px solid rgb(134, 134, 134);
+}
+
+.Buster--nonavailable:hover{
   border: 12px solid rgb(229, 229, 229);
 }
 
-.Upgrade__tooltip {
+.Buster__tooltip {
   font-family: 'Bleeker';
   font-size: 18px;
   position: fixed; 
@@ -34,39 +42,47 @@
   z-index: 10; 
 }
 
-.Upgrade--nonavailable:before{
-  content:"";
-  position:absolute;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
-.Upgrade__info{
+.Buster__info{
   display:flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.Upgrade__title{
+.Buster__title{
   font-size:30px;
   margin:0;
   font-weight: bold;
   text-align: left;
 }
 
-.Upgrade__upgrade-info{
-  color:chocolate;
+.Buster__timers{
+  display:flex;
+  gap:10px;
+  font-size:20px;
 }
 
-.Upgrade__max-level{
+.Buster__timers img{
+  width:28px;
+  height:28px;
+}
+
+.Buster__timer{
+  display:flex;
+  align-items: center;
+  gap:3px;
+}
+
+.Buster__benefit{
+  color:rgb(7, 191, 50);
+}
+
+.Buster__max-level{
   text-transform: uppercase;
   text-align: left;
 }
 
-.Upgrade__img{
-  width:120px;
+.Buster__img{
+  width:100px;
   height:111px;
   background-size: contain;
   background-position: center;
@@ -75,63 +91,53 @@
   pointer-events: none;
 }
 
-.Upgrade__price-block{
+.Buster__price-block{
   font-size:25px;
-  height:23px;
+  height:27px;
   width:100%;
   display:flex;
   align-items: center;
   justify-content:left;
   gap:10px;
-  color:rgb(7, 191, 50)
+  color:rgb(68, 164, 236);
 }
 
-.Upgrade__price-block img{
-  width:25px;
+.Buster__price-block img{
+  width:23px;
 }
 
-.Upgrade--hidden {
-  position:relative;
-  pointer-events: none; 
-}
-
-.Upgrade--hidden .Upgrade__img{
-  opacity: 0;
-}
-
-.Upgrade--invisible{
-  display:none;
-}
-
-.Upgrade__price-level{
+.Buster__price-level{
   display:flex;
   align-items:end;
   justify-content: space-between;
 }
 
-.Upgrade__level{
+.Buster__level{
   margin:0 !important;
   line-height: 30px;
   font-size:34px;
 }
 
-.Upgrade__requirements{
+.Buster__upgrader{
   display:flex;
-  gap: 2px;
+  justify-content: center;
   align-items:center;
+  background-color: crimson;
 }
 
-.Upgrade__requirements-text{
-  font-size:23px;
-  text-align:left;
-  color:rgb(68, 164, 236);
+.Buster__upgrader--availavle{
+  background-color: rgb(244, 252, 21);
 }
 
-.Upgrade__requirements-text span{
-  color:white;
+.Buster__upgrader--availavle:hover{
+  background-color: rgb(153, 255, 0);
 }
 
-.Upgrade__requirement-img{
-  width:16px;
-  height:16px;
+.Buster__upgrader img{
+  width:50px;
+  height:50px;
+}
+
+.Buster__upgrade-info{
+  color:chocolate;
 }
