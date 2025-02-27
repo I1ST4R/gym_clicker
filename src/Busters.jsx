@@ -14,6 +14,7 @@ function Busters({
   busters: propBusters, 
   upgrades,
   onCounterUpgradesChange,
+  onIncreaseDiamond,
  }) {
 
   const [busters, setBusters] = useState(() => {
@@ -28,6 +29,7 @@ function Busters({
   const handleBusterLevelChange = (id) => {
     const updatedBusters = busters.map((buster) => {
       if (buster.id === id) {
+        onIncreaseDiamond()
         const isFirstLevel = buster.level === 0; 
         const updatedBuster = {
           ...buster, 

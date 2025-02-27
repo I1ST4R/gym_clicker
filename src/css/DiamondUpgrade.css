@@ -1,0 +1,67 @@
+.DiamondUpgrade{
+  position:relative;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:74px;
+  height:74px;
+  border-radius: 5px;
+  user-select: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-image: url("../assets/Upgrades/upgrade-back.jpg");
+  background-size: cover;
+  color:white;
+  border: 3px solid rgb(134, 134, 134);
+  transition:.3s;
+  overflow-x: visible;
+}
+
+.DiamondUpgrade:hover{
+  border: 3px solid rgb(30, 30, 30);
+}
+
+.DiamondUpgrade__tooltip {
+  font-family: 'Bleeker';
+  font-size: 18px;
+  position: fixed; 
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  text-align: justify;
+  border-radius: 5px;
+  z-index: 10;  
+}
+
+.Upgrade--nonavailable:before{
+  content:"";
+  position:absolute;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.DiamondUpgrade__upgrade-info{
+  color:chocolate;
+}
+
+.DiamondUpgrade__img{
+  width:90%;
+  height:90%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  user-select: none;
+  pointer-events: none;
+}
+
+.DiamondUpgrade__price-block{
+  color:rgb(255, 57, 151)
+}
+
+.DiamondUpgrade__price-block img{
+  width:18px;
+  height:18px;
+}

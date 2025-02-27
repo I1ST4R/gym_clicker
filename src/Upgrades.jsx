@@ -12,6 +12,7 @@ function Upgrades({
   actIncreaseMoney,
   onCounterUpgradesChange,
   upgrades: propUpgrades, 
+  onIncreaseDiamond,
  }) {
 
   const [upgrades, setUpgrades] = useState(() => {
@@ -49,6 +50,7 @@ function Upgrades({
     const updatedUpgrades = upgrades.map((upgrade, index, array) => {
       upgrade.initialPrice = initialPrices[upgrade.id]
       if (upgrade.id === id) {
+        onIncreaseDiamond()
         const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney);
         const pasIncrease = Math.floor(upgrade.initialIncrease * !upgrade.isIncreaseMoney);
         onActIncreaseMoneyChange(actIncreaseMoney + actIncrease);

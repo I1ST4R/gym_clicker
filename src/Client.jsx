@@ -15,6 +15,7 @@ function Client({
   countMoney,
   pasIncreaseMoney,
   actIncreaseMoney,
+  multiplier,
 }) {
   const [image, setImage] = useState('');
   const [progress, setProgress] = useState(0);
@@ -100,7 +101,7 @@ function Client({
         setIsClientUpgraded(true);
         new Audio(clientThanksgiving).play();
         setTimeout(() => { setIsVisible(false)}, 2000)
-        const bonus = (pasIncreaseMoney +actIncreaseMoney) * 100
+        const bonus = (pasIncreaseMoney +actIncreaseMoney) * multiplier
         onCounterMoneyChange(countMoney + bonus)
       }
       new Audio(clientClick).play();

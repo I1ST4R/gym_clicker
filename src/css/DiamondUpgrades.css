@@ -1,0 +1,28 @@
+.DiamondUpgrades{
+  position:absolute;
+  left:0;
+  top:calc(100vh - 180px);
+  width:400px;
+  height:100vh;
+  padding: 10px 30px 30px 20px;
+  transition: 0.5s;
+  overflow-y:auto;
+  overflow-x: visible;
+}
+
+.DiamondUpgrades__title{
+  color:black;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.Upgrades__title p{
+  margin: 0;
+}
+
+.DiamondUpgrades__container{
+  display:grid;
+  width:400px;
+  grid-template-columns: repeat(5, 74px);
+  gap:3px;
+}
