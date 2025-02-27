@@ -12,6 +12,8 @@ function Busters({
   actIncreaseMoney,
   onCounterBustersChange,
   busters: propBusters, 
+  upgrades,
+  onCounterUpgradesChange,
  }) {
 
   const [busters, setBusters] = useState(() => {
@@ -60,6 +62,8 @@ function Busters({
             pasIncreaseMoney={pasIncreaseMoney}
             onActIncreaseMoneyChange={onActIncreaseMoneyChange}
             actIncreaseMoney={actIncreaseMoney}
+            onCounterUpgradesChange={onCounterUpgradesChange}
+            upgrades={upgrades}
           />
         ))}
       </div>

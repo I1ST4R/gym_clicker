@@ -12,7 +12,7 @@ function App() {
  
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 0;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000;
   });
 
   const [trainerImage, setTrainerImage] = useState(() => {
@@ -128,6 +128,8 @@ function App() {
         countMoney={countMoney}
         onCounterBustersChange={setBusters}
         busters={busters}
+        onCounterUpgradesChange={setUpgrades}
+        upgrades={upgrades}
       />
       {resultImages.map((image, index) => (
         <img

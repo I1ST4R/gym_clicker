@@ -20,26 +20,47 @@ function Upgrades({
   });
 
   useEffect(() => {
+    setUpgrades(propUpgrades);
+  }, [propUpgrades]);
+
+  useEffect(() => {
     localStorage.setItem('upgrades', JSON.stringify(upgrades));
   }, [upgrades]);
+
+  const [initialPrices, setInitialPrices] = useState({});
+
+  useEffect(() => {
+    const savedInitialPrices = localStorage.getItem('initialPrices');
+    if (savedInitialPrices) {
+      setInitialPrices(JSON.parse(savedInitialPrices));
+    } else {
+      const prices = {};
+      upgrades.forEach(upgrade => {
+        prices[upgrade.id] = upgrade.initialPrice;
+      });
+      setInitialPrices(prices);
+      localStorage.setItem('initialPrices', JSON.stringify(prices));
+    }
+  }, []);
 
 
 
   const handleUpgradeLevelChange = (id) => {
     const updatedUpgrades = upgrades.map((upgrade, index, array) => {
+      upgrade.initialPrice = initialPrices[upgrade.id]
       if (upgrade.id === id) {
-        const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney)
-        const pasIncrease = Math.floor(upgrade.initialIncrease * !upgrade.isIncreaseMoney)
-        onActIncreaseMoneyChange(actIncreaseMoney + actIncrease)
-        onPasIncreaseMoneyChange(pasIncreaseMoney + pasIncrease)
-        const difference = !upgrade.isIncreaseMoney * 0.035
-        const increase = upgrade.initialIncrease * (1.15 - difference)
+        const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney);
+        const pasIncrease = Math.floor(upgrade.initialIncrease * !upgrade.isIncreaseMoney);
+        onActIncreaseMoneyChange(actIncreaseMoney + actIncrease);
+        onPasIncreaseMoneyChange(pasIncreaseMoney + pasIncrease);
+        const difference = !upgrade.isIncreaseMoney * 0.035;
+        const increase = upgrade.initialIncrease * (1.15 - difference);
         const updatedUpgrade = {
-          ...upgrade, 
+          ...upgrade,
           level: upgrade.level + 1,
           initialIncrease: increase,
-          initialPrice: upgrade.initialPrice * 1.16,
-        }
+          initialPrice: initialPrices[upgrade.id], 
+        };
 
         index + 1 < array.length 
         ? array[index + 1].isHidden = !(updatedUpgrade.level > 0)
@@ -76,6 +97,8 @@ function Upgrades({
             pasIncreaseMoney={pasIncreaseMoney}
           />
         ))}
+        <div className="Upgrades__space">
+        </div>
       </div>
     </div>
   );

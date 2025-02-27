@@ -10,72 +10,84 @@ function Buster({
   desc,
   benefit,
   initialPrice,
+  upgradeInfo,
   time,
   cooldown,
   maxLvl,
   level: propLevel,
   isActive: propIsActive,
-  initialIncrease,
-  isIncreaseMoney,
   onBusterLevelChange,
-  onLevelTrainerChange,
   onCounterMoneyChange, 
   countMoney,
   onPasIncreaseMoneyChange,
   pasIncreaseMoney,
   onActIncreaseMoneyChange,
   actIncreaseMoney,
+  upgrades: propUpgrades,
+  onCounterUpgradesChange,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const intervalRef = useRef(null);
+
   const [isActive, setIsActive] = useState(() => {
     const savedIsActive = localStorage.getItem(`buster_${id}_isActive`);
     return savedIsActive ? savedIsActive === "true" : propIsActive;
   });
+
   const [curCooldown, setCurCooldown] = useState(() => {
     const savedCooldown = localStorage.getItem(`buster_${id}_curCooldown`);
-    return savedCooldown ? parseInt(savedCooldown, 10) : 0; // Восстанавливаем из localStorage
+    return savedCooldown ? parseInt(savedCooldown, 10) : 0; 
   });
-  const intervalRef = useRef(null);
-
-  // Сохраняем isActive в localStorage при изменении
-  useEffect(() => {
-    localStorage.setItem(`buster_${id}_isActive`, isActive.toString());
-  }, [id, isActive]);
-
-  // Сохраняем curCooldown в localStorage при изменении
-  useEffect(() => {
-    localStorage.setItem(`buster_${id}_curCooldown`, curCooldown.toString());
-  }, [id, curCooldown]);
-
-  // Запускаем таймер, если curCooldown > 0
-  useEffect(() => {
-    if (curCooldown > 0) {
-      intervalRef.current = setInterval(() => {
-        setCurCooldown(prev => {
-          if (prev <= 100) {
-            clearInterval(intervalRef.current);
-            setIsActive(true); // Бустер снова активен
-            return 0;
-          }
-          return prev - 100; // Уменьшаем на 100 мс для большей точности
-        });
-      }, 100); // Обновляем каждые 100 мс
-    } else {
-      clearInterval(intervalRef.current);
-    }
-
-    return () => clearInterval(intervalRef.current);
-  }, [curCooldown]);
 
   const [level, setLevel] = useState(() => {
     const savedLevel = localStorage.getItem(`buster_${id}_level`);
     return savedLevel ? parseInt(savedLevel, 10) : propLevel;
   });
 
+  const [upgrades, setUpgrades] = useState(() => {
+    const savedUpgrades = localStorage.getItem('upgrades');
+    return savedUpgrades ? JSON.parse(savedUpgrades) : propUpgrades;
+  });
+  
+  useEffect(() => {
+    localStorage.setItem('upgrades', JSON.stringify(upgrades));
+  }, [upgrades]);
+
   useEffect(() => {
     localStorage.setItem(`buster_${id}_level`, level.toString());
   }, [id, level]);
+
+
+  useEffect(() => {
+    localStorage.setItem(`buster_${id}_isActive`, isActive);
+  }, [id, isActive]);
+
+
+  useEffect(() => {
+    localStorage.setItem(`buster_${id}_curCooldown`, curCooldown.toString());
+  }, [id, curCooldown]);
+
+
+
+  useEffect(() => {
+    if (curCooldown > 0) {
+      intervalRef.current = setInterval(() => {
+        setCurCooldown(prev => {
+          if (prev <= 100) {
+            clearInterval(intervalRef.current);
+            setIsActive(true); 
+            return 0;
+          }
+          return prev - 100; 
+        });
+      }, 100); 
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [curCooldown]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60000);
@@ -108,25 +120,61 @@ function Buster({
   };
 
   const handleActivateBusterClick = () => {
-    if (!isActive || curCooldown > 0) return; // Если бустер не активен или на восстановлении, ничего не делаем
+    if (!isActive || curCooldown > 0 || level === 0) return; 
 
-    const actIncreaseMoneyBefore = actIncreaseMoney;
-    onActIncreaseMoneyChange(pasIncreaseMoney);
-    setIsActive(false); // Деактивируем бустер
+    switch (id){
+      case 1:
+        const actIncreaseMoneyBefore = actIncreaseMoney;
+        onActIncreaseMoneyChange(pasIncreaseMoney);
+        setIsActive(false); 
 
-    // Запускаем таймер действия бустера
-    setTimeout(() => {
-      onActIncreaseMoneyChange(actIncreaseMoneyBefore); // Возвращаем значение после завершения времени бустера
+        setTimeout(() => {
+          onActIncreaseMoneyChange(actIncreaseMoneyBefore); 
+          setCurCooldown(cooldown); 
+        }, time);
+        break;
+      case 2:
+        const pasIncreaseMoneyBefore = pasIncreaseMoney;
+        onPasIncreaseMoneyChange(pasIncreaseMoney * 7);
+        setIsActive(false); 
 
-      // Запускаем таймер восстановления
-      setCurCooldown(cooldown); // Устанавливаем время восстановления
-    }, time);
+        setTimeout(() => {
+          onPasIncreaseMoneyChange(pasIncreaseMoneyBefore); 
+          setCurCooldown(cooldown); 
+        }, time);
+        break;
+      case 3:
+        setTimeout(() => {
+          onCounterMoneyChange(countMoney * 50) 
+          setCurCooldown(cooldown) 
+        }, time);
+        break;
+      case 4:
+        setTimeout(() => {
+          onPasIncreaseMoneyChange(pasIncreaseMoney * 1.05) 
+          setCurCooldown(cooldown)  
+        }, time);
+        break;
+      case 5:
+        const updatedUpgrades = upgrades.map((upgrade) => {
+          const updatedUpgrade = {
+            ...upgrade,
+            initialPrice: upgrade.initialPrice / 2,
+          }
+          return updatedUpgrade;
+        })
+        setUpgrades(updatedUpgrades);
+        onCounterUpgradesChange(updatedUpgrades);
+        setCurCooldown(cooldown);
+        break;
+    }
+      
   };
 
   return (
     <div
       className={`Buster 
-        ${!isActive || curCooldown > 0 ? 'Buster--nonavailable' : ''} 
+        ${!isActive || curCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''} 
       `}
       onMouseEnter={handleMouseEnter} 
       onMouseLeave={handleMouseLeave}
@@ -144,8 +192,15 @@ function Buster({
         <p className="Buster__title">{title}</p>
         <div className="Buster__timers"> 
           <div className="Buster__timer">
-            <img src="src/assets/Busters/time.png" alt="" />
-            <p>{`${time / 1000} сек.`}</p>
+            {time != 0 ? (
+              <>
+                <img src="src/assets/Busters/time.png" alt="" />
+                <p>{`${time / 1000} сек.`}</p>
+              </>
+            ):(
+              <>
+              </>
+            )}
           </div>
           <div className="Buster__timer">
             <img src="src/assets/Busters/cooldown.png" alt="" />
@@ -186,7 +241,7 @@ function Buster({
           }}
         >
           <p>{desc}</p>
-          <p className="Buster__upgrade-info">Улучшение: ожидание уменьшается на 7%</p>
+          <p className="Buster__upgrade-info">{`Улучшение: ${upgradeInfo}`}</p>
           <p className="Buster__benefit">{`Эффект: ${benefit}`}</p>
         </div>
       )}
