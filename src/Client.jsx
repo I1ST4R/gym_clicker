@@ -59,8 +59,8 @@ function Client({
       } catch (error) {
         console.error("Error loading image:", error);
       }
-      setX(getRandomRange(50, window.innerWidth - 50))
-      setY(getRandomRange(50, window.innerHeight - 50))
+      setX(getRandomRange(50, window.innerWidth - 200))
+      setY(getRandomRange(50, window.innerHeight - 300))
       setIsVisible(true);
       setIsClientUpgraded(false);
       setProgress(0);
