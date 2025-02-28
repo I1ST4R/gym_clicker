@@ -38,11 +38,6 @@ function Client({
   function getRandomRange(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
-
-  function getRandomRangeWithExceptions(min, max, minExcept, maxExcept) {
-    if(Math.random() > 0.5) return getRandomRange(min, minExcept)
-    return getRandomRange(maxExcept, max)
-  }
  
   const loadImage = (src) => {
     return new Promise((resolve, reject) => {
@@ -64,28 +59,16 @@ function Client({
       } catch (error) {
         console.error("Error loading image:", error);
       }
-      const trainerBlock = document.querySelector(".Trainer")
-      const rectTrainer = trainerBlock.getBoundingClientRect()
-      setX(
-        getRandomRangeWithExceptions(
-          100, 
-          window.innerWidth - 550, 
-          rectTrainer.left - 150,
-          rectTrainer.left + trainerBlock.width,
-        )
-      )
-      setY(
-        getRandomRangeWithExceptions(
-          100, 
-          window.innerHeight - 300, 
-          rectTrainer.top - 300,
-          rectTrainer.top + trainerBlock.height,
-        )
-      )
+      setX(getRandomRange(50, window.innerWidth - 50))
+      setY(getRandomRange(50, window.innerHeight - 50))
       setIsVisible(true);
       setIsClientUpgraded(false);
       setProgress(0);
-      setTimeout(() => { setIsVisible(false) }, waitingTime);
+      setTimeout(() => { 
+        const client = document.querySelector(".Client")
+        client.style.top = "-300px"
+        setIsVisible(false) 
+      }, waitingTime);
 
     }, randomDelay);
   
