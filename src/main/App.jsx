@@ -8,13 +8,14 @@ import DiamondUpgrades from '../DiamondUpgrades.jsx';
 import BustersParams from '../js/BustersParams.js';
 import UpgradesParams from '../js/UpgradesParams.js';
 import DiamondUpgradesParams from '../js/DiamondUpgradesParams.js';
+import StoryIntro from '../StoryIntro.jsx'; 
 import '../css/App.css';
 
 function App() {
  
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000000000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000000000000;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
@@ -91,6 +92,13 @@ function App() {
     const savedCooldwonDiscount = localStorage.getItem('cooldwonDiscount');
     return savedCooldwonDiscount ? JSON.parse(savedCooldwonDiscount) : 1;
   });
+
+  const [storyShown, setStoryShown] = useState(() => {
+    const savedStoryShown = localStorage.getItem('storyShown');
+    return savedStoryShown ? JSON.parse(savedStoryShown) : false;
+  });
+
+  const [showStory, setShowStory] = useState(!storyShown);
 
   useEffect(() => {
     localStorage.setItem('countMoney', countMoney.toString());
@@ -182,6 +190,7 @@ function App() {
 
   return (
     <>
+      {showStory && <StoryIntro onClose={() => setShowStory(false)} />}
       <Client
         minDelay={minDelay}
         maxDelay={maxDelay}
