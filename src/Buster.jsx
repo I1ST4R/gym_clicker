@@ -23,8 +23,7 @@ function Buster({
   pasIncreaseMoney,
   onActIncreaseMoneyChange,
   actIncreaseMoney,
-  upgrades: propUpgrades,
-  onCounterUpgradesChange,
+  onIsDiscountExistsChange,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
@@ -45,15 +44,6 @@ function Buster({
     return savedLevel ? parseInt(savedLevel, 10) : propLevel;
   });
 
-  const [upgrades, setUpgrades] = useState(() => {
-    const savedUpgrades = localStorage.getItem('upgrades');
-    return savedUpgrades ? JSON.parse(savedUpgrades) : propUpgrades;
-  });
-  
-  useEffect(() => {
-    localStorage.setItem('upgrades', JSON.stringify(upgrades));
-  }, [upgrades]);
-
   useEffect(() => {
     localStorage.setItem(`buster_${id}_level`, level.toString());
   }, [id, level]);
@@ -67,8 +57,6 @@ function Buster({
   useEffect(() => {
     localStorage.setItem(`buster_${id}_curCooldown`, curCooldown.toString());
   }, [id, curCooldown]);
-
-
 
   useEffect(() => {
     if (curCooldown > 0) {
@@ -156,16 +144,8 @@ function Buster({
         }, time);
         break;
       case 5:
-        const updatedUpgrades = upgrades.map((upgrade) => {
-          const updatedUpgrade = {
-            ...upgrade,
-            initialPrice: upgrade.initialPrice / 2,
-          }
-          return updatedUpgrade;
-        })
-        setUpgrades(updatedUpgrades);
-        onCounterUpgradesChange(updatedUpgrades);
-        setCurCooldown(cooldown);
+        onIsDiscountExistsChange(true)
+        setCurCooldown(cooldown)
         break;
     }
       

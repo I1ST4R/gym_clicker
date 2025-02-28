@@ -65,7 +65,7 @@ const BustersParams = [
     img: "./src/assets/Busters/img5.png",
     desc: "Вместо рабочих позвал мужиков с качалки - на этом и сэкономил",
     benefit: "50% скидка на любую следующую покупку улучшения",
-    initialPrice: 50000,
+    initialPrice: 0,
     time: 0,
     upgradeInfo: "ожидание уменьшается на 7%",
     cooldown: 60000,

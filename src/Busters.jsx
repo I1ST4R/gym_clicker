@@ -12,8 +12,7 @@ function Busters({
   actIncreaseMoney,
   onCounterBustersChange,
   busters: propBusters, 
-  upgrades,
-  onCounterUpgradesChange,
+  onIsDiscountExistsChange,
   onIncreaseDiamond,
  }) {
 
@@ -64,8 +63,7 @@ function Busters({
             pasIncreaseMoney={pasIncreaseMoney}
             onActIncreaseMoneyChange={onActIncreaseMoneyChange}
             actIncreaseMoney={actIncreaseMoney}
-            onCounterUpgradesChange={onCounterUpgradesChange}
-            upgrades={upgrades}
+            onIsDiscountExistsChange={onIsDiscountExistsChange}
           />
         ))}
       </div>

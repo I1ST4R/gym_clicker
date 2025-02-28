@@ -14,7 +14,7 @@ function App() {
  
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
@@ -25,6 +25,16 @@ function App() {
   const [multiplier, setMultiplier] = useState(() => {
     const savedMultiplier = localStorage.getItem('multiplier');
     return savedMultiplier ? parseInt(savedMultiplier, 10) : 100;
+  });
+
+  const [priceMultiplier, setPriceMultiplier] = useState(() => {
+    const savedPriceMultiplier = localStorage.getItem('priceMultiplier');
+    return savedPriceMultiplier ? parseInt(savedPriceMultiplier, 10) : 1;
+  });
+
+  const [increaseMultiplier, setIncreaseMultiplier] = useState(() => {
+    const savedIncreaseMultiplier = localStorage.getItem('increaseMultiplier');
+    return savedIncreaseMultiplier ? parseInt(savedIncreaseMultiplier, 10) : 1;
   });
 
   const [minDelay, setMinDelay] = useState(() => {
@@ -44,7 +54,7 @@ function App() {
 
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
     const savedPasIncreaseMoney = localStorage.getItem('pasIncreaseMoney');
-    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 1000000000;
+    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 0;
   });
 
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
@@ -72,6 +82,11 @@ function App() {
     return savedBusters ? JSON.parse(savedBusters) : BustersParams;
   });
 
+  const [isDiscountExists, setIsDiscountExists] = useState(() => {
+    const savedIsDiscountExists = localStorage.getItem('isDiscountExists');
+    return savedIsDiscountExists ? JSON.parse(savedIsDiscountExists) : false;
+  });
+
   useEffect(() => {
     localStorage.setItem('countMoney', countMoney.toString());
   }, [countMoney]);
@@ -83,6 +98,14 @@ function App() {
   useEffect(() => {
     localStorage.setItem('multiplier', multiplier.toString());
   }, [multiplier]);
+
+  useEffect(() => {
+    localStorage.setItem('priceMultiplier', priceMultiplier.toString());
+  }, [priceMultiplier]);
+
+  useEffect(() => {
+    localStorage.setItem('increaseMultiplier', increaseMultiplier.toString());
+  }, [increaseMultiplier]);
 
   useEffect(() => {
     localStorage.setItem('minDelay', minDelay.toString());
@@ -108,6 +131,12 @@ function App() {
     localStorage.setItem('resultImages', JSON.stringify(resultImages));
   }, [resultImages]);
 
+  useEffect(() => {
+    localStorage.setItem('isDiscountExists', JSON.stringify(isDiscountExists));
+  }, [isDiscountExists]);
+
+
+
   const incrementCountMoneyForClick = () => {
     setCountMoney(countMoney + actIncreaseMoney);
     console.log(actIncreaseMoney)
@@ -116,7 +145,6 @@ function App() {
   const incrementCountDiamond = () => {
     const increaseDiamond = Math.random() * 100 > 92
     setCountDiamond(countDiamond + increaseDiamond );
-    console.log("diamonds try increase")
   };
 
   useEffect(() => {
@@ -173,6 +201,10 @@ function App() {
         countMoney={countMoney}
         onCounterUpgradesChange={setUpgrades}
         upgrades={upgrades}
+        priceMultiplier={priceMultiplier}
+        increaseMultiplier={increaseMultiplier}
+        isDiscountExists={isDiscountExists}
+        onIsDiscountExistsChange={setIsDiscountExists}
       />
       <Busters
         onIncreaseDiamond={incrementCountDiamond}
@@ -184,8 +216,7 @@ function App() {
         countMoney={countMoney}
         onCounterBustersChange={setBusters}
         busters={busters}
-        onCounterUpgradesChange={setUpgrades}
-        upgrades={upgrades}
+        onIsDiscountExistsChange={setIsDiscountExists}
       />
       <DiamondUpgrades
         onMaxDelayChange={setMaxDelay}
@@ -198,10 +229,10 @@ function App() {
         diamond={countDiamond}
         onCounterBustersChange={setBusters}
         busters={busters}
-        onCounterUpgradesChange={setUpgrades}
-        upgrades={upgrades}
         onCounterDiamondsUpgradesChange={setDiamondUpgrades}
         diamondUpgrades={diamondUpgrades}
+        onPriceMultiplierChange={ setPriceMultiplier}
+        onIncreaseMultiplierChange={ setIncreaseMultiplier}
       />
       {resultImages.map((image, index) => (
         <img

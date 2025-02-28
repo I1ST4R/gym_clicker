@@ -23,6 +23,7 @@ function Upgrade({
   isInvisible,
   requirements, 
   pasIncreaseMoney,
+  isDiscountExists,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
@@ -51,16 +52,17 @@ function Upgrade({
     setIsHovered(false);
   };
 
-  const price = Math.floor(initialPrice);
+  const discount = initialPrice * (isDiscountExists/2)
+  const priceWithDiscount = Math.floor(initialPrice - discount)
   const isMaxLevel = level >= maxLvl;
-  const isEnoughMoney = countMoney >= price;
+  const isEnoughMoney = countMoney >= priceWithDiscount;
 
   const handleUpgradeClick = () => {
     if (isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements) {
       const newLevel = level + 1;
       setLevel(newLevel); 
       onUpgradeLevelChange(id);
-      onCounterMoneyChange(countMoney - price);
+      onCounterMoneyChange(countMoney - priceWithDiscount);
       new Audio(upgradeLevelUp).play();
       if (id === 1) {
         onLevelTrainerChange(UpgradesParams[0].images(level + 1)); 
@@ -102,7 +104,7 @@ function Upgrade({
           ) : (
             <>
               <div className="Upgrade__price-block">
-                <p className="Upgrade__price">{abbreviateNum(price)}</p>
+                <p className="Upgrade__price">{abbreviateNum(priceWithDiscount)}</p>
                 <img src="src/assets/money.png" alt="" />
               </div>
             </>

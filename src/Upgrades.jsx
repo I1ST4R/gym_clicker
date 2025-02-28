@@ -13,6 +13,10 @@ function Upgrades({
   onCounterUpgradesChange,
   upgrades: propUpgrades, 
   onIncreaseDiamond,
+  priceMultiplier,
+  increaseMultiplier,
+  isDiscountExists,
+  onIsDiscountExistsChange,
  }) {
 
   const [upgrades, setUpgrades] = useState(() => {
@@ -28,27 +32,9 @@ function Upgrades({
     localStorage.setItem('upgrades', JSON.stringify(upgrades));
   }, [upgrades]);
 
-  const [initialPrices, setInitialPrices] = useState({});
-
-  useEffect(() => {
-    const savedInitialPrices = localStorage.getItem('initialPrices');
-    if (savedInitialPrices) {
-      setInitialPrices(JSON.parse(savedInitialPrices));
-    } else {
-      const prices = {};
-      upgrades.forEach(upgrade => {
-        prices[upgrade.id] = upgrade.initialPrice;
-      });
-      setInitialPrices(prices);
-      localStorage.setItem('initialPrices', JSON.stringify(prices));
-    }
-  }, []);
-
-
-
   const handleUpgradeLevelChange = (id) => {
+    onIsDiscountExistsChange(false)
     const updatedUpgrades = upgrades.map((upgrade, index, array) => {
-      upgrade.initialPrice = initialPrices[upgrade.id]
       if (upgrade.id === id) {
         onIncreaseDiamond()
         const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney);
@@ -56,12 +42,12 @@ function Upgrades({
         onActIncreaseMoneyChange(actIncreaseMoney + actIncrease);
         onPasIncreaseMoneyChange(pasIncreaseMoney + pasIncrease);
         const difference = !upgrade.isIncreaseMoney * 0.035;
-        const increase = upgrade.initialIncrease * (1.15 - difference);
+        const increase = upgrade.initialIncrease * (1.15 - difference) 
         const updatedUpgrade = {
           ...upgrade,
           level: upgrade.level + 1,
-          initialIncrease: increase,
-          initialPrice: initialPrices[upgrade.id], 
+          initialIncrease: increase * increaseMultiplier, 
+          initialPrice: increase * 150 * priceMultiplier
         };
 
         index + 1 < array.length 
@@ -97,6 +83,7 @@ function Upgrades({
             countMoney={countMoney}
             onPasIncreaseMoneyChange={onPasIncreaseMoneyChange}
             pasIncreaseMoney={pasIncreaseMoney}
+            isDiscountExists={isDiscountExists}
           />
         ))}
         <div className="Upgrades__space">

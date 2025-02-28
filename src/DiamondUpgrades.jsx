@@ -13,25 +13,16 @@ function Upgrades({
   diamond,
   onCounterBustersChange, 
   busters,
-  onCounterUpgradesChange,
-  upgrades: propUpgrades,
   onCounterDiamondsUpgradesChange,
   diamondUpgrades: propDiamondUpgrades,
+  onPriceMultiplierChange,
+  onIncreaseMultiplierChange
  }) {
 
   const [diamondUpgrades, setDiamondUpgrades] = useState(() => {
     const savedDiamondUpgrades = localStorage.getItem('diamondUpgrades');
     return savedDiamondUpgrades ? JSON.parse(savedDiamondUpgrades) : propDiamondUpgrades;
   });
-
-  const [upgrades, setUpgrades] = useState(() => {
-    const savedUpgrades = localStorage.getItem('upgrades');
-    return savedUpgrades ? JSON.parse(savedUpgrades) : propUpgrades;
-  });
-    
-  useEffect(() => {
-    localStorage.setItem('upgrades', JSON.stringify(upgrades));
-  }, [upgrades]);
   
   useEffect(() => {
     localStorage.setItem('diamondUpgrades', JSON.stringify(diamondUpgrades));
@@ -50,31 +41,12 @@ function Upgrades({
           initialPrice: prices[dUpgrade.level + 1], 
         }
 
-        let updatedUpgrades
         switch (id){
           case 1:
-            updatedUpgrades = upgrades.map((upgrade) => {
-              const price = upgrade.initialPrice * (100 - prices[dUpgrade.level])/100
-              const updatedUpgrade = {
-                ...upgrade,
-                initialPrice: price,
-              }
-              return updatedUpgrade;
-            })
-            setUpgrades(updatedUpgrades);
-            onCounterUpgradesChange(updatedUpgrades);
+            onPriceMultiplierChange((100 - prices[dUpgrade.level])/100)
             break;
           case 2:
-            updatedUpgrades = upgrades.map((upgrade) => {
-              const price = upgrade.initialIncrease * (100 + prices[dUpgrade.level])/100
-              const updatedUpgrade = {
-                ...upgrade,
-                initialIncrease: price,
-              }
-              return updatedUpgrade;
-            })
-            setUpgrades(updatedUpgrades);
-            onCounterUpgradesChange(updatedUpgrades);
+            onIncreaseMultiplierChange((100 + prices[dUpgrade.level])/100)
             break;
           case 3:
             console.log(3)
@@ -92,7 +64,7 @@ function Upgrades({
     })
 
     setDiamondUpgrades(updatedDUpgrades); 
-    onCounterDiamondsUpgradesChange(updatedDUpgrades); 
+    onCounterDiamondsUpgradesChange(updatedDUpgrades)
   };
 
   
@@ -118,7 +90,6 @@ function Upgrades({
             diamond={diamond}
             onCounterBustersChange={onCounterBustersChange}
             busters={busters}
-            onCounterUpgradesChange={onCounterUpgradesChange}
           />
         ))}
       </div>
