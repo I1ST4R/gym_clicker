@@ -16,7 +16,8 @@ function Upgrades({
   onCounterDiamondsUpgradesChange,
   diamondUpgrades: propDiamondUpgrades,
   onPriceMultiplierChange,
-  onIncreaseMultiplierChange
+  onIncreaseMultiplierChange,
+  onCooldwonDiscountChange,
  }) {
 
   const [diamondUpgrades, setDiamondUpgrades] = useState(() => {
@@ -40,22 +41,24 @@ function Upgrades({
           level: dUpgrade.level + 1,
           initialPrice: prices[dUpgrade.level + 1], 
         }
-
+        const increase = (100 + prices[dUpgrade.level])/100
+        const decrease = (100 - prices[dUpgrade.level])/100
         switch (id){
           case 1:
-            onPriceMultiplierChange((100 - prices[dUpgrade.level])/100)
+            onPriceMultiplierChange(decrease)
             break;
           case 2:
-            onIncreaseMultiplierChange((100 + prices[dUpgrade.level])/100)
+            onIncreaseMultiplierChange(increase)
             break;
           case 3:
-            console.log(3)
+            onCooldwonDiscountChange(decrease)
             break;
           case 4:
-            console.log(4)
+            onMaxDelayChange(maxDelay * decrease)
+            onMinDelayChange(minDelay * decrease)
             break;
           case 5:
-            console.log(5)
+            onMultiplierChange(multiplier * increase)
             break;
         }
         return updatedDUpgrade;

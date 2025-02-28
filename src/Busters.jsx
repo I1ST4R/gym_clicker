@@ -14,6 +14,7 @@ function Busters({
   busters: propBusters, 
   onIsDiscountExistsChange,
   onIncreaseDiamond,
+  cooldwonDiscount,
  }) {
 
   const [busters, setBusters] = useState(() => {
@@ -24,6 +25,20 @@ function Busters({
   useEffect(() => {
     localStorage.setItem('busters', JSON.stringify(busters));
   }, [busters]);
+
+  useEffect(() => {
+     const updatedBusters = busters.map((buster) => {
+      const updatedBuster = {
+        ...buster, 
+        cooldown:  buster.cooldown * cooldwonDiscount , 
+      }
+      return updatedBuster;  
+    })
+
+    setBusters(updatedBusters); 
+    onCounterBustersChange(updatedBusters);
+  }, [cooldwonDiscount]);
+
 
   const handleBusterLevelChange = (id) => {
     const updatedBusters = busters.map((buster) => {

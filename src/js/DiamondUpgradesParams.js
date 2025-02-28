@@ -14,7 +14,7 @@ const DiamondUpgradesParams = [
   {
     id: 3,
     img: "./src/assets/Busters/cooldown.png",
-    benefit: "снижение времени ожидания бустера на", 
+    benefit: "снижение времени ожидания бустеров на", 
     level: 0,
   },
   {

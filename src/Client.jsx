@@ -101,7 +101,7 @@ function Client({
         setIsClientUpgraded(true);
         new Audio(clientThanksgiving).play();
         setTimeout(() => { setIsVisible(false)}, 2000)
-        const bonus = (pasIncreaseMoney +actIncreaseMoney) * multiplier
+        const bonus = Math.floor((pasIncreaseMoney +actIncreaseMoney) * multiplier)
         onCounterMoneyChange(countMoney + bonus)
       }
       new Audio(clientClick).play();

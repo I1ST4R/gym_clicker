@@ -14,7 +14,7 @@ function App() {
  
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000000000;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
@@ -39,12 +39,12 @@ function App() {
 
   const [minDelay, setMinDelay] = useState(() => {
     const savedMinDelay = localStorage.getItem('minDelay');
-    return savedMinDelay ? parseInt(savedMinDelay, 10) : 50000;
+    return savedMinDelay ? parseInt(savedMinDelay, 10) : 10000;
   });
 
   const [maxDelay, setMaxDelay] = useState(() => {
     const savedMaxDelay = localStorage.getItem('maxDelay');
-    return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 100000;
+    return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 30000;
   });
 
   const [trainerImage, setTrainerImage] = useState(() => {
@@ -54,7 +54,7 @@ function App() {
 
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
     const savedPasIncreaseMoney = localStorage.getItem('pasIncreaseMoney');
-    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 0;
+    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 10000000000000;
   });
 
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
@@ -85,6 +85,11 @@ function App() {
   const [isDiscountExists, setIsDiscountExists] = useState(() => {
     const savedIsDiscountExists = localStorage.getItem('isDiscountExists');
     return savedIsDiscountExists ? JSON.parse(savedIsDiscountExists) : false;
+  });
+
+  const [cooldwonDiscount, setCooldwonDiscount] = useState(() => {
+    const savedCooldwonDiscount = localStorage.getItem('cooldwonDiscount');
+    return savedCooldwonDiscount ? JSON.parse(savedCooldwonDiscount) : 1;
   });
 
   useEffect(() => {
@@ -134,6 +139,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem('isDiscountExists', JSON.stringify(isDiscountExists));
   }, [isDiscountExists]);
+
+  useEffect(() => {
+    localStorage.setItem('cooldwonDiscount', JSON.stringify(cooldwonDiscount));
+  }, [cooldwonDiscount]);
 
 
 
@@ -217,6 +226,7 @@ function App() {
         onCounterBustersChange={setBusters}
         busters={busters}
         onIsDiscountExistsChange={setIsDiscountExists}
+        cooldwonDiscount={cooldwonDiscount}
       />
       <DiamondUpgrades
         onMaxDelayChange={setMaxDelay}
@@ -232,7 +242,8 @@ function App() {
         onCounterDiamondsUpgradesChange={setDiamondUpgrades}
         diamondUpgrades={diamondUpgrades}
         onPriceMultiplierChange={ setPriceMultiplier}
-        onIncreaseMultiplierChange={ setIncreaseMultiplier}
+        onIncreaseMultiplierChange={setIncreaseMultiplier}
+        onCooldwonDiscountChange={setCooldwonDiscount}
       />
       {resultImages.map((image, index) => (
         <img

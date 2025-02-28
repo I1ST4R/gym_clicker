@@ -6,7 +6,7 @@ const BustersParams = [
     desc: "Теперь ты настоящий сигма",
     benefit: "получай за 1 клик столько же сколько получаешь в секунду",
     initialPrice: 100,
-    time: 20000,
+    time: 10000,
     upgradeInfo: "ожидание уменьшается на 7%",
     cooldown: 60000,
     maxLvl: 10,
