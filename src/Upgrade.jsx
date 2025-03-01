@@ -24,9 +24,13 @@ function Upgrade({
   requirements, 
   pasIncreaseMoney,
   isDiscountExists,
+  upgrades, 
+  onEndChange,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+
+  const [isAlerted, setIsAlerted] = useState(false);
 
   const [level, setLevel] = useState(() => {
     const savedLevel = localStorage.getItem(`upgrade_${id}_level`);
@@ -37,13 +41,11 @@ function Upgrade({
     localStorage.setItem(`upgrade_${id}_level`, level.toString());
   }, [id, level]);
 
-
-  
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
       top: cardRect.top, 
-      left: cardRect.left - 240, 
+      left: cardRect.left - 260, 
     });
     setIsHovered(true);
   };
@@ -52,12 +54,22 @@ function Upgrade({
     setIsHovered(false);
   };
 
-  const discount = initialPrice * (isDiscountExists/2)
-  const priceWithDiscount = Math.floor(initialPrice - discount)
+  const discount = initialPrice * (isDiscountExists / 2);
+  const priceWithDiscount = Math.floor(initialPrice - discount);
   const isMaxLevel = level >= maxLvl;
   const isEnoughMoney = countMoney >= priceWithDiscount;
 
   const handleUpgradeClick = () => {
+    if (isId16 && isId15Level50 && isAlerted) {
+      setIsAlerted(true)
+      onEndChange(true)
+      return
+    }
+    if (isId16 && isId15Level50) {
+      alert("При улучшении этой карточки игра будет завершена. Вы уверены что хотите продолжить?")
+      setIsAlerted(true)
+      return
+    }
     if (isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements) {
       const newLevel = level + 1;
       setLevel(newLevel); 
@@ -70,6 +82,9 @@ function Upgrade({
     }
   };
 
+  const isId16 = id === 16;
+  const isId15Level50 = upgrades.find(upgrade => upgrade.id === 15)?.level >= 10;
+
   return (
     <div
       className={`Upgrade 
@@ -80,13 +95,19 @@ function Upgrade({
       onMouseEnter={handleMouseEnter} 
       onMouseLeave={handleMouseLeave} 
     >
-      <img
-        className="Upgrade__img"
-        src={id === 1 ? UpgradesParams[0].images(level) : img}  
-        alt={title}
-      />
+      {isId16 && !isId15Level50 ? (
+        <div className="Upgrade__placeholder">
+          <p>???</p>
+        </div>
+      ) : (
+        <img
+          className="Upgrade__img"
+          src={id === 1 ? UpgradesParams[0].images(level) : img}  
+          alt={title}
+        />
+      )}
       <div className="Upgrade__info"> 
-        <p className="Upgrade__title">{title}</p>
+        <p className="Upgrade__title">{isId16 && !isId15Level50 ? "???" : title}</p>
         {requirements > 0 && level === 0 ? (
           <div className="Upgrade__requirements">
             <p className="Upgrade__requirements-text">
@@ -98,13 +119,18 @@ function Upgrade({
         ) : (
           <></>
         )}
+        {isId16 && !isId15Level50 && (
+          <div className="Upgrade__unlock-requirement">
+            <p>Улучшите предыдущую карточку до 50 уровня</p>
+          </div>
+        )}
         <div className="Upgrade__price-level">
           {isMaxLevel ? (
             <p className="Upgrade__max-level">максимальный уровень</p>
           ) : (
             <>
               <div className="Upgrade__price-block">
-                <p className="Upgrade__price">{abbreviateNum(priceWithDiscount)}</p>
+                <p className="Upgrade__price">{isId16 && !isId15Level50 ? "???" : abbreviateNum(priceWithDiscount)}</p>
                 <img src="src/assets/money.png" alt="" />
               </div>
             </>
@@ -113,7 +139,7 @@ function Upgrade({
         </div>
       </div>
       
-      {isHovered && (
+      {isHovered && (isId15Level50 && isId16 || !isId16) && (
         <div
           className="Upgrade__tooltip"
           style={{
@@ -121,11 +147,17 @@ function Upgrade({
             left: `${tooltipPosition.left}px`,
           }}
         >
-          <p>{desc}</p>
-          <p className="Upgrade__upgrade-info">{`Улучшение:
-            + ${abbreviateNum(Math.floor(initialIncrease))} 
-            ${isIncreaseMoney ? "за клик" : "в секунду"}
-          `}</p>
+          {isId15Level50 && isId16 ? (
+            <p className="Upgrade__last">ВНИМАНИЕ! После покупки этой карточки игра будет считаться пройденой. Если вы не хотите завершать прохождение не покупайте это улучшение!</p>
+          ):
+          <>
+            <p>{desc}</p>
+            <p className="Upgrade__upgrade-info">{`Улучшение:
+              + ${abbreviateNum(Math.floor(initialIncrease))} 
+              ${isIncreaseMoney ? "за клик" : "в секунду"}
+            `}</p>
+          </>
+          }
         </div>
       )}
     </div>

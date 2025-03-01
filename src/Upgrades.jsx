@@ -17,6 +17,7 @@ function Upgrades({
   increaseMultiplier,
   isDiscountExists,
   onIsDiscountExistsChange,
+  onEndChange,
  }) {
 
   const [upgrades, setUpgrades] = useState(() => {
@@ -77,6 +78,7 @@ function Upgrades({
           <Upgrade
             key={upgrade.id}
             {...upgrade}
+            upgrades={upgrades} 
             onUpgradeLevelChange={handleUpgradeLevelChange}
             onLevelTrainerChange={onLevelTrainerChange}
             onCounterMoneyChange={onCounterMoneyChange}
@@ -84,6 +86,7 @@ function Upgrades({
             onPasIncreaseMoneyChange={onPasIncreaseMoneyChange}
             pasIncreaseMoney={pasIncreaseMoney}
             isDiscountExists={isDiscountExists}
+            onEndChange={onEndChange}
           />
         ))}
         <div className="Upgrades__space">

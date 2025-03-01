@@ -9,13 +9,14 @@ import BustersParams from '../js/BustersParams.js';
 import UpgradesParams from '../js/UpgradesParams.js';
 import DiamondUpgradesParams from '../js/DiamondUpgradesParams.js';
 import StoryIntro from '../StoryIntro.jsx'; 
+import StoryAutro from '../StoryAutro.jsx'; 
 import '../css/App.css';
 
 function App() {
  
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000000000000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 10000000000000000000000000000;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
@@ -99,6 +100,8 @@ function App() {
   });
 
   const [showStory, setShowStory] = useState(!storyShown);
+
+  const [end, setEnd] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('countMoney', countMoney.toString());
@@ -191,6 +194,7 @@ function App() {
   return (
     <>
       {showStory && <StoryIntro onClose={() => setShowStory(false)} />}
+      {end && <StoryAutro/>}
       <Client
         minDelay={minDelay}
         maxDelay={maxDelay}
@@ -223,6 +227,7 @@ function App() {
         increaseMultiplier={increaseMultiplier}
         isDiscountExists={isDiscountExists}
         onIsDiscountExistsChange={setIsDiscountExists}
+        onEndChange={setEnd}
       />
       <Busters
         onIncreaseDiamond={incrementCountDiamond}
