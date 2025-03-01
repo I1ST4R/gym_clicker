@@ -1,0 +1,33 @@
+/* SliderStyles.css */
+
+.slider-container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 480px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.swiper-wrapper {
+  height: 100vh;
+}
+
+.button-prev, .button-next{
+  position:absolute;
+  z-index: 10;
+  top:25px;
+  padding:0px;
+  padding:5px;
+  background-color: transparent;
+  border:none !important;
+  box-shadow: none !important;
+}
+
+.button-prev{
+  left:20px;
+}
+
+.button-next{
+  right:20px;
+}

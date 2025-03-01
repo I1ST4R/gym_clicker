@@ -1,11 +1,15 @@
 .DiamondUpgrades{
   position:absolute;
-  left:0;
-  top:calc(100vh - 180px);
-  width:400px;
+  right:0;
+  top:0px;
+  width:440px;
   height:100vh;
-  padding: 10px 30px 30px 20px;
+  padding: 10px 20px 20px 20px;
   transition: 0.5s;
+  background-image: url(../assets/Upgrades/upgrades-back.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   overflow-y:auto;
   overflow-x: visible;
 }
