@@ -16,17 +16,17 @@ function App() {
  
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 10000000000000000000000000000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 0;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
     const savedCountDiamond = localStorage.getItem('countDiamond');
-    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 999;
+    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 0;
   });
 
   const [multiplier, setMultiplier] = useState(() => {
     const savedMultiplier = localStorage.getItem('multiplier');
-    return savedMultiplier ? parseInt(savedMultiplier, 10) : 100;
+    return savedMultiplier ? parseInt(savedMultiplier, 10) : 30;
   });
 
   const [priceMultiplier, setPriceMultiplier] = useState(() => {
@@ -41,12 +41,12 @@ function App() {
 
   const [minDelay, setMinDelay] = useState(() => {
     const savedMinDelay = localStorage.getItem('minDelay');
-    return savedMinDelay ? parseInt(savedMinDelay, 10) : 10000;
+    return savedMinDelay ? parseInt(savedMinDelay, 10) : 300000;
   });
 
   const [maxDelay, setMaxDelay] = useState(() => {
     const savedMaxDelay = localStorage.getItem('maxDelay');
-    return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 30000;
+    return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 600000;
   });
 
   const [trainerImage, setTrainerImage] = useState(() => {
@@ -56,7 +56,7 @@ function App() {
 
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
     const savedPasIncreaseMoney = localStorage.getItem('pasIncreaseMoney');
-    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 10000000000000;
+    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 0;
   });
 
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
