@@ -26,9 +26,9 @@ function Upgrade({
   isDiscountExists,
   upgrades, 
   onEndChange,
+  onTooltipPositionChange,
+  onIsUpgradeHoveredChange,
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
   const [isAlerted, setIsAlerted] = useState(false);
 
@@ -42,16 +42,15 @@ function Upgrade({
   }, [id, level]);
 
   const handleMouseEnter = (event) => {
-    const cardRect = event.currentTarget.getBoundingClientRect();
-    setTooltipPosition({
-      top: cardRect.top, 
-      left: cardRect.left - 260, 
+    onTooltipPositionChange({ 
+      right: 500,
+      id: id, 
     });
-    setIsHovered(true);
+    onIsUpgradeHoveredChange(true);
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    onIsUpgradeHoveredChange(false);
   };
 
   const discount = initialPrice * (isDiscountExists / 2);
@@ -138,28 +137,6 @@ function Upgrade({
           <p className="Upgrade__level">{level === 0 ? "" : level}</p>
         </div>
       </div>
-      
-      {isHovered && (isId15Level50 && isId16 || !isId16) && (
-        <div
-          className="Upgrade__tooltip"
-          style={{
-            top: `${tooltipPosition.top}px`,
-            left: `${tooltipPosition.left}px`,
-          }}
-        >
-          {isId15Level50 && isId16 ? (
-            <p className="Upgrade__last">ВНИМАНИЕ! После покупки этой карточки игра будет считаться пройденой. Если вы не хотите завершать прохождение не покупайте это улучшение!</p>
-          ):
-          <>
-            <p>{desc}</p>
-            <p className="Upgrade__upgrade-info">{`Улучшение:
-              + ${abbreviateNum(Math.floor(initialIncrease))} 
-              ${isIncreaseMoney ? "за клик" : "в секунду"}
-            `}</p>
-          </>
-          }
-        </div>
-      )}
     </div>
   );
 }

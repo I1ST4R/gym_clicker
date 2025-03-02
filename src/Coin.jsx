@@ -7,21 +7,15 @@ function Coin({ id, startX, startY, onComplete }) {
   useEffect(() => {
     const coin = coinRef.current;
 
-    // Устанавливаем начальные координаты монетки
-    coin.style.left = `${startX}px`;
-    coin.style.top = `${startY}px`;
-
-    // Добавляем класс для запуска анимации
+    coin.style.left = `${startX - (window.innerWidth/2 - 330)}px`;
+    coin.style.top = `${startY - (window.innerHeight/2 - 110)}px`;
     coin.classList.add('Money--animate');
-
-    // Обработчик события завершения анимации
     const handleAnimationEnd = () => {
-      onComplete(id); // Уведомляем родительский компонент о завершении анимации
+      onComplete(id); 
     };
 
     coin.addEventListener('animationend', handleAnimationEnd);
 
-    // Очистка
     return () => {
       coin.removeEventListener('animationend', handleAnimationEnd);
     };

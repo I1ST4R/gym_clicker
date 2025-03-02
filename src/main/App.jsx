@@ -13,18 +13,19 @@ import DiamondUpgradesParams from '../js/DiamondUpgradesParams.js';
 import StoryIntro from '../StoryIntro.jsx'; 
 import StoryAutro from '../StoryAutro.jsx'; 
 import '../css/App.css';
-import '../css/SliderStyles.css'; 
+import '../css/SliderStyles.css';
+import abbreviateNum from '../js/numberAbbreviator.js'; 
 
 function App() {
 
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 0;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000000;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
     const savedCountDiamond = localStorage.getItem('countDiamond');
-    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 0;
+    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 100;
   });
 
   const [multiplier, setMultiplier] = useState(() => {
@@ -44,12 +45,12 @@ function App() {
 
   const [minDelay, setMinDelay] = useState(() => {
     const savedMinDelay = localStorage.getItem('minDelay');
-    return savedMinDelay ? parseInt(savedMinDelay, 10) : 300000;
+    return savedMinDelay ? parseInt(savedMinDelay, 10) : 10000/*300000*/;
   });
 
   const [maxDelay, setMaxDelay] = useState(() => {
     const savedMaxDelay = localStorage.getItem('maxDelay');
-    return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 600000;
+    return savedMaxDelay ? parseInt(savedMaxDelay, 10) :/* 600000*/20000;
   });
 
   const [trainerImage, setTrainerImage] = useState(() => {
@@ -101,6 +102,14 @@ function App() {
     const savedStoryShown = localStorage.getItem('storyShown');
     return savedStoryShown ? JSON.parse(savedStoryShown) : false;
   });
+
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, right: 0 , id: 1});
+
+  const [isUpgradeHovered, setIsUpgradeHovered] = useState(false);
+
+  const [isDUpgradeHovered, setIsDUpgradeHovered] = useState(false);
+
+  const [isBusterHovered, setIsBusterHovered] = useState(false);
 
   const [showStory, setShowStory] = useState(!storyShown);
 
@@ -168,6 +177,12 @@ function App() {
     const increaseDiamond = Math.random() * 100 > 92
     setCountDiamond(countDiamond + increaseDiamond );
   };
+  
+  const [windowWidth, setwindowWidth] = useState(window.innerWidth);
+
+  window.addEventListener("resize", () => {
+    setwindowWidth(window.innerWidth)
+  });
 
   useEffect(() => {
     upgrades.forEach((u) => {
@@ -175,6 +190,7 @@ function App() {
         setResultImages((prevImages) => [
           ...prevImages,
           {
+            zIndex: u.zIndex,
             src: u.resultImg,
             x: u.resultImgPositionX,
             y: u.resultImgPositionY,
@@ -192,7 +208,6 @@ function App() {
     }, 1000);
     return () => clearInterval(interval);
   }, [pasIncreaseMoney]);
-
   
   const swiperRef = useRef(null);
 
@@ -208,9 +223,17 @@ function App() {
     }
   };
 
+  const DUpgradesPrices = [1, 2, 5, 10]
+  
+  useEffect(() => {
+    console.log(diamondUpgrades[tooltipPosition.id - 1].level)
+  }, [diamondUpgrades[tooltipPosition.id - 1].level]);
+
   return (
+   
     <>
       {showStory && <StoryIntro onClose={() => setShowStory(false)} />}
+      
       {end && <StoryAutro/>}
       <Client
         minDelay={minDelay}
@@ -267,6 +290,8 @@ function App() {
               isDiscountExists={isDiscountExists}
               onIsDiscountExistsChange={setIsDiscountExists}
               onEndChange={setEnd}
+              onTooltipPositionChange={setTooltipPosition}
+              onIsUpgradeHoveredChange={setIsUpgradeHovered}
             />
           </SwiperSlide>
           <SwiperSlide>
@@ -282,6 +307,8 @@ function App() {
               busters={busters}
               onIsDiscountExistsChange={setIsDiscountExists}
               cooldwonDiscount={cooldwonDiscount}
+              onTooltipPositionChange={setTooltipPosition}
+              onIsBusterHoveredChange={setIsBusterHovered}
             />
           </SwiperSlide>
           <SwiperSlide>
@@ -301,20 +328,126 @@ function App() {
               onPriceMultiplierChange={setPriceMultiplier}
               onIncreaseMultiplierChange={setIncreaseMultiplier}
               onCooldwonDiscountChange={setCooldwonDiscount}
+              onTooltipPositionChange={setTooltipPosition}
+              onIsDUpgradeHoveredChange={setIsDUpgradeHovered}
             />
           </SwiperSlide>
         </Swiper>
-      </div>
+      </div> 
+
+      {/*Tooltip for DUpgrades*/}
+      {isDUpgradeHovered && (
+        <div
+          className="Tooltip"
+          style={{
+            top: `80px`,
+            right: `${tooltipPosition.right}px`,
+          }}
+        >
+        {!(diamondUpgrades[tooltipPosition.id - 1].level === 4) ?
+        (
+            <>
+            <p className="Tooltip__upgrade-info">
+              {`
+              Улучшение: 
+              ${diamondUpgrades[tooltipPosition.id - 1].benefit} 
+              ${DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level]}%
+              `}
+            </p>
+            <div className="Tooltip__price-block">
+              {`
+              Стоимость: 
+              ${DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level]} 
+              `}
+              <img src="src/assets/diamond.png" alt="" />
+            </div>
+            </>
+          ) : 
+          (
+            <>
+              <div
+                  className="Tooltip"
+                  style={{
+                    top: `${tooltipPosition.top}px`,
+                    right: `${tooltipPosition.right}px`,
+                }}
+                >
+                <p className="Tooltip__upgrade-info">
+                  Максимальный уровень
+                </p>
+              </div>
+            </>
+          )}
+          
+        </div>
+      )}
+
+      {/*Tooltip for Busters*/}    
+      {isBusterHovered && (
+        <div
+          className="Tooltip"
+          style={{
+            top: `${tooltipPosition.top}px`,
+            right: `${tooltipPosition.right}px`,
+          }}
+        >
+          <p>{busters[tooltipPosition.id - 1].desc}</p>
+          <p className="Tooltip__upgrade-info">{
+            `Улучшение: ${busters[tooltipPosition.id - 1].upgradeInfo}`
+          }</p>
+          <p className="Tooltip__benefit">{
+            `Эффект: ${busters[tooltipPosition.id - 1].benefit}`
+          }</p>
+        </div>
+      )}    
+
+      {/*Tooltip for Upgrades*/}
+      { isUpgradeHovered && (
+          <div
+            className="Tooltip"
+            style={{
+              top: `${tooltipPosition.top}px`,
+              right: `${tooltipPosition.right}px`,
+            }}
+          >
+            <p>{upgrades[tooltipPosition.id - 1].desc}</p>
+              <p className="Tooltip__upgrade-info">
+                {`Улучшение:
+                  + ${abbreviateNum(Math.floor(upgrades[tooltipPosition.id  - 1].initialIncrease))} 
+                  ${upgrades[tooltipPosition.id  - 1].isIncreaseMoney ? "за клик" : "в секунду"}
+                `}
+              </p>    
+          </div>
+        )
+      }
+
+      { isUpgradeHovered && 
+      tooltipPosition.id === 16 
+      && upgrades[tooltipPosition.id].level >= 50 (
+          <div
+            className="Tooltip"
+            style={{
+              top: `${tooltipPosition.top}px`,
+              right: `${tooltipPosition.right}px`,
+            }}
+          >
+            <p className="Tooltip__last">ВНИМАНИЕ! После покупки этой карточки игра будет считаться пройденой. Если вы не хотите завершать прохождение не покупайте это улучшение!</p>    
+          </div>
+        )
+      }
+
+      {/*Result images*/}
       {resultImages.map((image, index) => (
         <img
           key={index} 
           src={image.src}
           style={{
             position: 'absolute',
-            left: `${image.x}px`,
+            left: `${(windowWidth - 480)/2 +image.x}px`,
             top: `${image.y}px`,
             width: `${image.width}px`,
             height: `${image.height}px`,
+            zIndex:`${image.zIndex}`,
             userSelect: `none`,
             pointerEvents: `none`,
           }}

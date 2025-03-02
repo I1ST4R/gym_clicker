@@ -24,6 +24,8 @@ function Buster({
   onActIncreaseMoneyChange,
   actIncreaseMoney,
   onIsDiscountExistsChange,
+  onTooltipPositionChange,
+  onIsBusterHoveredChange,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
@@ -85,15 +87,16 @@ function Buster({
 
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
-    setTooltipPosition({
+    onTooltipPositionChange({
       top: cardRect.top, 
-      left: cardRect.left + 430, 
+      right: 500, 
+      id: id,
     });
-    setIsHovered(true);
+    onIsBusterHoveredChange(true);
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    onIsBusterHoveredChange(false);
   };
 
   const isMaxLevel = level >= maxLvl;
@@ -211,20 +214,6 @@ function Buster({
       >
         <img src="./src/assets/Busters/upgrade.png" alt="" />
       </div>
-      
-      {isHovered && (
-        <div
-          className="Buster__tooltip"
-          style={{
-            top: `${tooltipPosition.top}px`,
-            left: `${tooltipPosition.left}px`,
-          }}
-        >
-          <p>{desc}</p>
-          <p className="Buster__upgrade-info">{`Улучшение: ${upgradeInfo}`}</p>
-          <p className="Buster__benefit">{`Эффект: ${benefit}`}</p>
-        </div>
-      )}
     </div>
   );
 }

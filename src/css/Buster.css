@@ -29,19 +29,6 @@
   border: 12px solid rgb(229, 229, 229);
 }
 
-.Buster__tooltip {
-  font-family: 'Bleeker';
-  font-size: 18px;
-  position: fixed; 
-  width: 200px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  text-align: justify;
-  border-radius: 5px;
-  z-index: 10; 
-}
-
 .Buster__info{
   display:flex;
   flex-direction: column;
@@ -70,10 +57,6 @@
   display:flex;
   align-items: center;
   gap:3px;
-}
-
-.Buster__benefit{
-  color:rgb(7, 191, 50);
 }
 
 .Buster__max-level{
@@ -138,6 +121,3 @@
   height:50px;
 }
 
-.Buster__upgrade-info{
-  color:chocolate;
-}

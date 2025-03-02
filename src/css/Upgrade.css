@@ -21,23 +21,6 @@
   border: 12px solid rgb(229, 229, 229);
 }
 
-.Upgrade__last{
-  color:red;
-}
-
-.Upgrade__tooltip {
-  font-family: 'Bleeker';
-  font-size: 18px;
-  position: fixed; 
-  width: 230px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  text-align: justify;
-  border-radius: 5px;
-  z-index: 10; 
-}
-
 .Upgrade--nonavailable:before{
   content:"";
   position:absolute;

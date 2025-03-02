@@ -1,12 +1,15 @@
-.Trainer{
-  width:200px;
-  height:300px;
+.Trainer {
+  width: 200px;
+  height: 300px;
   transition: 0.5s;
   cursor: pointer;
   user-select: none;
-  font-size:40px;
-  margin-top:400px;
-  margin-inline:auto;
+  font-size: 40px;
+  position: absolute; 
+  top: 50%;
+  left: calc(50% - 240px); 
+  transform: translate(-50%, -50%); 
+  z-index:30;
 }
 
 

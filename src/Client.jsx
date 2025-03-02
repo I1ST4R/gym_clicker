@@ -5,6 +5,7 @@ import ClientsBefore from './js/ClientsBefore.js';
 import clientClick from './assets/sounds/clientClick.mp3';
 import clientUpgrade from './assets/sounds/clientUpgrade.mp3';
 import clientThanksgiving from './assets/sounds/clientThanksgiving.mp3';
+import abbreviateNum from './js/numberAbbreviator.js';
 
 function Client({
   minDelay,
@@ -59,8 +60,12 @@ function Client({
       } catch (error) {
         console.error("Error loading image:", error);
       }
-      setX(getRandomRange(50, window.innerWidth - 200))
-      setY(getRandomRange(50, window.innerHeight - 300))
+      const client = document.querySelector(".Client")
+      const clientRect = client.getBoundingClientRect()
+      const menu = document.querySelector(".slider-container")
+      const menuRect = menu.getBoundingClientRect()
+      setX(getRandomRange(50, window.innerWidth - clientRect.width - menuRect.width - 50))
+      setY(getRandomRange(50 , window.innerHeight - clientRect.height - 50))
       setIsVisible(true);
       setIsClientUpgraded(false);
       setProgress(0);
@@ -102,7 +107,16 @@ function Client({
         opacity: isVisible ? 1 : 0,  
       }}
     >
-      <img src={image} alt="" />
+      {isClientUpgraded?(
+        <div className = "Client__bonus">
+          <p>
+            {`+${abbreviateNum(Math.floor((pasIncreaseMoney +actIncreaseMoney) * multiplier))}`} 
+          </p>
+          <img className="Client__money" src="src/assets/money.png" alt="" />
+        </div>
+      ):
+      (<></>)}
+      <img className = "Client__img" src={image} alt="" />
       <div
         className="Client__progressbar"
         style={isClientUpgraded ? { display: 'none' } : {}}

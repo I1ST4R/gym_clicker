@@ -6,7 +6,7 @@
   transform-origin: center;
   user-select: none;
   pointer-events: none; 
-  z-index:5;
+  z-index:1;
 }
 
 .Money--animate {

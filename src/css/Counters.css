@@ -2,11 +2,12 @@
   font-size:30px;
   position:absolute;
   top:20px;
-  left: 50%;
+  left: calc(50% - 240px);
   transform: translateX(-50%);
   user-select:none;
   display:flex;
   gap:15px;
+  z-index:30;
 }
 
 .Counter{

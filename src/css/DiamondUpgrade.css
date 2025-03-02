@@ -21,19 +21,6 @@
   border: 3px solid rgb(30, 30, 30);
 }
 
-.DiamondUpgrade__tooltip {
-  font-family: 'Bleeker';
-  font-size: 18px;
-  position: fixed; 
-  width: 200px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  text-align: justify;
-  border-radius: 5px;
-  z-index: 10;  
-}
-
 .Upgrade--nonavailable:before{
   content:"";
   position:absolute;
@@ -41,10 +28,6 @@
   width:100%;
   height:100%;
   background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
-.DiamondUpgrade__upgrade-info{
-  color:chocolate;
 }
 
 .DiamondUpgrade__img{
@@ -59,9 +42,4 @@
 
 .DiamondUpgrade__price-block{
   color:rgb(255, 57, 151)
-}
-
-.DiamondUpgrade__price-block img{
-  width:18px;
-  height:18px;
 }

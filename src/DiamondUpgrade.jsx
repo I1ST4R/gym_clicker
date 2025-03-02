@@ -7,17 +7,9 @@ function Upgrade({
   benefit,
   level: propLevel,
   onUpgradeLevelChange,
-  onMaxDelayChange,
-  maxDelay, 
-  onMinDelayChange,
-  minDelay,
-  onMultiplierChange,
-  multiplier,
-  onCounterDiamondChange,
   diamond,
-  onCounterBustersChange,
-  busters,
-  onCounterUpgradesChange,
+  onTooltipPositionChange,
+  onIsDUpgradeHoveredChange,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
@@ -35,15 +27,16 @@ function Upgrade({
   
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
-    setTooltipPosition({
+    onTooltipPositionChange({
       top: cardRect.top - 60, 
-      left: 450, 
+      right: 500, 
+      id: id,
     });
-    setIsHovered(true);
+    onIsDUpgradeHoveredChange(true);
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    onIsDUpgradeHoveredChange(false);
   };
 
   const isMaxLevel = level === 4;
@@ -63,39 +56,7 @@ function Upgrade({
     onMouseLeave={handleMouseLeave}
     onClick={handleUpgradeClick}
     >
-      <img src={img} alt="" className='DiamondUpgrade__img'/>
-      
-      {isHovered && !isMaxLevel && (
-        <div
-          className="DiamondUpgrade__tooltip"
-          style={{
-            top: `${tooltipPosition.top}px`,
-            left: `${tooltipPosition.left}px`,
-          }}
-        >
-          <p className="DiamondUpgrade__upgrade-info">
-            {`Улучшение: ${benefit} ${prices[level]}%`}
-          </p>
-          <div className="DiamondUpgrade__price-block">
-            {`Стоимость: ${prices[level]} `}
-            <img src="src/assets/diamond.png" alt="" />
-          </div>
-        </div>
-      )}
-      {isHovered && isMaxLevel && (
-        <div
-          className="DiamondUpgrade__tooltip"
-          style={{
-            top: `${tooltipPosition.top}px`,
-            left: `${tooltipPosition.left}px`,
-        }}
-        >
-        <p className="DiamondUpgrade__upgrade-info">
-          Максимальный уровень
-        </p>
-      </div>
-      )}
-        
+      <img src={img} alt="" className='DiamondUpgrade__img'/>  
     </div>
   );
 }

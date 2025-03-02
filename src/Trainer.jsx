@@ -15,15 +15,13 @@ function Trainer({ onClick, trainerImage }) {
 
     new Audio(moneyClick).play()
 
-    const clickX = event.clientX - 20;
-    const clickY = event.clientY - 40;
-
+    const clickX = event.clientX;
+    const clickY = event.clientY;
     const newCoin = {
       id: Date.now(), 
       x: clickX,
       y: clickY,
     };
-
     setCoins((prevCoins) => [...prevCoins, newCoin]);
 
     setTimeout(() => {
@@ -31,7 +29,7 @@ function Trainer({ onClick, trainerImage }) {
     }, 200);
   };
 
-  // Функция для удаления монетки после завершения анимации
+  
   const removeCoin = (id) => {
     setCoins((prevCoins) => prevCoins.filter((coin) => coin.id !== id));
   };
@@ -45,13 +43,15 @@ function Trainer({ onClick, trainerImage }) {
       />
 
       {coins.map((coin) => (
-        <Coin
-          key={coin.id}
-          id={coin.id}
-          startX={coin.x}
-          startY={coin.y}
-          onComplete={removeCoin}
-        />
+        <>
+          <Coin
+            key={coin.id}
+            id={coin.id}
+            startX={coin.x}
+            startY={coin.y}
+            onComplete={removeCoin}
+          />
+        </>
       ))}
     </div>
   );

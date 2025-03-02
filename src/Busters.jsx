@@ -15,6 +15,8 @@ function Busters({
   onIsDiscountExistsChange,
   onIncreaseDiamond,
   cooldwonDiscount,
+  onTooltipPositionChange,
+  onIsBusterHoveredChange,
  }) {
 
   const [busters, setBusters] = useState(() => {
@@ -79,6 +81,8 @@ function Busters({
             onActIncreaseMoneyChange={onActIncreaseMoneyChange}
             actIncreaseMoney={actIncreaseMoney}
             onIsDiscountExistsChange={onIsDiscountExistsChange}
+            onIsBusterHoveredChange={onIsBusterHoveredChange}
+            onTooltipPositionChange={onTooltipPositionChange}
           />
         ))}
       </div>

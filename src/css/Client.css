@@ -1,8 +1,8 @@
 .Client{
   position:absolute;
   left:0;
-  width:140px;
-  height:242px;
+  width:160px;
+  height:260px;
   opacity:1;
   transition: 1s;
   cursor: pointer;
@@ -10,7 +10,7 @@
   z-index:2;
 }
 
-.Client img{
+.Client__img{
   width:100%;
   height:210px;
   pointer-events: none; 
@@ -29,4 +29,17 @@
   background-color: green;
   box-sizing: border-box;
   border:2px solid transparent;
+}
+
+.Client__bonus{
+  font-size:30px;
+  color:green;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  gap:3px;
+}
+.Client__money{
+  width:30px;
+  height:30px;
 }

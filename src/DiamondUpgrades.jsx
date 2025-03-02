@@ -18,6 +18,8 @@ function Upgrades({
   onPriceMultiplierChange,
   onIncreaseMultiplierChange,
   onCooldwonDiscountChange,
+  onTooltipPositionChange,
+  onIsDUpgradeHoveredChange,
  }) {
 
   const [diamondUpgrades, setDiamondUpgrades] = useState(() => {
@@ -93,6 +95,8 @@ function Upgrades({
             diamond={diamond}
             onCounterBustersChange={onCounterBustersChange}
             busters={busters}
+            onTooltipPositionChange={onTooltipPositionChange}
+            onIsDUpgradeHoveredChange={onIsDUpgradeHoveredChange}
           />
         ))}
       </div>

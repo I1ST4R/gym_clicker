@@ -18,6 +18,8 @@ function Upgrades({
   isDiscountExists,
   onIsDiscountExistsChange,
   onEndChange,
+  onTooltipPositionChange,
+  onIsUpgradeHoveredChange,
  }) {
 
   const [upgrades, setUpgrades] = useState(() => {
@@ -87,6 +89,9 @@ function Upgrades({
             pasIncreaseMoney={pasIncreaseMoney}
             isDiscountExists={isDiscountExists}
             onEndChange={onEndChange}
+            onTooltipPositionChange={onTooltipPositionChange}
+            onIsUpgradeHoveredChange={
+            onIsUpgradeHoveredChange}
           />
         ))}
         <div className="Upgrades__space">

@@ -47,7 +47,6 @@ body {
   place-items: center;
   width: 100vw !important;
   height:100vh;
-  overflow-x: hidden;
   overflow-y: hidden;
 }
 
