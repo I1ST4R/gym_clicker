@@ -20,12 +20,12 @@ function App() {
 
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 1000000000000000000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 0;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
     const savedCountDiamond = localStorage.getItem('countDiamond');
-    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 100;
+    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 0;
   });
 
   const [multiplier, setMultiplier] = useState(() => {
@@ -45,12 +45,12 @@ function App() {
 
   const [minDelay, setMinDelay] = useState(() => {
     const savedMinDelay = localStorage.getItem('minDelay');
-    return savedMinDelay ? parseInt(savedMinDelay, 10) : 10000/*300000*/;
+    return savedMinDelay ? parseInt(savedMinDelay, 10) : 300000;
   });
 
   const [maxDelay, setMaxDelay] = useState(() => {
     const savedMaxDelay = localStorage.getItem('maxDelay');
-    return savedMaxDelay ? parseInt(savedMaxDelay, 10) :/* 600000*/20000;
+    return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 600000;
   });
 
   const [trainerImage, setTrainerImage] = useState(() => {
@@ -224,10 +224,6 @@ function App() {
   };
 
   const DUpgradesPrices = [1, 2, 5, 10]
-  
-  useEffect(() => {
-    console.log(diamondUpgrades[tooltipPosition.id - 1].level)
-  }, [diamondUpgrades[tooltipPosition.id - 1].level]);
 
   return (
    
@@ -341,7 +337,7 @@ function App() {
           className="Tooltip"
           style={{
             top: `80px`,
-            right: `${tooltipPosition.right}px`,
+            right: `530px`,
           }}
         >
         {!(diamondUpgrades[tooltipPosition.id - 1].level === 4) ?
@@ -388,7 +384,7 @@ function App() {
           className="Tooltip"
           style={{
             top: `${tooltipPosition.top}px`,
-            right: `${tooltipPosition.right}px`,
+            right: `530px`,
           }}
         >
           <p>{busters[tooltipPosition.id - 1].desc}</p>
@@ -402,12 +398,13 @@ function App() {
       )}    
 
       {/*Tooltip for Upgrades*/}
-      { isUpgradeHovered && (
+      { isUpgradeHovered && 
+      tooltipPosition.id != 16 && (
           <div
             className="Tooltip"
             style={{
               top: `${tooltipPosition.top}px`,
-              right: `${tooltipPosition.right}px`,
+              right: `530px`,
             }}
           >
             <p>{upgrades[tooltipPosition.id - 1].desc}</p>
@@ -422,13 +419,13 @@ function App() {
       }
 
       { isUpgradeHovered && 
-      tooltipPosition.id === 16 
-      && upgrades[tooltipPosition.id].level >= 50 (
+      tooltipPosition.id === 16 && 
+      upgrades[tooltipPosition.id - 2].level >= 50 &&(
           <div
             className="Tooltip"
             style={{
               top: `${tooltipPosition.top}px`,
-              right: `${tooltipPosition.right}px`,
+              right: `530px`,
             }}
           >
             <p className="Tooltip__last">ВНИМАНИЕ! После покупки этой карточки игра будет считаться пройденой. Если вы не хотите завершать прохождение не покупайте это улучшение!</p>    

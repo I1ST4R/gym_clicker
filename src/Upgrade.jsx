@@ -42,8 +42,10 @@ function Upgrade({
   }, [id, level]);
 
   const handleMouseEnter = (event) => {
+    const cardRect = event.currentTarget.getBoundingClientRect();
     onTooltipPositionChange({ 
       right: 500,
+      top:cardRect.top,
       id: id, 
     });
     onIsUpgradeHoveredChange(true);
@@ -82,7 +84,7 @@ function Upgrade({
   };
 
   const isId16 = id === 16;
-  const isId15Level50 = upgrades.find(upgrade => upgrade.id === 15)?.level >= 10;
+  const isId15Level50 = upgrades.find(upgrade => upgrade.id === 15)?.level >= 50;
 
   return (
     <div
