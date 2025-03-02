@@ -25,20 +25,20 @@ function Counter({ countMoney, pasIncreaseMoney, countDiamond }) {
       {(hasDiamondBeenPositive || countDiamond > 0) && (
         <div className="Counter">
           <span>{abbreviateNum(countDiamond)}</span>
-          <img className="Counter__img" src="src/assets/diamond.png" alt="" />
+          <img className="Counter__img" src="diamond.png" alt="" />
         </div>
       )}
 
       {(hasPasIncreaseMoneyBeenPositive || pasIncreaseMoney > 0) && (
         <div className="Counter">
           <span>{abbreviateNum(pasIncreaseMoney)}</span>
-          <img className="Counter__img" src="src/assets/client.png" alt="" />
+          <img className="Counter__img" src="client.png" alt="" />
         </div>
       )}
 
       <div className="Counter">
         <span>{abbreviateNum(countMoney)}</span>
-        <img className="Counter__img" src="src/assets/money.png" alt="" />
+        <img className="Counter__img" src="money.png" alt="" />
       </div>
     </div>
   );

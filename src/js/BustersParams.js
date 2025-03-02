@@ -2,7 +2,7 @@ const BustersParams = [
   {
     id: 1,
     title: "Расставание",
-    img: "./src/assets/Busters/img1.jpg",
+    img: "Busters/img1.jpg",
     desc: "Теперь ты настоящий сигма",
     benefit: "получай за 1 клик столько же сколько получаешь в секунду",
     initialPrice: 100,
@@ -17,7 +17,7 @@ const BustersParams = [
   {
     id: 2,
     title: "Без побочек",
-    img: "./src/assets/Busters/img2.png",
+    img: "Busters/img2.png",
     desc: "Если ты не знаешь что это то и не стоит",
     benefit: "получай в 7 раз больше с каждого клиента",
     initialPrice: 1000,
@@ -32,7 +32,7 @@ const BustersParams = [
   {
     id: 3,
     title: "Награда",
-    img: "./src/assets/Busters/img3.png",
+    img: "Busters/img3.png",
     desc: "Ты много сделал для продвижения спорта, держи анонимное пожертвование",
     benefit: "получи денежный бонус",
     initialPrice: 5000,
@@ -47,7 +47,7 @@ const BustersParams = [
   {
     id: 4,
     title: "Памятник",
-    img: "./src/assets/Busters/img4.png",
+    img: "Busters/img4.png",
     desc: "Вау! В твою честь построили памятник",
     benefit: "получи больше популярности",
     initialPrice: 10000,
@@ -62,7 +62,7 @@ const BustersParams = [
   {
     id: 5,
     title: "Экономия",
-    img: "./src/assets/Busters/img5.png",
+    img: "Busters/img5.png",
     desc: "Вместо рабочих позвал мужиков с качалки - на этом и сэкономил",
     benefit: "50% скидка на любую следующую покупку улучшения",
     initialPrice: 50000,

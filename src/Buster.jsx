@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './css/Buster.css';
 import abbreviateNum from './js/numberAbbreviator.js';
-import BustersParams from './js/BustersParams.js';
 
 function Buster({
   id,
@@ -27,8 +26,6 @@ function Buster({
   onTooltipPositionChange,
   onIsBusterHoveredChange,
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const intervalRef = useRef(null);
 
   const [isActive, setIsActive] = useState(() => {
@@ -177,7 +174,7 @@ function Buster({
           <div className="Buster__timer">
             {time != 0 ? (
               <>
-                <img src="src/assets/Busters/time.png" alt="" />
+                <img src="Busters/time.png" alt="" />
                 <p>{`${time / 1000} сек.`}</p>
               </>
             ):(
@@ -186,7 +183,7 @@ function Buster({
             )}
           </div>
           <div className="Buster__timer">
-            <img src="src/assets/Busters/cooldown.png" alt="" />
+            <img src="Busters/cooldown.png" alt="" />
             <p>{curCooldown > 0 ? formatTime(curCooldown) : "Готово"}</p>
           </div>
         </div>
@@ -197,7 +194,7 @@ function Buster({
             <>
               <div className="Buster__price-block">
                 <p className="Buster__price">{abbreviateNum(Math.floor(initialPrice))}</p>
-                <img src="src/assets/client.png" alt="" />
+                <img src="client.png" alt="" />
               </div>
             </>
           )}
@@ -212,7 +209,7 @@ function Buster({
         `} 
         onClick={handleUpgradeBusterClick}
       >
-        <img src="./src/assets/Busters/upgrade.png" alt="" />
+        <img src="Busters/upgrade.png" alt="" />
       </div>
     </div>
   );

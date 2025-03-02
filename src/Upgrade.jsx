@@ -71,7 +71,7 @@ function Upgrade({
       setIsAlerted(true)
       return
     }
-    if (isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements) {
+    if (!isId16 && isEnoughMoney && !isMaxLevel && pasIncreaseMoney >= requirements) {
       const newLevel = level + 1;
       setLevel(newLevel); 
       onUpgradeLevelChange(id);
@@ -115,7 +115,7 @@ function Upgrade({
               <span>Условия: </span>
               {abbreviateNum(requirements)}
             </p>
-            <img className="Upgrade__requirement-img" src="src/assets/client.png" alt="" />
+            <img className="Upgrade__requirement-img" src="client.png" alt="" />
           </div>
         ) : (
           <></>
@@ -132,7 +132,7 @@ function Upgrade({
             <>
               <div className="Upgrade__price-block">
                 <p className="Upgrade__price">{isId16 && !isId15Level50 ? "???" : abbreviateNum(priceWithDiscount)}</p>
-                <img src="src/assets/money.png" alt="" />
+                <img src="money.png" alt="" />
               </div>
             </>
           )}

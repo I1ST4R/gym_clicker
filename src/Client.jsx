@@ -112,7 +112,7 @@ function Client({
           <p>
             {`+${abbreviateNum(Math.floor((pasIncreaseMoney +actIncreaseMoney) * multiplier))}`} 
           </p>
-          <img className="Client__money" src="src/assets/money.png" alt="" />
+          <img className="Client__money" src="money.png" alt="" />
         </div>
       ):
       (<></>)}

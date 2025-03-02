@@ -1,9 +1,9 @@
 const TrainerLevels = [
-  "src/assets/Trainer/img1.png", 
-  "src/assets/Trainer/img2.png", 
-  "src/assets/Trainer/img3.png", 
-  "src/assets/Trainer/img4.png", 
-  "src/assets/Trainer/img5.png", 
+  "Trainer/img1.png", 
+  "Trainer/img2.png", 
+  "Trainer/img3.png", 
+  "Trainer/img4.png", 
+  "Trainer/img5.png", 
 ]
 
 function getTrainerImage(level) {

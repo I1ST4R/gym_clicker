@@ -55,7 +55,7 @@ function App() {
 
   const [trainerImage, setTrainerImage] = useState(() => {
     const savedTrainerImage = localStorage.getItem('trainerImage');
-    return savedTrainerImage || "src/assets/Trainer/img1.png";
+    return savedTrainerImage || "Trainer/img1.png";
   });
 
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
@@ -355,7 +355,7 @@ function App() {
               Стоимость: 
               ${DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level]} 
               `}
-              <img src="src/assets/diamond.png" alt="" />
+              <img src="diamond.png" alt="" />
             </div>
             </>
           ) : 
