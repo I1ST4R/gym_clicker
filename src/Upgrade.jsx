@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './css/Upgrade.css';
-import upgradeLevelUp from './assets/sounds/upgradeLevelUp.mp3';
+import upgradeLevelUp from '../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
 import UpgradesParams from './js/UpgradesParams.js';
 

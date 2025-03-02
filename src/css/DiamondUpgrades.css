@@ -6,7 +6,7 @@
   height:100vh;
   padding: 10px 20px 20px 20px;
   transition: 0.5s;
-  background-image: url(../assets/Upgrades/upgrades-back.jpg);
+  background-image: url(../Upgrades/upgrades-back.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

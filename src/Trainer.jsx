@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './css/Trainer.css';
-import moneyClick from './assets/sounds/moneyClick.mp3';
+import moneyClick from '../public/sounds/moneyClick.mp3';
 import Coin from './Coin';
 
 function Trainer({ onClick, trainerImage }) {

@@ -23,7 +23,7 @@ function Coin({ id, startX, startY, onComplete }) {
 
   return (
     <div className="Money" ref={coinRef}>
-      <img src="src/assets/money.png" alt="Coin" />
+      <img src="money.png" alt="Coin" />
     </div>
   );
 }

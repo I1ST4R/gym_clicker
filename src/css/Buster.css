@@ -9,7 +9,7 @@
   grid-template-columns: 100px auto 70px;
   gap:10px;
   box-sizing: border-box;
-  background-image: url("../assets/Upgrades/upgrade-back.jpg");
+  background-image: url("../Upgrades/upgrade-back.jpg");
   background-size: cover;
   color:white;
   border: 12px solid rgb(253, 206, 103);

@@ -9,7 +9,7 @@
   user-select: none;
   cursor: pointer;
   box-sizing: border-box;
-  background-image: url("../assets/Upgrades/upgrade-back.jpg");
+  background-image: url("../Upgrades/upgrade-back.jpg");
   background-size: cover;
   color:white;
   border: 3px solid rgb(134, 134, 134);

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './css/Client.css';
 import ClientsAfter from './js/ClientsAfter.js';
 import ClientsBefore from './js/ClientsBefore.js';
-import clientClick from './assets/sounds/clientClick.mp3';
-import clientUpgrade from './assets/sounds/clientUpgrade.mp3';
-import clientThanksgiving from './assets/sounds/clientThanksgiving.mp3';
+import clientClick from '../public/sounds/clientClick.mp3';
+import clientUpgrade from '../public/sounds/clientUpgrade.mp3';
+import clientThanksgiving from '../public/sounds/clientThanksgiving.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
 
 function Client({
