@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './css/Counters.css'; 
 import abbreviateNum from './js/numberAbbreviator.js';
 
-function Counter({ countMoney, pasIncreaseMoney, countDiamond }) {
+import { AppContext } from './main/AppContext.jsx';
+
+function Counter() {
+
+  const{
+    countDiamond,
+    pasIncreaseMoney,
+    countMoney,
+  } = useContext(AppContext); 
 
   const [hasDiamondBeenPositive, setHasDiamondBeenPositive] = useState(false);
   const [hasPasIncreaseMoneyBeenPositive, setHasPasIncreaseMoneyBeenPositive] = useState(false);

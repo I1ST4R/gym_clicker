@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './css/DiamondUpgrade.css';
+
+import { AppContext } from './main/AppContext.jsx';
 
 function Upgrade({
   id,
   img,
-  benefit,
   level: propLevel,
   onUpgradeLevelChange,
-  diamond,
-  onTooltipPositionChange,
-  onIsDUpgradeHoveredChange,
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  }) {
+
+  const {
+    countDiamond,
+    setTooltipPosition,
+    setIsDUpgradeHovered,
+  } = useContext(AppContext);
 
   const [level, setLevel] = useState(() => {
     const savedLevel = localStorage.getItem(`upgrade_${id}_level`);
@@ -27,20 +29,20 @@ function Upgrade({
   
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
-    onTooltipPositionChange({
+    setTooltipPosition({
       top: cardRect.top - 60, 
       right: 500, 
       id: id,
     });
-    onIsDUpgradeHoveredChange(true);
+    setIsDUpgradeHovered(true);
   };
 
   const handleMouseLeave = () => {
-    onIsDUpgradeHoveredChange(false);
+    setIsDUpgradeHovered(false);
   };
 
   const isMaxLevel = level === 4;
-  const isEnoughDiamonds = diamond >= prices[level];
+  const isEnoughDiamonds = countDiamond >= prices[level];
 
   const handleUpgradeClick = () => {
     if (isEnoughDiamonds && !isMaxLevel) {

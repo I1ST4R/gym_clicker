@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react'; 
 import './css/Client.css';
 import ClientsAfter from './js/ClientsAfter.js';
 import ClientsBefore from './js/ClientsBefore.js';
@@ -7,17 +7,21 @@ import clientUpgrade from '../public/sounds/clientUpgrade.mp3';
 import clientThanksgiving from '../public/sounds/clientThanksgiving.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
 
-function Client({
-  minDelay,
-  maxDelay,
-  numOfClicks,
-  waitingTime,
-  onCounterMoneyChange,
-  countMoney,
-  pasIncreaseMoney,
-  actIncreaseMoney,
-  multiplier,
-}) {
+import { AppContext } from './main/AppContext.jsx';
+
+function Client (){
+  const {
+    minDelay,
+    maxDelay,
+    numOfClicks,
+    waitingTime,
+    onCounterMoneyChange,
+    countMoney,
+    pasIncreaseMoney,
+    actIncreaseMoney,
+    multiplier,
+  } = useContext(AppContext); 
+  
   const [image, setImage] = useState('');
   const [progress, setProgress] = useState(0);
   const [isClientUpgraded, setIsClientUpgraded] = useState(() => {

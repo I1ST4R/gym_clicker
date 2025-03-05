@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './css/DiamondUpgrades.css';
 import DiamondUpgrade from './DiamondUpgrade.jsx';
 
-function Upgrades({ 
-  onMaxDelayChange, 
-  maxDelay, 
-  onMinDelayChange,
-  minDelay,
-  onMultiplierChange,
-  multiplier,
-  onCounterDiamondChange,
-  diamond,
-  onCounterBustersChange, 
-  busters,
-  onCounterDiamondsUpgradesChange,
-  diamondUpgrades: propDiamondUpgrades,
-  onPriceMultiplierChange,
-  onIncreaseMultiplierChange,
-  onCooldwonDiscountChange,
-  onTooltipPositionChange,
-  onIsDUpgradeHoveredChange,
- }) {
+import { AppContext } from './main/AppContext.jsx';
 
-  const [diamondUpgrades, setDiamondUpgrades] = useState(() => {
-    const savedDiamondUpgrades = localStorage.getItem('diamondUpgrades');
-    return savedDiamondUpgrades ? JSON.parse(savedDiamondUpgrades) : propDiamondUpgrades;
-  });
-  
-  useEffect(() => {
-    localStorage.setItem('diamondUpgrades', JSON.stringify(diamondUpgrades));
-  }, [diamondUpgrades]);
+function Upgrades({ }) {
+  const{
+    setMaxDelay, 
+    maxDelay, 
+    setMinDelay,
+    minDelay,
+    setMultiplier,
+    multiplier,
+    setCountDiamond,
+    countDiamond,
+    setDiamondUpgrades,
+    diamondUpgrades,
+    setPriceMultiplier,
+    setIncreaseMultiplier,
+    setCooldwonDiscount,
+  } = useContext(AppContext);
 
   const prices = [1, 2, 5, 10]
 
@@ -37,7 +27,7 @@ function Upgrades({
     const updatedDUpgrades = diamondUpgrades.map((dUpgrade) => {
 
       if (dUpgrade.id === id) {
-        onCounterDiamondChange(diamond - prices[dUpgrade.level])
+        setCountDiamond(countDiamond - prices[dUpgrade.level])
         const updatedDUpgrade = {
           ...dUpgrade, 
           level: dUpgrade.level + 1,
@@ -47,20 +37,20 @@ function Upgrades({
         const decrease = (100 - prices[dUpgrade.level])/100
         switch (id){
           case 1:
-            onPriceMultiplierChange(decrease)
+            setPriceMultiplier(decrease)
             break;
           case 2:
-            onIncreaseMultiplierChange(increase)
+            setIncreaseMultiplier(increase)
             break;
           case 3:
-            onCooldwonDiscountChange(decrease)
+            setCooldwonDiscount(decrease)
             break;
           case 4:
-            onMaxDelayChange(maxDelay * decrease)
-            onMinDelayChange(minDelay * decrease)
+            setMaxDelay(maxDelay * decrease)
+            setMinDelay(minDelay * decrease)
             break;
           case 5:
-            onMultiplierChange(multiplier * increase)
+            setMultiplier(multiplier * increase)
             break;
         }
         return updatedDUpgrade;
@@ -69,7 +59,6 @@ function Upgrades({
     })
 
     setDiamondUpgrades(updatedDUpgrades); 
-    onCounterDiamondsUpgradesChange(updatedDUpgrades)
   };
 
   
@@ -85,18 +74,6 @@ function Upgrades({
             key={diamondUpgrade.id}
             {...diamondUpgrade}
             onUpgradeLevelChange={handleUpgradeLevelChange}
-            onMaxDelayChange={onMaxDelayChange}
-            maxDelay={maxDelay} 
-            onMinDelayChange={onMinDelayChange}
-            minDelay={minDelay}
-            onMultiplierChange={onMultiplierChange}
-            multiplier={multiplier}
-            onCounterDiamondChange={onCounterDiamondChange}
-            diamond={diamond}
-            onCounterBustersChange={onCounterBustersChange}
-            busters={busters}
-            onTooltipPositionChange={onTooltipPositionChange}
-            onIsDUpgradeHoveredChange={onIsDUpgradeHoveredChange}
           />
         ))}
       </div>

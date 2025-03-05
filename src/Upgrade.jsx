@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './css/Upgrade.css';
 import upgradeLevelUp from '../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
 import UpgradesParams from './js/UpgradesParams.js';
+
+import { AppContext } from './main/AppContext.jsx';
 
 function Upgrade({
   id,
@@ -15,20 +17,22 @@ function Upgrade({
   initialIncrease,
   level: propLevel,
   isIncreaseMoney,
-  onUpgradeLevelChange,
-  onLevelTrainerChange,
-  onCounterMoneyChange, 
-  countMoney,
   isHidden,
   isInvisible,
-  requirements, 
-  pasIncreaseMoney,
-  isDiscountExists,
-  upgrades, 
-  onEndChange,
-  onTooltipPositionChange,
-  onIsUpgradeHoveredChange,
-}) {
+  requirements,
+  onUpgradeLevelChange,
+  }){ 
+
+  const{ 
+    upgrades,
+    setCountMoney, 
+    countMoney,
+    pasIncreaseMoney,
+    isDiscountExists,
+    setEnd,
+    setTooltipPosition,
+    setIsUpgradeHovered,
+  } = useContext(AppContext);
 
   const [isAlerted, setIsAlerted] = useState(false);
 
@@ -43,16 +47,16 @@ function Upgrade({
 
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
-    onTooltipPositionChange({ 
+    setTooltipPosition({ 
       right: 500,
       top:cardRect.top,
       id: id, 
     });
-    onIsUpgradeHoveredChange(true);
+    setIsUpgradeHovered(true);
   };
 
   const handleMouseLeave = () => {
-    onIsUpgradeHoveredChange(false);
+    setIsUpgradeHovered(false);
   };
 
   const discount = initialPrice * (isDiscountExists / 2);
@@ -63,7 +67,7 @@ function Upgrade({
   const handleUpgradeClick = () => {
     if (isId16 && isId15Level50 && isAlerted) {
       setIsAlerted(true)
-      onEndChange(true)
+      setEnd(true)
       return
     }
     if (isId16 && isId15Level50) {
@@ -75,10 +79,10 @@ function Upgrade({
       const newLevel = level + 1;
       setLevel(newLevel); 
       onUpgradeLevelChange(id);
-      onCounterMoneyChange(countMoney - priceWithDiscount);
+      setCountMoney(countMoney - priceWithDiscount);
       new Audio(upgradeLevelUp).play();
       if (id === 1) {
-        onLevelTrainerChange(UpgradesParams[0].images(level + 1)); 
+        setLevelTrainer(UpgradesParams[0].images(level + 1)); 
       }
     }
   };

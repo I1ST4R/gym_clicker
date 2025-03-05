@@ -1,49 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './css/Upgrades.css';
 import Upgrade from './Upgrade.jsx';
 
-function Upgrades({ 
-  onLevelTrainerChange, 
-  onCounterMoneyChange, 
-  countMoney,
-  onPasIncreaseMoneyChange,
-  pasIncreaseMoney,
-  onActIncreaseMoneyChange,
-  actIncreaseMoney,
-  onCounterUpgradesChange,
-  upgrades: propUpgrades, 
-  onIncreaseDiamond,
-  priceMultiplier,
-  increaseMultiplier,
-  isDiscountExists,
-  onIsDiscountExistsChange,
-  onEndChange,
-  onTooltipPositionChange,
-  onIsUpgradeHoveredChange,
- }) {
+import { AppContext } from './main/AppContext.jsx';
 
-  const [upgrades, setUpgrades] = useState(() => {
-    const savedUpgrades = localStorage.getItem('upgrades');
-    return savedUpgrades ? JSON.parse(savedUpgrades) : propUpgrades;
-  });
-
-  useEffect(() => {
-    setUpgrades(propUpgrades);
-  }, [propUpgrades]);
-
-  useEffect(() => {
-    localStorage.setItem('upgrades', JSON.stringify(upgrades));
-  }, [upgrades]);
+function Upgrades({onIncreaseDiamond}){ 
+  const{ 
+    setPasIncreaseMoney,
+    pasIncreaseMoney,
+    setActIncreaseMoney,
+    actIncreaseMoney,
+    setUpgrades,
+    upgrades, 
+    priceMultiplier,
+    increaseMultiplier,
+    setIsDiscountExists,
+  } = useContext(AppContext);
 
   const handleUpgradeLevelChange = (id) => {
-    onIsDiscountExistsChange(false)
+    setIsDiscountExists(false)
     const updatedUpgrades = upgrades.map((upgrade, index, array) => {
       if (upgrade.id === id) {
         onIncreaseDiamond()
         const actIncrease = Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney);
         const pasIncrease = Math.floor(upgrade.initialIncrease * !upgrade.isIncreaseMoney);
-        onActIncreaseMoneyChange(actIncreaseMoney + actIncrease);
-        onPasIncreaseMoneyChange(pasIncreaseMoney + pasIncrease);
+        setActIncreaseMoney(actIncreaseMoney + actIncrease);
+        setPasIncreaseMoney(pasIncreaseMoney + pasIncrease);
         const difference = !upgrade.isIncreaseMoney * 0.035;
         const increase = upgrade.initialIncrease * (1.15 - difference) 
         const updatedUpgrade = {
@@ -67,7 +49,6 @@ function Upgrades({
     });
 
     setUpgrades(updatedUpgrades); 
-    onCounterUpgradesChange(updatedUpgrades); 
   };
 
   return (
@@ -80,18 +61,7 @@ function Upgrades({
           <Upgrade
             key={upgrade.id}
             {...upgrade}
-            upgrades={upgrades} 
             onUpgradeLevelChange={handleUpgradeLevelChange}
-            onLevelTrainerChange={onLevelTrainerChange}
-            onCounterMoneyChange={onCounterMoneyChange}
-            countMoney={countMoney}
-            onPasIncreaseMoneyChange={onPasIncreaseMoneyChange}
-            pasIncreaseMoney={pasIncreaseMoney}
-            isDiscountExists={isDiscountExists}
-            onEndChange={onEndChange}
-            onTooltipPositionChange={onTooltipPositionChange}
-            onIsUpgradeHoveredChange={
-            onIsUpgradeHoveredChange}
           />
         ))}
         <div className="Upgrades__space">

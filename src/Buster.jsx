@@ -1,31 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,  useContext } from 'react';
 import './css/Buster.css';
 import abbreviateNum from './js/numberAbbreviator.js';
+
+import { AppContext } from './main/AppContext.jsx';
 
 function Buster({
   id,
   title,
   img,
-  desc,
-  benefit,
   initialPrice,
-  upgradeInfo,
   time,
   cooldown,
   maxLvl,
   level: propLevel,
   isActive: propIsActive,
   onBusterLevelChange,
-  onCounterMoneyChange, 
-  countMoney,
-  onPasIncreaseMoneyChange,
-  pasIncreaseMoney,
-  onActIncreaseMoneyChange,
-  actIncreaseMoney,
-  onIsDiscountExistsChange,
-  onTooltipPositionChange,
-  onIsBusterHoveredChange,
-}) {
+  }) {
+
+  const {
+    setCountMoney, 
+    countMoney,
+    setPasIncreaseMoney,
+    pasIncreaseMoney,
+    setActIncreaseMoney,
+    actIncreaseMoney,
+    setIsDiscountExists,
+    setTooltipPosition,
+    setIsBusterHovered,
+  } = useContext(AppContext);
+  
+
   const intervalRef = useRef(null);
 
   const [isActive, setIsActive] = useState(() => {
@@ -84,16 +88,16 @@ function Buster({
 
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
-    onTooltipPositionChange({
+    setTooltipPosition({
       top: cardRect.top, 
       right: 500, 
       id: id,
     });
-    onIsBusterHoveredChange(true);
+    setIsBusterHovered(true);
   };
 
   const handleMouseLeave = () => {
-    onIsBusterHoveredChange(false);
+    setIsBusterHovered(false);
   };
 
   const isMaxLevel = level >= maxLvl;
@@ -103,7 +107,7 @@ function Buster({
     if (isEnoughClients && !isMaxLevel) {
       setLevel(level + 1); 
       onBusterLevelChange(id);
-      onPasIncreaseMoneyChange(pasIncreaseMoney - initialPrice);
+      setPasIncreaseMoney(pasIncreaseMoney - initialPrice);
     }
   };
 
@@ -113,38 +117,38 @@ function Buster({
     switch (id){
       case 1:
         const actIncreaseMoneyBefore = actIncreaseMoney;
-        onActIncreaseMoneyChange(pasIncreaseMoney);
+        setActIncreaseMoney(pasIncreaseMoney);
         setIsActive(false); 
 
         setTimeout(() => {
-          onActIncreaseMoneyChange(actIncreaseMoneyBefore); 
+          setActIncreaseMoney(actIncreaseMoneyBefore); 
           setCurCooldown(cooldown); 
         }, time);
         break;
       case 2:
         const pasIncreaseMoneyBefore = pasIncreaseMoney;
-        onPasIncreaseMoneyChange(pasIncreaseMoney * 7);
+        setPasIncreaseMoney(pasIncreaseMoney * 7);
         setIsActive(false); 
 
         setTimeout(() => {
-          onPasIncreaseMoneyChange(pasIncreaseMoneyBefore); 
+          setPasIncreaseMoney(pasIncreaseMoneyBefore); 
           setCurCooldown(cooldown); 
         }, time);
         break;
       case 3:
         setTimeout(() => {
-          onCounterMoneyChange(countMoney * 50) 
+          setCountMoney(countMoney * 50) 
           setCurCooldown(cooldown) 
         }, time);
         break;
       case 4:
         setTimeout(() => {
-          onPasIncreaseMoneyChange(pasIncreaseMoney * 1.05) 
+          setPasIncreaseMoney(pasIncreaseMoney * 1.05) 
           setCurCooldown(cooldown)  
         }, time);
         break;
       case 5:
-        onIsDiscountExistsChange(true)
+        setIsDiscountExists(setIsDiscountExists)
         setCurCooldown(cooldown)
         break;
     }

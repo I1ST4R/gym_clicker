@@ -1,32 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,  useContext } from 'react';
 import './css/Busters.css';
 import Buster from './Buster.jsx';
 
-function Busters({ 
-  onLevelTrainerChange, 
-  onCounterMoneyChange, 
-  countMoney,
-  onPasIncreaseMoneyChange,
-  pasIncreaseMoney,
-  onActIncreaseMoneyChange,
-  actIncreaseMoney,
-  onCounterBustersChange,
-  busters: propBusters, 
-  onIsDiscountExistsChange,
-  onIncreaseDiamond,
-  cooldwonDiscount,
-  onTooltipPositionChange,
-  onIsBusterHoveredChange,
- }) {
+import { AppContext } from './main/AppContext.jsx';
 
-  const [busters, setBusters] = useState(() => {
-    const savedBusters = localStorage.getItem('busters');
-    return savedBusters ? JSON.parse(savedBusters) : propBusters;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('busters', JSON.stringify(busters));
-  }, [busters]);
+function Busters({onIncreaseDiamond}){  
+  const{
+    setBusters,
+    busters,
+    cooldwonDiscount,
+  } = useContext(AppContext);
 
   useEffect(() => {
      const updatedBusters = busters.map((buster) => {
@@ -38,7 +21,6 @@ function Busters({
     })
 
     setBusters(updatedBusters); 
-    onCounterBustersChange(updatedBusters);
   }, [cooldwonDiscount]);
 
 
@@ -59,7 +41,6 @@ function Busters({
     })
 
     setBusters(updatedBusters); 
-    onCounterBustersChange(updatedBusters); 
   };
 
   return (
@@ -73,16 +54,6 @@ function Busters({
             key={buster.id}
             {...buster}
             onBusterLevelChange={handleBusterLevelChange}
-            onLevelTrainerChange={onLevelTrainerChange}
-            onCounterMoneyChange={onCounterMoneyChange}
-            countMoney={countMoney}
-            onPasIncreaseMoneyChange={onPasIncreaseMoneyChange}
-            pasIncreaseMoney={pasIncreaseMoney}
-            onActIncreaseMoneyChange={onActIncreaseMoneyChange}
-            actIncreaseMoney={actIncreaseMoney}
-            onIsDiscountExistsChange={onIsDiscountExistsChange}
-            onIsBusterHoveredChange={onIsBusterHoveredChange}
-            onTooltipPositionChange={onTooltipPositionChange}
           />
         ))}
       </div>
