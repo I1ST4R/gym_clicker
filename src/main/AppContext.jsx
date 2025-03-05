@@ -11,17 +11,17 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) :400000000000000000000;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 0;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
     const savedCountDiamond = localStorage.getItem('countDiamond');
-    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 1000;
+    return savedCountDiamond ? parseInt(savedCountDiamond, 10) : 0;
   });
 
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
     const savedPasIncreaseMoney = localStorage.getItem('pasIncreaseMoney');
-    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 100000000000;
+    return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 0;
   });
 
   const [multiplier, setMultiplier] = useState(() => {
