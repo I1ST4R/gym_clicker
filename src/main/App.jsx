@@ -341,6 +341,24 @@ function App() {
           alt="Result"
         />
       ))}
+      <footer className="footer">
+        <div className="footer__container">
+          <div className="footer__point">
+            Разработчик: <span>I1ST4R (Ivan)</span>
+            <img src="star.png" alt="" />
+          </div>
+          <a className="footer__point" 
+          href="https://github.com/I1ST4R/gym_clicker">
+            <span>Проект на GitHub</span>
+            <img src="github.png" alt="tg" />
+          </a>
+          <a className="footer__point"
+          href="https://t.me/SSSsTtAaRrr">
+            <span>Баги, пожелания, идеи </span>
+            <img src="tg.png" alt="tg" />
+          </a>
+        </div>
+      </footer>
     </>
   );
 }
