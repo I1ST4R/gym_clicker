@@ -8,7 +8,8 @@ const TrainerLevels = [
 
 function getTrainerImage(level) {
   if(level === 0) return TrainerLevels[1]
-  return TrainerLevels[Math.ceil(level / 8)]
+  if(level >= 100) return TrainerLevels[4]
+  return TrainerLevels[Math.ceil(level / 33)]
 }
 
 export default getTrainerImage

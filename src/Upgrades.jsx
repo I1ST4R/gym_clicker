@@ -27,12 +27,12 @@ function Upgrades({onIncreaseDiamond}){
         setActIncreaseMoney(actIncreaseMoney + actIncrease);
         setPasIncreaseMoney(pasIncreaseMoney + pasIncrease);
         const difference = !upgrade.isIncreaseMoney * 0.035;
-        const increase = upgrade.initialIncrease * (1.15 - difference) 
+        const newIncrease = upgrade.initialIncrease * (1.15 - difference) 
         const updatedUpgrade = {
           ...upgrade,
           level: upgrade.level + 1,
-          initialIncrease: increase * increaseMultiplier, 
-          initialPrice: increase * 150 * priceMultiplier
+          initialIncrease: newIncrease * increaseMultiplier, 
+          initialPrice: upgrade.initialPrice * 1.16
         };
 
         index + 1 < array.length 

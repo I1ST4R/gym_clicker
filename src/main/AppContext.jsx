@@ -9,9 +9,11 @@ export const AppContext = createContext();
 
 // Создаем провайдер
 export const AppProvider = ({ children }) => {
+
+  //counters
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? parseInt(savedCountMoney, 10) : 0;
+    return savedCountMoney ? parseInt(savedCountMoney, 10) : 100000000000000;
   });
 
   const [countDiamond, setCountDiamond] = useState(() => {
@@ -24,6 +26,13 @@ export const AppProvider = ({ children }) => {
     return savedPasIncreaseMoney ? parseInt(savedPasIncreaseMoney, 10) : 0;
   });
 
+  //money for click
+  const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
+    const savedActIncreaseMoney = localStorage.getItem('actIncreaseMoney');
+    return savedActIncreaseMoney ? parseInt(savedActIncreaseMoney, 10) : 1;
+  });
+
+  //multipliers
   const [multiplier, setMultiplier] = useState(() => {
     const savedMultiplier = localStorage.getItem('multiplier');
     return savedMultiplier ? parseInt(savedMultiplier, 10) : 30;
@@ -39,6 +48,7 @@ export const AppProvider = ({ children }) => {
     return savedIncreaseMultiplier ? parseInt(savedIncreaseMultiplier, 10) : 1;
   });
 
+  //delay for Client
   const [minDelay, setMinDelay] = useState(() => {
     const savedMinDelay = localStorage.getItem('minDelay');
     return savedMinDelay ? parseInt(savedMinDelay, 10) : 300000;
@@ -49,14 +59,11 @@ export const AppProvider = ({ children }) => {
     return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 600000;
   });
 
+
+  //for images show
   const [trainerImage, setTrainerImage] = useState(() => {
     const savedTrainerImage = localStorage.getItem('trainerImage');
     return savedTrainerImage || "Trainer/img1.png";
-  });
-
-  const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
-    const savedActIncreaseMoney = localStorage.getItem('actIncreaseMoney');
-    return savedActIncreaseMoney ? parseInt(savedActIncreaseMoney, 10) : 1;
   });
 
   const [resultImages, setResultImages] = useState(() => {
@@ -64,6 +71,7 @@ export const AppProvider = ({ children }) => {
     return savedResultImages ? JSON.parse(savedResultImages) : [];
   });
 
+  //arrays with up info
   const [upgrades, setUpgrades] = useState(() => {
     const savedUpgrades = localStorage.getItem('upgrades');
     return savedUpgrades ? JSON.parse(savedUpgrades) : UpgradesParams;
@@ -79,6 +87,7 @@ export const AppProvider = ({ children }) => {
     return savedBusters ? JSON.parse(savedBusters) : BustersParams;
   });
 
+  //for buster about discount
   const [isDiscountExists, setIsDiscountExists] = useState(() => {
     const savedIsDiscountExists = localStorage.getItem('isDiscountExists');
     return savedIsDiscountExists ? JSON.parse(savedIsDiscountExists) : false;
@@ -89,6 +98,7 @@ export const AppProvider = ({ children }) => {
     return savedCooldwonDiscount ? JSON.parse(savedCooldwonDiscount) : 1;
   });
 
+  //for story
   const [storyShown, setStoryShown] = useState(() => {
     const savedStoryShown = localStorage.getItem('storyShown');
     return savedStoryShown ? JSON.parse(savedStoryShown) : false;

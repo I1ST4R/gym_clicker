@@ -21,48 +21,20 @@ function App() {
     setCountMoney,
     countDiamond,
     setCountDiamond,
-    multiplier,
-    setMultiplier,
-    priceMultiplier,
-    setPriceMultiplier,
-    increaseMultiplier,
-    setIncreaseMultiplier,
-    minDelay,
-    setMinDelay,
-    maxDelay,
-    setMaxDelay,
-    trainerImage,
-    setTrainerImage,
     pasIncreaseMoney,
-    setPasIncreaseMoney,
     actIncreaseMoney,
-    setActIncreaseMoney,
     resultImages,
     setResultImages,
     upgrades,
-    setUpgrades,
     diamondUpgrades,
-    setDiamondUpgrades,
     busters,
-    setBusters,
-    isDiscountExists,
-    setIsDiscountExists,
-    cooldwonDiscount,
-    setCooldwonDiscount,
-    storyShown,
-    setStoryShown,
     tooltipPosition,
-    setTooltipPosition,
     isUpgradeHovered,
-    setIsUpgradeHovered,
     isDUpgradeHovered,
-    setIsDUpgradeHovered,
     isBusterHovered,
-    setIsBusterHovered,
     showStory,
     setShowStory,
     end,
-    setEnd,
     windowWidth,
     setWindowWidth,
   } = useContext(AppContext);
@@ -72,7 +44,7 @@ function App() {
   };
 
   const incrementCountDiamond = () => {
-    const increaseDiamond = Math.random() * 100 > 92;
+    const increaseDiamond = Math.random() * 100 > 95;
     setCountDiamond(countDiamond + increaseDiamond);
   };
 
