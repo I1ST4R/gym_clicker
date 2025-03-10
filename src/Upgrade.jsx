@@ -11,7 +11,7 @@ function Upgrade({
   title,
   img,
   desc,
-  level: proplevel,
+  level,
   initialPrice,
   maxLvl,
   initialIncrease,
@@ -25,25 +25,14 @@ function Upgrade({
     upgrades,
     setCountMoney,
     countMoney,
-    pasIncreaseMoney,
     isDiscountExists,
     setEnd,
     setTooltipPosition,
     setIsUpgradeHovered,
-    isUpgradeHovered,
     setTrainerImage,
   } = useContext(AppContext);
 
   const [isAlerted, setIsAlerted] = useState(false);
-
-  const [level, setLevel] = useState(() => {
-    const savedLevel = localStorage.getItem(`upgrade_${id}_level`);
-    return savedLevel ? BigInt(savedLevel) : BigInt(proplevel);
-  });
-
-  useEffect(() => {
-    localStorage.setItem(`upgrade_${id}_level`, level.toString());
-  }, [id, level]);
 
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
@@ -85,8 +74,7 @@ function Upgrade({
     }
 
     if (!isId16 && isEnoughMoney) {
-      const newLevel = level + BigInt(1);
-      setLevel(newLevel);
+      const newLevel = level + 1;
       onUpgradeLevelChange(id);
       setCountMoney(countMoney - priceWithDiscount);
       new Audio(upgradeLevelUp).play();
