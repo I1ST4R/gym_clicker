@@ -107,7 +107,7 @@ function Buster({
     if (isEnoughClients && !isMaxLevel) {
       setLevel(level + 1); 
       onBusterLevelChange(id);
-      setPasIncreaseMoney(pasIncreaseMoney - initialPrice);
+      setPasIncreaseMoney(pasIncreaseMoney - BigInt(Math.floor(initialPrice)));
     }
   };
 
@@ -127,7 +127,7 @@ function Buster({
         break;
       case 2:
         const pasIncreaseMoneyBefore = pasIncreaseMoney;
-        setPasIncreaseMoney(pasIncreaseMoney * 7);
+        setPasIncreaseMoney(pasIncreaseMoney * BigInt(7));
         setIsActive(false); 
 
         setTimeout(() => {
@@ -137,16 +137,22 @@ function Buster({
         break;
       case 3:
         setTimeout(() => {
-          setCountMoney(countMoney * 50) 
+          setCountMoney(countMoney * BigInt(50)) 
           setCurCooldown(cooldown) 
         }, time);
         break;
-      case 4:
-        setTimeout(() => {
-          setPasIncreaseMoney(pasIncreaseMoney * 1.05) 
-          setCurCooldown(cooldown)  
-        }, time);
-        break;
+        case 4:
+          let newPasIncreaseMoney = BigInt('0');
+          setTimeout(() => {
+            if (pasIncreaseMoney <= 10000) {
+              newPasIncreaseMoney = BigInt(Math.floor(Number(pasIncreaseMoney) * 1.05));
+            } else {
+              newPasIncreaseMoney = (pasIncreaseMoney * BigInt(105)) / BigInt(100);
+            }
+            setPasIncreaseMoney(newPasIncreaseMoney);
+            setCurCooldown(cooldown);
+          }, time);
+          break;
       case 5:
         setIsDiscountExists(setIsDiscountExists)
         setCurCooldown(cooldown)

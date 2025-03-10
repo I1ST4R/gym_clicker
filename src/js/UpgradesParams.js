@@ -31,7 +31,7 @@ const UpgradesParams = [
     initialIncrease: 8,//убрать
     isIncreaseMoney: false,
     isHidden: true,//убрать
-    isInvisible: false,//убрать
+    isInvisible: true,//убрать
     level: 0,//убрать
   },
   {
@@ -337,8 +337,8 @@ const UpgradesParams = [
     initialPrice: 1089000000000000000000000,
     initialIncrease: 0,
     isIncreaseMoney: false,
-    isHidden: true,
-    isInvisible: true,
+    isHidden: false,
+    isInvisible: false,
     level: 0,
   },
 ];

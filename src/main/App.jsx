@@ -19,21 +19,22 @@ function App() {
   const {
     countMoney,
     setCountMoney,
-    countDiamond,
-    setCountDiamond,
+    countDnk,
+    setCountDnk,
     pasIncreaseMoney,
     actIncreaseMoney,
     resultImages,
     setResultImages,
     upgrades,
+    setUpgrades,
     diamondUpgrades,
     busters,
     tooltipPosition,
     isUpgradeHovered,
     isDUpgradeHovered,
     isBusterHovered,
-    showStory,
-    setShowStory,
+    storyShown,
+    setStoryShown,
     end,
     windowWidth,
     setWindowWidth,
@@ -43,9 +44,9 @@ function App() {
     setCountMoney(countMoney + actIncreaseMoney);
   };
 
-  const incrementCountDiamond = () => {
-    const increaseDiamond = Math.random() * 100 > 95;
-    setCountDiamond(countDiamond + increaseDiamond);
+  const incrementCountDnk = () => {
+    const increaseDnk = BigInt(Math.floor((pasIncreaseMoney.toString().length) / 2));
+    setCountDnk(countDnk + increaseDnk);
   };
 
   useEffect(() => {
@@ -56,6 +57,16 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [setWindowWidth]);
+
+  useEffect(() => {
+    const updatedUpgrades = upgrades.map((upgrade) => {
+      if(upgrade.level > 0 )upgrade.isHidden = false
+      else if (upgrade.initialPrice <= countMoney) upgrade.isInvisible = false
+      return upgrade
+    });
+
+    setUpgrades(updatedUpgrades);
+  }, [countMoney]);
 
   useEffect(() => {
     upgrades.forEach((u) => {
@@ -100,12 +111,12 @@ function App() {
 
   return (
     <>
-      {showStory && <StoryIntro onClose={() => setShowStory(false)} />}
+      {!storyShown && <StoryIntro onClose={() => setStoryShown(true)} />}
 
       {end && <StoryAutro />}
-      <Client/>
+      <Client />
       <Trainer onClick={incrementCountMoneyForClick} />
-      <Counters/>
+      <Counters />
       <div className="slider-container">
         <button className="button-prev" onClick={goPrev}>
           <svg width="30" height="21" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -128,22 +139,14 @@ function App() {
           }}
         >
           <SwiperSlide>
-            <Upgrades
-              onIncreaseDiamond={incrementCountDiamond}
-            />
+            <Upgrades onIncreaseDiamond={incrementCountDnk} />
           </SwiperSlide>
-          <SwiperSlide>
-            <Busters
-              onIncreaseDiamond={incrementCountDiamond}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <DiamondUpgrades/>
-          </SwiperSlide>
+          <SwiperSlide><Busters /></SwiperSlide>
+          <SwiperSlide><DiamondUpgrades /></SwiperSlide>
         </Swiper>
       </div>
 
-      {/*Tooltip for DUpgrades*/}
+      {/* Tooltip for DUpgrades */}
       {isDUpgradeHovered && (
         <div
           className="Tooltip"
@@ -155,92 +158,28 @@ function App() {
           {!(diamondUpgrades[tooltipPosition.id - 1].level === 4) ? (
             <>
               <p className="Tooltip__upgrade-info">
-                {`Улучшение: ${diamondUpgrades[tooltipPosition.id - 1].benefit} ${DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level]}%`}
+                {`Улучшение: ${diamondUpgrades[tooltipPosition.id - 1].benefit} ${BigInt(DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level])} %`}
               </p>
               <div className="Tooltip__price-block">
-                {`Стоимость: ${DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level]} `}
+                {`Стоимость: ${BigInt(DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level])} `}
                 <img src="diamond.png" alt="" />
               </div>
             </>
           ) : (
-            <>
-              <div
-                className="Tooltip"
-                style={{
-                  top: `${tooltipPosition.top}px`,
-                  right: `${tooltipPosition.right}px`,
-                }}
-              >
-                <p className="Tooltip__upgrade-info">Максимальный уровень</p>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-
-      {/*Tooltip for Busters*/}
-      {isBusterHovered && (
-        <div
-          className="Tooltip"
-          style={{
-            top: `${tooltipPosition.top}px`,
-            right: `530px`,
-          }}
-        >
-          <p>{busters[tooltipPosition.id - 1].desc}</p>
-          <p className="Tooltip__upgrade-info">{`Улучшение: ${busters[tooltipPosition.id - 1].upgradeInfo}`}</p>
-          <p className="Tooltip__benefit">{`Эффект: ${busters[tooltipPosition.id - 1].benefit}`}</p>
-        </div>
-      )}
-
-      {/*Tooltip for Upgrades*/}
-      {isDUpgradeHovered && (
-        <div
-          className="Tooltip"
-          style={{
-            top: `80px`,
-            right: `530px`,
-          }}
-        >
-        {!(diamondUpgrades[tooltipPosition.id - 1].level === 4) ?
-        (
-            <>
-            <p className="Tooltip__upgrade-info">
-              {`
-              Улучшение: 
-              ${diamondUpgrades[tooltipPosition.id - 1].benefit} 
-              ${DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level]}%
-              `}
-            </p>
-            <div className="Tooltip__price-block">
-              {`
-              Стоимость: 
-              ${DUpgradesPrices[diamondUpgrades[tooltipPosition.id - 1].level]} 
-              `}
-              <img src="diamond.png" alt="" />
+            <div
+              className="Tooltip"
+              style={{
+                top: `${tooltipPosition.top}px`,
+                right: `${tooltipPosition.right}px`,
+              }}
+            >
+              <p className="Tooltip__upgrade-info">Максимальный уровень</p>
             </div>
-            </>
-          ) : 
-          (
-            <>
-              <div
-                  className="Tooltip"
-                  style={{
-                    top: `${tooltipPosition.top}px`,
-                    right: `${tooltipPosition.right}px`,
-                }}
-                >
-                <p className="Tooltip__upgrade-info">
-                  Максимальный уровень
-                </p>
-              </div>
-            </>
           )}
-          
         </div>
       )}
 
-      {/*Tooltip for Busters*/}    
+      {/* Tooltip for Busters */}
       {isBusterHovered && (
         <div
           className="Tooltip"
@@ -250,63 +189,64 @@ function App() {
           }}
         >
           <p>{busters[tooltipPosition.id - 1].desc}</p>
-          <p className="Tooltip__upgrade-info">{
-            `Улучшение: ${busters[tooltipPosition.id - 1].upgradeInfo}`
-          }</p>
-          <p className="Tooltip__benefit">{
-            `Эффект: ${busters[tooltipPosition.id - 1].benefit}`
-          }</p>
+          <p className="Tooltip__upgrade-info">
+            {`Улучшение: ${busters[tooltipPosition.id - 1].upgradeInfo}`}
+          </p>
+          <p className="Tooltip__benefit">
+            {`Эффект: ${busters[tooltipPosition.id - 1].benefit}`}
+          </p>
         </div>
-      )}    
+      )}
 
-      {/*Tooltip for Upgrades*/}
-      { isUpgradeHovered && 
-      tooltipPosition.id != 16 && (
-          <div
-            className="Tooltip"
-            style={{
-              top: `${tooltipPosition.top}px`,
-              right: `530px`,
-            }}
-          >
-            <p>{upgrades[tooltipPosition.id - 1].desc}</p>
-              <p className="Tooltip__upgrade-info">
-                {`Улучшение:
-                  + ${abbreviateNum(Math.floor(upgrades[tooltipPosition.id  - 1].initialIncrease))} 
-                  ${upgrades[tooltipPosition.id  - 1].isIncreaseMoney ? "за клик" : "в секунду"}
-                `}
-              </p>    
-          </div>
-        )
-      }
+      {/* Tooltip for Upgrades */}
+      {isUpgradeHovered && tooltipPosition.id !== 19 && (
+        <div
+          className="Tooltip"
+          style={{
+            top: `${tooltipPosition.top}px`,
+            right: `530px`,
+          }}
+        >
+          <p>{upgrades[tooltipPosition.id - 1].desc}</p>
+          <p className="Tooltip__upgrade-info">
+          {`Улучшение: 
+        + ${
+          typeof upgrades[tooltipPosition.id - 1].initialIncrease === 'bigint'
+            ? abbreviateNum(upgrades[tooltipPosition.id - 1].initialIncrease) 
+            : abbreviateNum(BigInt(Math.floor(upgrades[tooltipPosition.id - 1].initialIncrease))) 
+        } 
+        ${upgrades[tooltipPosition.id - 1].isIncreaseMoney ? "за клик" : "в секунду"}
+      `}
+          </p>
+        </div>
+      )}
 
-      { isUpgradeHovered && 
-      tooltipPosition.id === 16 && 
-      upgrades[tooltipPosition.id - 2].level >= 50 &&(
-          <div
-            className="Tooltip"
-            style={{
-              top: `${tooltipPosition.top}px`,
-              right: `530px`,
-            }}
-          >
-            <p className="Tooltip__last">ВНИМАНИЕ! После покупки этой карточки игра будет считаться пройденой. Если вы не хотите завершать прохождение не покупайте это улучшение!</p>    
-          </div>
-        )
-      }
+      {isUpgradeHovered && tooltipPosition.id === 19 && upgrades[tooltipPosition.id - 2].level >= 50 && (
+        <div
+          className="Tooltip"
+          style={{
+            top: `${tooltipPosition.top}px`,
+            right: `530px`,
+          }}
+        >
+          <p className="Tooltip__last">
+            ВНИМАНИЕ! После покупки этой карточки игра будет считаться пройденной. Если вы не хотите завершать прохождение, не покупайте это улучшение!
+          </p>
+        </div>
+      )}
 
       {/*Result images*/}
       {resultImages.map((image, index) => (
         <img
-          key={index} 
+          key={index}
           src={image.src}
           style={{
             position: 'absolute',
-            left: `${(windowWidth - 480)/2 +image.x}px`,
+            left: `${(windowWidth - 480) / 2 + image.x}px`,
             top: `${image.y}px`,
             width: `${image.width}px`,
             height: `${image.height}px`,
-            zIndex:`${image.zIndex}`,
+            zIndex: `${image.zIndex}`,
             userSelect: `none`,
             pointerEvents: `none`,
           }}
@@ -319,13 +259,13 @@ function App() {
             Разработчик: <span>I1ST4R (Ivan)</span>
             <img src="star.png" alt="" />
           </div>
-          <a className="footer__point" 
-          href="https://github.com/I1ST4R/gym_clicker">
+          <a className="footer__point"
+            href="https://github.com/I1ST4R/gym_clicker">
             <span>Проект на GitHub</span>
             <img src="github.png" alt="tg" />
           </a>
           <a className="footer__point"
-          href="https://t.me/SSSsTtAaRrr">
+            href="https://t.me/SSSsTtAaRrr">
             <span>Баги, пожелания, идеи </span>
             <img src="tg.png" alt="tg" />
           </a>

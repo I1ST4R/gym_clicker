@@ -78,8 +78,7 @@
 }
 
 .Upgrade--hidden {
-  position:relative;
-  pointer-events: none; 
+  position:relative; 
 }
 
 .Upgrade--hidden .Upgrade__img{

@@ -1,25 +1,28 @@
-function abbreviateNum(n) {
+function abbreviateNumBigInt(n) {
+  const units = ["k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc"];
 
-  const units = [
-    "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", 
-  ]
-  const unitIndex = Math.floor(Math.log10(n) / 3) - 1;
-  const unit = units[unitIndex];
+  const bigIntN = BigInt(n);
 
-  if (!unit) {
-    return n.toString();
+  if (bigIntN < 1000n) {
+    return bigIntN.toString();
   }
 
-  const divisor = Math.pow(1000, unitIndex + 1);
-  const abbreviatedNum = (n / divisor).toFixed(3);
+  let logValue = 0;
+  let tempN = bigIntN;
+  let decimalPart = 0
+  while (tempN >= 1000n) {
+    decimalPart = tempN % 1000n
+    tempN /= 1000n;
+    logValue++;
+  }
 
-  let [integerPart, decimalPart] = abbreviatedNum.split('.');
+  const unit = units[logValue - 1]; 
 
-  decimalPart.toString() === '000'? 
-  decimalPart = ''
-  : decimalPart = "." + decimalPart.toString() 
+  const abbreviatedNumStr = tempN.toString();
 
-  return `${integerPart}${decimalPart} ${unit}`;
+  let formattedDecimalPart = decimalPart == 0 ? '' : '.' + decimalPart
+
+  return `${abbreviatedNumStr}${formattedDecimalPart} ${unit}`;
 }
 
-export default abbreviateNum
+export default abbreviateNumBigInt;

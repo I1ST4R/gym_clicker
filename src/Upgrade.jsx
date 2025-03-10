@@ -20,17 +20,17 @@ function Upgrade({
   isInvisible,
   requirements,
   onUpgradeLevelChange,
-  }){ 
-
-  const{ 
+}) {
+  const {
     upgrades,
-    setCountMoney, 
+    setCountMoney,
     countMoney,
     pasIncreaseMoney,
     isDiscountExists,
     setEnd,
     setTooltipPosition,
     setIsUpgradeHovered,
+    isUpgradeHovered,
     setTrainerImage,
   } = useContext(AppContext);
 
@@ -38,7 +38,7 @@ function Upgrade({
 
   const [level, setLevel] = useState(() => {
     const savedLevel = localStorage.getItem(`upgrade_${id}_level`);
-    return savedLevel ? parseInt(savedLevel, 10) : proplevel;
+    return savedLevel ? BigInt(savedLevel) : BigInt(proplevel);
   });
 
   useEffect(() => {
@@ -47,10 +47,10 @@ function Upgrade({
 
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
-    setTooltipPosition({ 
+    setTooltipPosition({
       right: 500,
-      top:cardRect.top,
-      id: id, 
+      top: cardRect.top,
+      id: id,
     });
     setIsUpgradeHovered(true);
   };
@@ -59,45 +59,53 @@ function Upgrade({
     setIsUpgradeHovered(false);
   };
 
-  const discount = initialPrice * (isDiscountExists / 2);
-  const priceWithDiscount = Math.floor(initialPrice - discount);
+  const discount = (BigInt(initialPrice) * BigInt(isDiscountExists ? 1 : 0)) / BigInt(2);
+  const priceWithDiscount = BigInt(initialPrice) - discount;
   const isEnoughMoney = countMoney >= priceWithDiscount;
 
+  const isId16 = id === 16;
+  const isId19 = id === 19;
+  const isId15Level50 = upgrades.find((upgrade) => upgrade.id === 15)?.level >= 50;
+
   const handleUpgradeClick = () => {
-    if (isId16 && isId15Level50 && isAlerted) {
-      setIsAlerted(true)
-      setEnd(true)
-      return
+    if (isId19) {
+      setEnd(true);
+      return;
     }
+
     if (isId16 && isId15Level50) {
-      alert("При улучшении этой карточки игра будет завершена. Вы уверены что хотите продолжить?")
-      setIsAlerted(true)
-      return
+      if (isAlerted) {
+        setEnd(true);
+        return;
+      } else {
+        alert('При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?');
+        setIsAlerted(true);
+        return;
+      }
     }
+
     if (!isId16 && isEnoughMoney) {
-      const newLevel = level + 1;
-      setLevel(newLevel); 
+      const newLevel = level + BigInt(1);
+      setLevel(newLevel);
       onUpgradeLevelChange(id);
       setCountMoney(countMoney - priceWithDiscount);
       new Audio(upgradeLevelUp).play();
       if (id === 1) {
-        setTrainerImage(getTrainerImage(level + 1)); 
+        setTrainerImage(getTrainerImage(newLevel));
       }
     }
   };
-
-  const isId16 = id === 16;
-  const isId15Level50 = upgrades.find(upgrade => upgrade.id === 15)?.level >= 50;
 
   return (
     <div
       className={`Upgrade 
         ${!isEnoughMoney ? 'Upgrade--nonavailable' : ''} 
         ${isHidden ? 'Upgrade--hidden' : ''}
-        ${isInvisible ? 'Upgrade--invisible' : ''}`}
+        ${isInvisible ? 'Upgrade--invisible' : ''}
+        `}
       onClick={handleUpgradeClick}
-      onMouseEnter={handleMouseEnter} 
-      onMouseLeave={handleMouseLeave} 
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {isId16 && !isId15Level50 ? (
         <div className="Upgrade__placeholder">
@@ -106,12 +114,12 @@ function Upgrade({
       ) : (
         <img
           className="Upgrade__img"
-          src={id === 1 ? getTrainerImage(level) : img}  
+          src={id === 1 ? getTrainerImage(level) : img}
           alt={title}
         />
       )}
-      <div className="Upgrade__info"> 
-        <p className="Upgrade__title">{isId16 && !isId15Level50 ? "???" : title}</p>
+      <div className="Upgrade__info">
+        <p className="Upgrade__title">{isId16 && !isId15Level50 ? '???' : title}</p>
         {isId16 && !isId15Level50 && (
           <div className="Upgrade__unlock-requirement">
             <p>Улучшите предыдущую карточку до 50 уровня</p>
@@ -119,10 +127,12 @@ function Upgrade({
         )}
         <div className="Upgrade__price-level">
           <div className="Upgrade__price-block">
-            <p className="Upgrade__price">{isId16 && !isId15Level50 ? "???" : abbreviateNum(priceWithDiscount)}</p>
+            <p className="Upgrade__price">
+              {isId16 && !isId15Level50 ? '???' : abbreviateNum(priceWithDiscount)}
+            </p>
             <img src="money.png" alt="" />
           </div>
-          <p className="Upgrade__level">{level === 0 ? "" : level}</p>
+          <p className="Upgrade__level">{level === 0 ? '' : level.toString()}</p>
         </div>
       </div>
     </div>
