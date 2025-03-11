@@ -107,9 +107,14 @@ export const AppProvider = ({ children }) => {
     return savedCooldwonDiscount ? JSON.parse(savedCooldwonDiscount) : 1;
   });
 
-  const [storyShown, setStoryShown] = useState(() => {
-    const savedStoryShown = localStorage.getItem('storyShown');
-    return savedStoryShown ? JSON.parse(savedStoryShown) : false;
+  const [storyIntroShown, setStoryIntroShown] = useState(() => {
+    const savedStoryIntroShown = localStorage.getItem('storyIntroShown');
+    return savedStoryIntroShown ? JSON.parse(savedStoryIntroShown) : false;
+  });
+
+  const [storyAutroShown, setStoryAutroShown] = useState(() => {
+    const savedStoryAutroShown = localStorage.getItem('storyAutroShown');
+    return savedStoryAutroShown ? JSON.parse(savedStoryAutroShown) : false;
   });
 
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, right: 0, id: 1 });
@@ -154,7 +159,8 @@ export const AppProvider = ({ children }) => {
       }),
       isDiscountExists: JSON.stringify(isDiscountExists),
       cooldwonDiscount: JSON.stringify(cooldwonDiscount),
-      storyShown: JSON.stringify(storyShown),
+      storyIntroShown: JSON.stringify(storyIntroShown),
+      storyAutroShown: JSON.stringify(storyAutroShown),
     };
 
     Object.entries(stateToSave).forEach(([key, value]) => {
@@ -177,7 +183,8 @@ export const AppProvider = ({ children }) => {
     busters,
     isDiscountExists,
     cooldwonDiscount,
-    storyShown,
+    storyIntroShown,
+    storyAutroShown
   ]);
 
   return (
@@ -215,8 +222,10 @@ export const AppProvider = ({ children }) => {
         setIsDiscountExists,
         cooldwonDiscount,
         setCooldwonDiscount,
-        storyShown,
-        setStoryShown,
+        storyIntroShown,
+        setStoryIntroShown,
+        storyAutroShown,
+        setStoryAutroShown,
         tooltipPosition,
         setTooltipPosition,
         isUpgradeHovered,

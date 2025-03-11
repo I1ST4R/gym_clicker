@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import './css/Upgrade.css';
 import upgradeLevelUp from '../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
@@ -51,29 +51,24 @@ function Upgrade({
   const discount = (BigInt(initialPrice) * BigInt(isDiscountExists ? 1 : 0)) / BigInt(2);
   const priceWithDiscount = BigInt(initialPrice) - discount;
   const isEnoughMoney = countMoney >= priceWithDiscount;
-
-  const isId16 = id === 16;
-  const isId19 = id === 19;
-  const isId15Level50 = upgrades.find((upgrade) => upgrade.id === 15)?.level >= 50;
+  const isLastUpgrade = id === upgrades.length
+  const isRequirementsMet = upgrades[upgrades.length - 2].level === 50
 
   const handleUpgradeClick = () => {
-    if (isId19) {
-      setEnd(true);
-      return;
+
+    if(isAlerted){
+      setEnd(true)
+      console.log(1)
+      return
     }
 
-    if (isId16 && isId15Level50) {
-      if (isAlerted) {
-        setEnd(true);
-        return;
-      } else {
-        alert('При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?');
-        setIsAlerted(true);
-        return;
-      }
+    if(isLastUpgrade && isRequirementsMet){
+      alert('При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?');
+      setIsAlerted(true)
+      return
     }
 
-    if (!isId16 && isEnoughMoney) {
+    if (isEnoughMoney && !isLastUpgrade) {
       const newLevel = level + 1;
       onUpgradeLevelChange(id);
       setCountMoney(countMoney - priceWithDiscount);
@@ -95,7 +90,7 @@ function Upgrade({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {isId16 && !isId15Level50 ? (
+      {isLastUpgrade && !isRequirementsMet ? (
         <div className="Upgrade__placeholder">
           <p>???</p>
         </div>
@@ -107,8 +102,8 @@ function Upgrade({
         />
       )}
       <div className="Upgrade__info">
-        <p className="Upgrade__title">{isId16 && !isId15Level50 ? '???' : title}</p>
-        {isId16 && !isId15Level50 && (
+        <p className="Upgrade__title">{isLastUpgrade && !isRequirementsMet ? '???' : title}</p>
+        {isLastUpgrade && !isRequirementsMet && (
           <div className="Upgrade__unlock-requirement">
             <p>Улучшите предыдущую карточку до 50 уровня</p>
           </div>
@@ -116,7 +111,7 @@ function Upgrade({
         <div className="Upgrade__price-level">
           <div className="Upgrade__price-block">
             <p className="Upgrade__price">
-              {isId16 && !isId15Level50 ? '???' : abbreviateNum(priceWithDiscount)}
+              {isLastUpgrade && !isRequirementsMet ? '???' : abbreviateNum(priceWithDiscount)}
             </p>
             <img src="money.png" alt="" />
           </div>

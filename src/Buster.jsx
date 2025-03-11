@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef,  useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import './css/Buster.css';
 import abbreviateNum from './js/numberAbbreviator.js';
-
 import { AppContext } from './main/AppContext.jsx';
 
 function Buster({
@@ -15,22 +14,16 @@ function Buster({
   level: propLevel,
   isActive: propIsActive,
   onBusterLevelChange,
-  }) {
-
+  onActivateBuster,
+}) {
   const {
-    setCountMoney, 
-    countMoney,
-    setPasIncreaseMoney,
-    pasIncreaseMoney,
-    setActIncreaseMoney,
-    actIncreaseMoney,
-    setIsDiscountExists,
     setTooltipPosition,
     setIsBusterHovered,
+    pasIncreaseMoney,
   } = useContext(AppContext);
-  
 
   const intervalRef = useRef(null);
+  const timeoutRef = useRef(null);
 
   const [isActive, setIsActive] = useState(() => {
     const savedIsActive = localStorage.getItem(`buster_${id}_isActive`);
@@ -39,7 +32,7 @@ function Buster({
 
   const [curCooldown, setCurCooldown] = useState(() => {
     const savedCooldown = localStorage.getItem(`buster_${id}_curCooldown`);
-    return savedCooldown ? parseInt(savedCooldown, 10) : 0; 
+    return savedCooldown ? parseInt(savedCooldown, 10) : 0;
   });
 
   const [level, setLevel] = useState(() => {
@@ -47,15 +40,16 @@ function Buster({
     return savedLevel ? parseInt(savedLevel, 10) : propLevel;
   });
 
+  const isMaxLevel = level >= maxLvl;
+  const isEnoughClients = pasIncreaseMoney >= initialPrice;
+
   useEffect(() => {
     localStorage.setItem(`buster_${id}_level`, level.toString());
   }, [id, level]);
 
-
   useEffect(() => {
     localStorage.setItem(`buster_${id}_isActive`, isActive);
   }, [id, isActive]);
-
 
   useEffect(() => {
     localStorage.setItem(`buster_${id}_curCooldown`, curCooldown.toString());
@@ -70,9 +64,9 @@ function Buster({
             setIsActive(true); 
             return 0;
           }
-          return prev - 100; 
+          return prev - 100;
         });
-      }, 100); 
+      }, 100);
     } else {
       clearInterval(intervalRef.current);
     }
@@ -89,8 +83,8 @@ function Buster({
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
-      top: cardRect.top, 
-      right: 500, 
+      top: cardRect.top,
+      right: 500,
       id: id,
     });
     setIsBusterHovered(true);
@@ -100,94 +94,58 @@ function Buster({
     setIsBusterHovered(false);
   };
 
-  const isMaxLevel = level >= maxLvl;
-  const isEnoughClients = pasIncreaseMoney >= initialPrice;
-
   const handleUpgradeBusterClick = () => {
     if (isEnoughClients && !isMaxLevel) {
-      setLevel(level + 1); 
+      setLevel(level + 1);
       onBusterLevelChange(id);
-      setPasIncreaseMoney(pasIncreaseMoney - BigInt(Math.floor(initialPrice)));
     }
   };
 
   const handleActivateBusterClick = () => {
-    if (!isActive || curCooldown > 0 || level === 0) return; 
-
-    switch (id){
-      case 1:
-        const actIncreaseMoneyBefore = actIncreaseMoney;
-        setActIncreaseMoney(pasIncreaseMoney);
-        setIsActive(false); 
-
-        setTimeout(() => {
-          setActIncreaseMoney(actIncreaseMoneyBefore); 
-          setCurCooldown(cooldown); 
-        }, time);
-        break;
-      case 2:
-        const pasIncreaseMoneyBefore = pasIncreaseMoney;
-        setPasIncreaseMoney(pasIncreaseMoney * BigInt(7));
-        setIsActive(false); 
-
-        setTimeout(() => {
-          setPasIncreaseMoney(pasIncreaseMoneyBefore); 
-          setCurCooldown(cooldown); 
-        }, time);
-        break;
-      case 3:
-        setTimeout(() => {
-          setCountMoney(countMoney * BigInt(50)) 
-          setCurCooldown(cooldown) 
-        }, time);
-        break;
-        case 4:
-          let newPasIncreaseMoney = BigInt('0');
-          setTimeout(() => {
-            if (pasIncreaseMoney <= 10000) {
-              newPasIncreaseMoney = BigInt(Math.floor(Number(pasIncreaseMoney) * 1.05));
-            } else {
-              newPasIncreaseMoney = (pasIncreaseMoney * BigInt(105)) / BigInt(100);
-            }
-            setPasIncreaseMoney(newPasIncreaseMoney);
-            setCurCooldown(cooldown);
-          }, time);
-          break;
-      case 5:
-        setIsDiscountExists(setIsDiscountExists)
+    if (!isActive || curCooldown > 0 || level === 0) return;
+    setIsActive(false);
+    if (time > 0) {
+      timeoutRef.current = setTimeout(() => {
         setCurCooldown(cooldown)
-        break;
-    }
-      
-  };
+      }, time);
+    } else setCurCooldown(cooldown)
+    onActivateBuster(id, time);
+  }
+
+  useEffect(() => {
+    return () => {
+      timeoutRef.current ? clearTimeout(timeoutRef.current): ""
+      intervalRef.current ? clearInterval(intervalRef.current): ""
+    };
+  }, []);
 
   return (
     <div
       className={`Buster 
         ${!isActive || curCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''} 
       `}
-      onMouseEnter={handleMouseEnter} 
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img 
+      <img
         onClick={handleActivateBusterClick}
         className="Buster__img"
-        src={img}  
+        src={img}
         alt={title}
       />
-      <div 
-        className="Buster__info" 
-        onClick={handleActivateBusterClick} 
-      > 
+      <div
+        className="Buster__info"
+        onClick={handleActivateBusterClick}
+      >
         <p className="Buster__title">{title}</p>
-        <div className="Buster__timers"> 
+        <div className="Buster__timers">
           <div className="Buster__timer">
             {time != 0 ? (
               <>
                 <img src="Busters/time.png" alt="" />
                 <p>{`${time / 1000} сек.`}</p>
               </>
-            ):(
+            ) : (
               <>
               </>
             )}
@@ -212,11 +170,11 @@ function Buster({
         </div>
       </div>
 
-      <div 
+      <div
         className={`
           ${isEnoughClients ? "Buster__upgrader--availavle" : ""}
           Buster__upgrader
-        `} 
+        `}
         onClick={handleUpgradeBusterClick}
       >
         <img src="Busters/upgrade.png" alt="" />

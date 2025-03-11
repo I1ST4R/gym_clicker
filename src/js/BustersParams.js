@@ -1,78 +1,61 @@
+const DefaultBusterParams = {
+  cooldown: 1800000,
+  maxLvl: 10,
+  isActive: true,
+  level: 0,
+  upgradeInfo: "ожидание перезарядки бустера уменьшается на 7%",
+};
+
 const BustersParams = [
   {
-    id: 1,
     title: "Расставание",
-    img: "Busters/img1.jpg",
     desc: "Теперь ты настоящий сигма",
     benefit: "получай за 1 клик столько же сколько получаешь в секунду",
     initialPrice: 100,
     time: 10000,
-    upgradeInfo: "ожидание уменьшается на 7%",
-    cooldown: 1800000,
-    maxLvl: 10,
-    level: 0,
-    isActive: true,
   },
 
   {
-    id: 2,
     title: "Без побочек",
-    img: "Busters/img2.png",
     desc: "Если ты не знаешь что это то и не стоит",
     benefit: "получай в 7 раз больше с каждого клиента",
     initialPrice: 1000,
     time: 10000,
-    upgradeInfo: "ожидание уменьшается на 7%",
-    cooldown: 1800000,
-    maxLvl: 10,
-    level: 0,
-    isActive: true,
   },
 
   {
-    id: 3,
     title: "Награда",
-    img: "Busters/img3.png",
     desc: "Ты много сделал для продвижения спорта, держи анонимное пожертвование",
     benefit: "получи денежный бонус",
     initialPrice: 5000,
     time: 0,
-    upgradeInfo: "ожидание уменьшается на 7%",
-    cooldown: 1800000,
-    maxLvl: 10,
-    level: 0,
-    isActive: true,
   },
 
   {
-    id: 4,
     title: "Памятник",
-    img: "Busters/img4.png",
     desc: "Вау! В твою честь построили памятник",
     benefit: "получи больше популярности",
     initialPrice: 10000,
     time: 0,
-    upgradeInfo: "ожидание уменьшается на 7%",
-    cooldown: 1800000,
-    maxLvl: 10,
-    level: 0,
-    isActive: true,
   },
 
   {
-    id: 5,
     title: "Экономия",
-    img: "Busters/img5.png",
     desc: "Вместо рабочих позвал мужиков с качалки - на этом и сэкономил",
     benefit: "50% скидка на любую следующую покупку улучшения",
     initialPrice: 50000,
     time: 0,
-    upgradeInfo: "ожидание уменьшается на 7%",
-    cooldown: 1800000,
-    maxLvl: 10,
-    level: 0,
-    isActive: true,
   },
-]
+].map((upgrade, index) => {
+  const id = index + 1; 
+  const img = `Busters/img${id}.png`; 
+
+  return {
+    id,
+    img,
+    ...DefaultBusterParams, 
+    ...upgrade, 
+  };
+});
 
 export default BustersParams;

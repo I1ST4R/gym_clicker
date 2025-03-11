@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext  } from 'react';
 import './css/StoryIntro.css';
+import { AppContext } from './main/AppContext.jsx';
 
 const StoryIntro = ({ onClose }) => {
+
+  const {
+    setStoryIntroShown,
+  } = useContext(AppContext);
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
@@ -43,8 +49,7 @@ const StoryIntro = ({ onClose }) => {
   };
 
   const handleClose = () => {
-    localStorage.setItem('storyShown', 'true');
-    onClose();
+    setStoryIntroShown(true)
   };
 
   return (

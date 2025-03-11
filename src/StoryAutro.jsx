@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './css/StoryIntro.css';
+import { AppContext } from './main/AppContext.jsx';
 
-const StoryAutro = () => {
+const StoryAutro = (onClose) => {
+
+  const {setStoryAutroShown} = useContext(AppContext);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
@@ -44,7 +47,7 @@ const StoryAutro = () => {
 
   const handleClose = () => {
     localStorage.setItem('storyShown', 'true');
-    onClose();
+    setStoryAutroShown(true)
   };
 
   return (

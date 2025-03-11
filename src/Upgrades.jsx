@@ -50,12 +50,11 @@ function Upgrades({ onIncreaseDiamond }) {
 
 
         } else {
-          // Обработка больших чисел как BigInt
-          actIncrease = BigInt(Math.floor(upgrade.initialIncrease * upgrade.isIncreaseMoney));
-          pasIncrease = BigInt(Math.floor(upgrade.initialIncrease * !upgrade.isIncreaseMoney));
 
-          setActIncreaseMoney(actIncreaseMoney + actIncrease);
-          setPasIncreaseMoney(pasIncreaseMoney + pasIncrease);
+          if (upgrade.isIncreaseMoney){
+            setActIncreaseMoney(actIncreaseMoney + BigInt(upgrade.initialIncrease))
+          } 
+          else setPasIncreaseMoney(pasIncreaseMoney + BigInt(upgrade.initialIncrease))
 
           const difference = !upgrade.isIncreaseMoney ? 0.035 : 0;
           newIncrease = BigInt(Math.floor(Number(upgrade.initialIncrease) * (1.15 - difference)));
