@@ -6,10 +6,11 @@ import Counters from '../Counters.jsx';
 import Busters from '../Busters.jsx';
 import Client from '../Client.jsx';
 import Upgrades from '../Upgrades.jsx';
-import DiamondUpgrades from '../DiamondUpgrades.jsx';
+import DnkUpgrades from '../DnkUpgrades.jsx';
 import StoryIntro from '../StoryIntro.jsx';
 import StoryAutro from '../StoryAutro.jsx';
-import Tooltip from '../Tooltip.jsx'; // Импортируем компонент Tooltip
+import Tooltip from '../Tooltip.jsx';
+import CustomAlert from '../CustomAlert';
 import '../css/App.css';
 import '../css/SliderStyles.css';
 import abbreviateNum from '../js/numberAbbreviator.js';
@@ -27,16 +28,22 @@ function App() {
     setResultImages,
     upgrades,
     setUpgrades,
-    diamondUpgrades,
+    resetProgress,
     busters,
     tooltipPosition,
     isUpgradeHovered,
-    isDUpgradeHovered,
     isBusterHovered,
     storyIntroShown,
+    storyAutroShown,
+    isDnkHovered,
+    increaseMultiplier,
     end,
+    setEnd,
+    dnkUpgrades,
     windowWidth,
     setWindowWidth,
+    showCustomAlert,
+    setShowCustomAlert,
   } = useContext(AppContext);
 
   const incrementCountMoneyForClick = () => {
@@ -44,15 +51,36 @@ function App() {
   };
 
   const incrementCountDnk = () => {
-    const increaseDnk = BigInt(Math.floor((pasIncreaseMoney.toString().length) / 2));
-    setCountDnk(countDnk + increaseDnk);
+    const log3 = (value) => {
+      if (value < 3n) return 0n;
+      let count = 0n;
+      while (value >= 3n) {
+        value /= 3n;
+        count += 1n;
+      }
+      return count;
+    };
+
+    const divisor = 1000000000000000000n;
+    const increaseDnk = log3(pasIncreaseMoney / divisor);
+
+    setCountDnk(20n);
   };
+
+  useEffect(() => {
+    if (end && storyAutroShown) incrementCountDnk()
+  }, [end, storyAutroShown]);
+
+  useEffect(() => {
+    if (countDnk === 0n && storyAutroShown) {
+      resetProgress()
+    }
+  }, [countDnk]);
 
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [setWindowWidth]);
@@ -92,8 +120,6 @@ function App() {
     return () => clearInterval(interval);
   }, [pasIncreaseMoney, setCountMoney]);
 
-  const DUpgradesPrices = [1, 2, 5, 10];
-
   const swiperRef = useRef(null);
 
   const goNext = () => {
@@ -108,19 +134,10 @@ function App() {
     }
   };
 
-  // Определяем данные для подсказки
   let tooltipContent = null;
   let tooltipType = null;
 
-  if (isDUpgradeHovered) {
-    const upgrade = diamondUpgrades[tooltipPosition.id - 1];
-    tooltipContent = {
-      level: upgrade.level,
-      benefit: upgrade.benefit,
-      price: BigInt(DUpgradesPrices[upgrade.level]),
-    };
-    tooltipType = 'DUpgrades';
-  } else if (isBusterHovered) {
+  if (isBusterHovered) {
     const buster = busters[tooltipPosition.id - 1];
     tooltipContent = {
       desc: buster.desc,
@@ -134,8 +151,10 @@ function App() {
       desc: upgrade.desc,
       initialIncrease: abbreviateNum(
         typeof upgrade.initialIncrease === 'bigint'
-          ? upgrade.initialIncrease
-          : BigInt(Math.floor(upgrade.initialIncrease))
+          ?
+          (upgrade.initialIncrease / 100n) * BigInt(Math.floor(increaseMultiplier * 100))
+          :
+          Math.floor(upgrade.initialIncrease * increaseMultiplier)
       ),
       isIncreaseMoney: upgrade.isIncreaseMoney,
       isLastUpgrade: tooltipPosition.id === 19 && upgrades[tooltipPosition.id - 2].level >= 50,
@@ -143,10 +162,20 @@ function App() {
     tooltipType = 'Upgrades';
   }
 
+  const handleConfirm = () => {
+    setShowCustomAlert(false);
+    setEnd(true);
+  };
+
+  const handleCancel = () => {
+    setShowCustomAlert(false);
+  };
+
   return (
     <>
-      {!storyIntroShown && <StoryIntro />}
-      {end && !storyIntroShown && <StoryAutro />}
+      {end && !storyAutroShown && <StoryAutro />}
+      {end && storyAutroShown && countDnk != 0 && <DnkUpgrades />}
+      {!end && !storyIntroShown && <StoryIntro />}
 
       <Client />
       <Trainer onClick={incrementCountMoneyForClick} />
@@ -173,15 +202,15 @@ function App() {
           }}
         >
           <SwiperSlide>
-            <Upgrades onIncreaseDiamond={incrementCountDnk} />
+            <Upgrades handleConfirm={handleConfirm}/>
           </SwiperSlide>
           <SwiperSlide><Busters /></SwiperSlide>
-          <SwiperSlide><DiamondUpgrades /></SwiperSlide>
+          <SwiperSlide>Скоро тут что-то будет</SwiperSlide>
         </Swiper>
       </div>
 
       {/* Подсказка */}
-      {(isDUpgradeHovered || isBusterHovered || isUpgradeHovered) && (
+      {(isBusterHovered || isUpgradeHovered) && (
         <Tooltip
           position={{ top: tooltipPosition.top, right: 530 }}
           content={tooltipContent}
@@ -207,6 +236,14 @@ function App() {
           alt="Result"
         />
       ))}
+
+      {showCustomAlert && (
+        <CustomAlert
+          message="При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?"
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+        />
+      )}
 
       <footer className="footer">
         <div className="footer__container">

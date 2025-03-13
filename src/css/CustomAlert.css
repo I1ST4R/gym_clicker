@@ -1,0 +1,45 @@
+.custom-alert-overlay {
+  position: absolute;
+  left:0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.custom-alert {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color:black;
+}
+
+.custom-alert p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.custom-alert-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.custom-alert-buttons button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.custom-alert-buttons button:last-child {
+  background-color: #f44336;
+  color: white;
+}

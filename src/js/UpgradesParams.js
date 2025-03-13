@@ -197,8 +197,20 @@ const UpgradesParams = [
   const id = index + 1; 
   const img = `Upgrades/upgrade${id}.png`; 
   const resultImg = upgrade.resultImg ? `Upgrades/upgradeResult${id}.png` : false; 
-  const initialPrice = 150 * Math.pow(11, index);
-  const initialIncrease = Math.floor(initialPrice / 150)
+
+  let initialPrice, initialIncrease
+  if(index + 1 < 7){
+    initialPrice = 150 * Math.pow(11, index)
+    initialIncrease = initialPrice / 150
+  }
+  else{
+    initialPrice = BigInt(Math.floor(150 * Math.pow(11, index)))
+    initialIncrease = BigInt(initialPrice / 150n)
+  }
+
+  if(id === 19){
+    initialPrice = 0
+  }
 
   return {
     id,

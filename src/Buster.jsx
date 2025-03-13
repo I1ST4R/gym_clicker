@@ -11,68 +11,51 @@ function Buster({
   time,
   cooldown,
   maxLvl,
-  level: propLevel,
-  isActive: propIsActive,
+  level,
+  isActive,
   onBusterLevelChange,
   onActivateBuster,
+  curCooldown,
 }) {
   const {
     setTooltipPosition,
     setIsBusterHovered,
     pasIncreaseMoney,
+    cooldwonDiscount,
+    busters,
+    end,
   } = useContext(AppContext);
 
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  const [isActive, setIsActive] = useState(() => {
-    const savedIsActive = localStorage.getItem(`buster_${id}_isActive`);
-    return savedIsActive ? savedIsActive === "true" : propIsActive;
-  });
+  useEffect(() => {
+    setLocalCurCooldown(0)
+  }, [end]);
 
-  const [curCooldown, setCurCooldown] = useState(() => {
-    const savedCooldown = localStorage.getItem(`buster_${id}_curCooldown`);
-    return savedCooldown ? parseInt(savedCooldown, 10) : 0;
-  });
-
-  const [level, setLevel] = useState(() => {
-    const savedLevel = localStorage.getItem(`buster_${id}_level`);
-    return savedLevel ? parseInt(savedLevel, 10) : propLevel;
-  });
+  const [localCurCooldown, setLocalCurCooldown] = useState(curCooldown);
 
   const isMaxLevel = level >= maxLvl;
   const isEnoughClients = pasIncreaseMoney >= initialPrice;
 
   useEffect(() => {
-    localStorage.setItem(`buster_${id}_level`, level.toString());
-  }, [id, level]);
-
-  useEffect(() => {
-    localStorage.setItem(`buster_${id}_isActive`, isActive);
-  }, [id, isActive]);
-
-  useEffect(() => {
-    localStorage.setItem(`buster_${id}_curCooldown`, curCooldown.toString());
-  }, [id, curCooldown]);
-
-  useEffect(() => {
-    if (curCooldown > 0) {
+    if (localCurCooldown > 0) {
       intervalRef.current = setInterval(() => {
-        setCurCooldown(prev => {
+        setLocalCurCooldown((prev) => {
           if (prev <= 100) {
             clearInterval(intervalRef.current);
-            setIsActive(true); 
+            isActive = true;
             return 0;
+          } else {
+            return prev - 100;
           }
-          return prev - 100;
         });
       }, 100);
     } else {
       clearInterval(intervalRef.current);
     }
-
     return () => clearInterval(intervalRef.current);
-  }, [curCooldown]);
+  }, [localCurCooldown]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60000);
@@ -96,33 +79,35 @@ function Buster({
 
   const handleUpgradeBusterClick = () => {
     if (isEnoughClients && !isMaxLevel) {
-      setLevel(level + 1);
+      level += 1;
       onBusterLevelChange(id);
     }
   };
 
   const handleActivateBusterClick = () => {
-    if (!isActive || curCooldown > 0 || level === 0) return;
-    setIsActive(false);
+    if (!isActive || localCurCooldown > 0 || level === 0) return;
+    isActive = false;
     if (time > 0) {
       timeoutRef.current = setTimeout(() => {
-        setCurCooldown(cooldown)
+        setLocalCurCooldown(Math.floor(cooldown * cooldwonDiscount));
       }, time);
-    } else setCurCooldown(cooldown)
+    } else {
+      setLocalCurCooldown(Math.floor(cooldown * cooldwonDiscount));
+    }
     onActivateBuster(id, time);
-  }
+  };
 
   useEffect(() => {
     return () => {
-      timeoutRef.current ? clearTimeout(timeoutRef.current): ""
-      intervalRef.current ? clearInterval(intervalRef.current): ""
+      timeoutRef.current ? clearTimeout(timeoutRef.current) : "";
+      intervalRef.current ? clearInterval(intervalRef.current) : "";
     };
   }, []);
 
   return (
     <div
       className={`Buster 
-        ${!isActive || curCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''} 
+        ${!isActive || localCurCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''} 
       `}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -152,7 +137,7 @@ function Buster({
           </div>
           <div className="Buster__timer">
             <img src="Busters/cooldown.png" alt="" />
-            <p>{curCooldown > 0 ? formatTime(curCooldown) : "Готово"}</p>
+            <p>{localCurCooldown > 0 ? formatTime(localCurCooldown) : "Готово"}</p>
           </div>
         </div>
         <div className="Buster__price-level">

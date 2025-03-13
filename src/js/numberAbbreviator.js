@@ -15,14 +15,19 @@ function abbreviateNumBigInt(n) {
     tempN /= 1000n;
     logValue++;
   }
+  
+  if(logValue - 1 >= units.length) {
+    return`∞`
+  }
+  else{
+    const unit = units[logValue - 1]; 
 
-  const unit = units[logValue - 1]; 
+    const abbreviatedNumStr = tempN.toString();
 
-  const abbreviatedNumStr = tempN.toString();
+    let formattedDecimalPart = decimalPart == 0 ? '' : '.' + decimalPart
 
-  let formattedDecimalPart = decimalPart == 0 ? '' : '.' + decimalPart
-
-  return `${abbreviatedNumStr}${formattedDecimalPart} ${unit}`;
+    return `${abbreviatedNumStr}${formattedDecimalPart} ${unit}`;
+  }
 }
 
 export default abbreviateNumBigInt;

@@ -7,7 +7,7 @@
   transition: 1s;
   cursor: pointer;
   user-select: none;
-  z-index:40;
+  z-index:1000;
 }
 
 .Client__img{

@@ -4,6 +4,7 @@ const DefaultBusterParams = {
   isActive: true,
   level: 0,
   upgradeInfo: "ожидание перезарядки бустера уменьшается на 7%",
+  curCooldown: 0,
 };
 
 const BustersParams = [

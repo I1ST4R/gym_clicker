@@ -46,7 +46,6 @@ const StoryAutro = (onClose) => {
   };
 
   const handleClose = () => {
-    localStorage.setItem('storyShown', 'true');
     setStoryAutroShown(true)
   };
 

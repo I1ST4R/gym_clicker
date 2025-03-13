@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import BustersParams from '../js/BustersParams.js';
 import UpgradesParams from '../js/UpgradesParams.js';
-import DiamondUpgradesParams from '../js/DiamondUpgradesParams.js';
+import DnkUpgradesParams from '../js/DnkUpgradesParams.js';
 
 // Создаем контекст
 export const AppContext = createContext();
@@ -11,8 +11,10 @@ export const AppProvider = ({ children }) => {
   // Состояния для BigInt
   const [countMoney, setCountMoney] = useState(() => {
     const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? BigInt(savedCountMoney) : BigInt('10000000000000000000000000000');
+    return savedCountMoney ? BigInt(savedCountMoney) : BigInt('0');
   });
+
+  const [showCustomAlert, setShowCustomAlert] = useState(false);
 
   const [countDnk, setCountDnk] = useState(() => {
     const savedCountDnk = localStorage.getItem('countDnk');
@@ -21,9 +23,9 @@ export const AppProvider = ({ children }) => {
 
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
     const savedPasIncreaseMoney = localStorage.getItem('pasIncreaseMoney');
-    return savedPasIncreaseMoney ? BigInt(savedPasIncreaseMoney) : BigInt('10000000000');
+    return savedPasIncreaseMoney ? BigInt(savedPasIncreaseMoney) : BigInt('10000000');
   });
-
+  
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
     const savedActIncreaseMoney = localStorage.getItem('actIncreaseMoney');
     return savedActIncreaseMoney ? BigInt(savedActIncreaseMoney) : BigInt('1');
@@ -31,12 +33,12 @@ export const AppProvider = ({ children }) => {
 
   const [multiplier, setMultiplier] = useState(() => {
     const savedMultiplier = localStorage.getItem('multiplier');
-    return savedMultiplier ? BigInt(savedMultiplier) : BigInt('30');
+    return savedMultiplier ? parseInt(savedMultiplier) : 30;
   });
 
   const [priceMultiplier, setPriceMultiplier] = useState(() => {
     const savedPriceMultiplier = localStorage.getItem('priceMultiplier');
-    return savedPriceMultiplier ? BigInt(savedPriceMultiplier) : BigInt('1');
+    return savedPriceMultiplier ? parseInt(savedPriceMultiplier) : 1
   });
 
   const [increaseMultiplier, setIncreaseMultiplier] = useState(() => {
@@ -52,7 +54,7 @@ export const AppProvider = ({ children }) => {
 
   const [maxDelay, setMaxDelay] = useState(() => {
     const savedMaxDelay = localStorage.getItem('maxDelay');
-    return savedMaxDelay ? parseInt(savedMaxDelay, 10) : 600000;
+    return savedMaxDelay ? parseInt(savedMaxDelay, 10) :  600000;
   });
 
   const [trainerImage, setTrainerImage] = useState(() => {
@@ -69,7 +71,6 @@ export const AppProvider = ({ children }) => {
   const [upgrades, setUpgrades] = useState(() => {
     const savedUpgrades = localStorage.getItem('upgrades');
     return savedUpgrades ? JSON.parse(savedUpgrades, (key, value) => {
-      // Если значение является строкой и представляет BigInt, преобразуем его обратно
       if (typeof value === 'string' && /^\d+n$/.test(value)) {
         return BigInt(value.slice(0, -1));
       }
@@ -77,14 +78,14 @@ export const AppProvider = ({ children }) => {
     }) : UpgradesParams;
   });
 
-  const [diamondUpgrades, setDiamondUpgrades] = useState(() => {
-    const savedDiamondUpgrades = localStorage.getItem('diamondUpgrades');
-    return savedDiamondUpgrades ? JSON.parse(savedDiamondUpgrades, (key, value) => {
+  const [dnkUpgrades, setDnkUpgrades] = useState(() => {
+    const savedDnkUpgrades = localStorage.getItem('dnkUpgrades');
+    return savedDnkUpgrades ? JSON.parse(savedDnkUpgrades, (key, value) => {
       if (typeof value === 'string' && /^\d+n$/.test(value)) {
         return BigInt(value.slice(0, -1));
       }
       return value;
-    }) : DiamondUpgradesParams;
+    }) : DnkUpgradesParams;
   });
 
   const [busters, setBusters] = useState(() => {
@@ -119,33 +120,63 @@ export const AppProvider = ({ children }) => {
 
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, right: 0, id: 1 });
   const [isUpgradeHovered, setIsUpgradeHovered] = useState(false);
-  const [isDUpgradeHovered, setIsDUpgradeHovered] = useState(false);
+  const [isDnkHovered, setIsDnkHovered] = useState(false);
   const [isBusterHovered, setIsBusterHovered] = useState(false);
   const [end, setEnd] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // Эффект для сохранения всех состояний в localStorage
+  // Функция для сброса прогресса
+  const resetProgress = () => {
+    // Сбрасываем состояния, кроме dnkUpgrades, priceMultiplier, increaseMultiplier, cooldwonDiscount, maxDelay, minDelay, multiplier
+    setCountMoney(BigInt('100000000000000000000000000'));
+    setPasIncreaseMoney(BigInt('10000000'));
+    setActIncreaseMoney(BigInt('1'));
+    setTrainerImage("Trainer/img1.png");
+    setResultImages([]);
+    setUpgrades(UpgradesParams);
+    setBusters(BustersParams);
+    setIsDiscountExists(false);
+    setStoryIntroShown(false);
+    setStoryAutroShown(false);
+    setEnd(false);
+    setShowCustomAlert(false)
+  
+    // Очищаем localStorage, кроме countDnk, dnkUpgrades, priceMultiplier, increaseMultiplier, cooldwonDiscount, maxDelay, minDelay, multiplier
+    localStorage.removeItem('countMoney');
+    localStorage.removeItem('pasIncreaseMoney');
+    localStorage.removeItem('actIncreaseMoney');
+    localStorage.removeItem('trainerImage');
+    localStorage.removeItem('resultImages');
+    localStorage.removeItem('upgrades');
+    localStorage.removeItem('busters');
+    localStorage.removeItem('isDiscountExists');
+    localStorage.removeItem('storyIntroShown');
+    localStorage.removeItem('storyAutroShown');
+    localStorage.removeItem('end');
+  
+    /*window.location.reload();*/
+  };
+
   useEffect(() => {
     const stateToSave = {
-      countMoney: countMoney.toString(), // Преобразуем BigInt в строку
-      countDnk: countDnk.toString(), // Преобразуем BigInt в строку
-      pasIncreaseMoney: pasIncreaseMoney.toString(), // Преобразуем BigInt в строку
-      actIncreaseMoney: actIncreaseMoney.toString(), // Преобразуем BigInt в строку
-      multiplier: multiplier.toString(), // Преобразуем BigInt в строку
-      priceMultiplier: priceMultiplier.toString(), // Преобразуем BigInt в строку
-      increaseMultiplier: increaseMultiplier.toString(), // Преобразуем BigInt в строку
-      minDelay: minDelay.toString(), // Преобразуем number в строку
-      maxDelay: maxDelay.toString(), // Преобразуем number в строку
+      countMoney: countMoney.toString(),
+      countDnk: countDnk.toString(),
+      pasIncreaseMoney: pasIncreaseMoney.toString(),
+      actIncreaseMoney: actIncreaseMoney.toString(),
+      multiplier: multiplier.toString(),
+      priceMultiplier: priceMultiplier.toString(),
+      increaseMultiplier: increaseMultiplier.toString(),
+      minDelay: minDelay.toString(),
+      maxDelay: maxDelay.toString(),
       trainerImage,
       resultImages: JSON.stringify(resultImages),
       upgrades: JSON.stringify(upgrades, (key, value) => {
-        // Если значение является BigInt, преобразуем его в строку
         if (typeof value === 'bigint') {
-          return value.toString() + 'n'; // Добавляем 'n' для идентификации BigInt
+          return value.toString() + 'n';
         }
         return value;
       }),
-      diamondUpgrades: JSON.stringify(diamondUpgrades, (key, value) => {
+      dnkUpgrades: JSON.stringify(dnkUpgrades, (key, value) => {
         if (typeof value === 'bigint') {
           return value.toString() + 'n';
         }
@@ -179,12 +210,12 @@ export const AppProvider = ({ children }) => {
     trainerImage,
     resultImages,
     upgrades,
-    diamondUpgrades,
+    dnkUpgrades,
     busters,
     isDiscountExists,
     cooldwonDiscount,
     storyIntroShown,
-    storyAutroShown
+    storyAutroShown,
   ]);
 
   return (
@@ -214,8 +245,8 @@ export const AppProvider = ({ children }) => {
         setResultImages,
         upgrades,
         setUpgrades,
-        diamondUpgrades,
-        setDiamondUpgrades,
+        dnkUpgrades,
+        setDnkUpgrades,
         busters,
         setBusters,
         isDiscountExists,
@@ -230,14 +261,17 @@ export const AppProvider = ({ children }) => {
         setTooltipPosition,
         isUpgradeHovered,
         setIsUpgradeHovered,
-        isDUpgradeHovered,
-        setIsDUpgradeHovered,
+        isDnkHovered,
+        setIsDnkHovered,
         isBusterHovered,
         setIsBusterHovered,
         end,
         setEnd,
         windowWidth,
         setWindowWidth,
+        resetProgress,
+        showCustomAlert,
+        setShowCustomAlert
       }}
     >
       {children}

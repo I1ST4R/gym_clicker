@@ -4,7 +4,7 @@ import Upgrade from './Upgrade.jsx';
 
 import { AppContext } from './main/AppContext.jsx';
 
-function Upgrades({ onIncreaseDiamond }) {
+function Upgrades() {
   const {
     setPasIncreaseMoney,
     pasIncreaseMoney,
@@ -12,59 +12,38 @@ function Upgrades({ onIncreaseDiamond }) {
     actIncreaseMoney,
     setUpgrades,
     upgrades,
-    priceMultiplier,
     increaseMultiplier,
     setIsDiscountExists,
   } = useContext(AppContext);
 
   const handleUpgradeLevelChange = (id) => {
     setIsDiscountExists(false);
-    const updatedUpgrades = upgrades.map((upgrade, index, array) => {
+    const updatedUpgrades = upgrades.map((upgrade) => {
       if (upgrade.id === id) {
-        onIncreaseDiamond();
 
-        const isSmallNumber = upgrade.initialIncrease < 1000000;
-
-        let actIncrease, pasIncrease, newIncrease, updatedUpgrade;
+        const isSmallNumber = upgrade.id < 7;
+        const difference = !upgrade.isIncreaseMoney ? 0.035 : 0;
+        let newIncrease, newPrice, BigIntInc, updatedUpgrade
 
         if (isSmallNumber) {
-          // Обработка маленьких чисел как обычных чисел
-          actIncrease = upgrade.initialIncrease * upgrade.isIncreaseMoney;
-          pasIncrease = upgrade.initialIncrease * !upgrade.isIncreaseMoney;
-
-          // Приводим маленькие числа к BigInt перед сложением
-          setActIncreaseMoney(actIncreaseMoney + BigInt(Math.floor(actIncrease)));
-          setPasIncreaseMoney(pasIncreaseMoney + BigInt(Math.floor(pasIncrease)));
-
-          const difference = !upgrade.isIncreaseMoney ? 0.035 : 0;
-          newIncrease = upgrade.initialIncrease * (1.15 - difference);
-
-          
-
-          updatedUpgrade = {
-            ...upgrade,
-            level: upgrade.level + 1,
-            initialIncrease: newIncrease * increaseMultiplier,
-            initialPrice: Math.floor(upgrade.initialPrice * 1.16),
-          };
-
-
+          BigIntInc = BigInt(Math.floor(upgrade.initialIncrease * increaseMultiplier))
+          newIncrease = upgrade.initialIncrease * (1.15 - difference) * increaseMultiplier
+          newPrice = upgrade.initialPrice * 1.16;
         } else {
+          BigIntInc = (upgrade.initialIncrease / 100n) * BigInt(Math.floor(increaseMultiplier * 100))
+          let diffMultiplier = BigInt(Math.ceil((1.15 - difference)*100))
+          newIncrease = upgrade.initialIncrease / 100n * diffMultiplier
+          newPrice = (upgrade.initialPrice / 100n) * 116n
+        }
 
-          if (upgrade.isIncreaseMoney){
-            setActIncreaseMoney(actIncreaseMoney + BigInt(upgrade.initialIncrease))
-          } 
-          else setPasIncreaseMoney(pasIncreaseMoney + BigInt(upgrade.initialIncrease))
+        upgrade.isIncreaseMoney ? setActIncreaseMoney(actIncreaseMoney + BigIntInc)
+        : setPasIncreaseMoney(pasIncreaseMoney + BigIntInc)
 
-          const difference = !upgrade.isIncreaseMoney ? 0.035 : 0;
-          newIncrease = BigInt(Math.floor(Number(upgrade.initialIncrease) * (1.15 - difference)));
-
-          updatedUpgrade = {
-            ...upgrade,
-            level: upgrade.level + 1,
-            initialIncrease: newIncrease * BigInt(increaseMultiplier),
-            initialPrice: BigInt(Math.floor(Number(upgrade.initialPrice) * 1.16)),
-          };
+        updatedUpgrade = {
+          ...upgrade,
+          level: upgrade.level + 1,
+          initialIncrease: newIncrease,
+          initialPrice: newPrice,
         }
 
         return updatedUpgrade;

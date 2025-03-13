@@ -1,9 +1,13 @@
-import React from 'react';
-import './css/Tooltip.css'; // Подключите стили для Tooltip
+import React, {useContext} from 'react';
+import './css/Tooltip.css'
+
+import { AppContext } from './main/AppContext.jsx'
 
 function Tooltip({ position, content, type }) {
+  const{
+    increaseMultiplier,
+  } = useContext(AppContext);
   if (!content) return null;
-
   return (
     <div
       className="Tooltip"
@@ -12,21 +16,9 @@ function Tooltip({ position, content, type }) {
         right: `${position.right}px`,
       }}
     >
-      {type === 'DUpgrades' && (
+      {type === 'Dnk' && (
         <>
-          {content.level === 4 ? (
-            <p className="Tooltip__upgrade-info">Максимальный уровень</p>
-          ) : (
-            <>
-              <p className="Tooltip__upgrade-info">
-                {`Улучшение: ${content.benefit} ${content.price} %`}
-              </p>
-              <div className="Tooltip__price-block">
-                {`Стоимость: ${content.price} `}
-                <img src="diamond.png" alt="" />
-              </div>
-            </>
-          )}
+          <p>{content.benefit}</p>
         </>
       )}
 

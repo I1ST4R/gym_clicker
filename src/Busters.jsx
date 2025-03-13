@@ -7,23 +7,13 @@ function Busters({ onIncreaseDiamond }) {
   const {
     setBusters,
     busters,
-    cooldwonDiscount,
     setCountMoney,
-    countMoney,
     setPasIncreaseMoney,
     pasIncreaseMoney,
     setActIncreaseMoney,
     actIncreaseMoney,
     setIsDiscountExists,
   } = useContext(AppContext);
-
-  useEffect(() => {
-    const updatedBusters = busters.map((buster) => ({
-      ...buster,
-      cooldown: buster.cooldown * cooldwonDiscount,
-    }));
-    setBusters(updatedBusters);
-  }, [cooldwonDiscount]);
 
   const handleBusterLevelChange = (id) => {
     const updatedBusters = busters.map((buster) => {

@@ -3,22 +3,18 @@ import './css/Upgrade.css';
 import upgradeLevelUp from '../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
 import getTrainerImage from './js/TrainerLevels.js';
-
 import { AppContext } from './main/AppContext.jsx';
+import CustomAlert from './CustomAlert'; // Импортируем CustomAlert
 
 function Upgrade({
   id,
   title,
   img,
-  desc,
   level,
   initialPrice,
-  maxLvl,
   initialIncrease,
-  isIncreaseMoney,
   isHidden,
   isInvisible,
-  requirements,
   onUpgradeLevelChange,
 }) {
   const {
@@ -27,9 +23,11 @@ function Upgrade({
     countMoney,
     isDiscountExists,
     setEnd,
+    priceMultiplier,
     setTooltipPosition,
     setIsUpgradeHovered,
     setTrainerImage,
+    setShowCustomAlert,
   } = useContext(AppContext);
 
   const [isAlerted, setIsAlerted] = useState(false);
@@ -48,77 +46,69 @@ function Upgrade({
     setIsUpgradeHovered(false);
   };
 
-  const discount = (BigInt(initialPrice) * BigInt(isDiscountExists ? 1 : 0)) / BigInt(2);
-  const priceWithDiscount = BigInt(initialPrice) - discount;
-  const isEnoughMoney = countMoney >= priceWithDiscount;
-  const isLastUpgrade = id === upgrades.length
-  const isRequirementsMet = upgrades[upgrades.length - 2].level === 50
+  let priceWithMults, dnkMult;
+  let discount = (isDiscountExists ? 1 : 2) / 2;
+  if (id < 7) {
+    dnkMult = priceMultiplier;
+    priceWithMults = BigInt(Math.floor(initialPrice * dnkMult * discount));
+  } else {
+    dnkMult = BigInt(Math.floor((priceMultiplier * 100)));
+    let flooredPrice = BigInt(initialPrice);
+    priceWithMults = BigInt(flooredPrice / 1000n * dnkMult * BigInt(discount * 10));
+  }
+
+  const isEnoughMoney = countMoney >= priceWithMults;
+  const isLastUpgrade = id === upgrades.length;
+  const isSmallNumber = initialIncrease < 1000000;
+
+  const doChanges = () => {
+    onUpgradeLevelChange(id);
+    setCountMoney(countMoney - priceWithMults);
+    id === 1 ? setTrainerImage(getTrainerImage(level + 1)) : "";
+  };
 
   const handleUpgradeClick = () => {
-
-    if(isAlerted){
-      setEnd(true)
-      console.log(1)
-      return
+    if (isEnoughMoney && isLastUpgrade) {
+      setShowCustomAlert(true);
+      return;
     }
-
-    if(isLastUpgrade && isRequirementsMet){
-      alert('При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?');
-      setIsAlerted(true)
-      return
-    }
-
-    if (isEnoughMoney && !isLastUpgrade) {
-      const newLevel = level + 1;
-      onUpgradeLevelChange(id);
-      setCountMoney(countMoney - priceWithDiscount);
+    if (isEnoughMoney) {
+      doChanges();
       new Audio(upgradeLevelUp).play();
-      if (id === 1) {
-        setTrainerImage(getTrainerImage(newLevel));
-      }
     }
   };
 
   return (
-    <div
-      className={`Upgrade 
-        ${!isEnoughMoney ? 'Upgrade--nonavailable' : ''} 
-        ${isHidden ? 'Upgrade--hidden' : ''}
-        ${isInvisible ? 'Upgrade--invisible' : ''}
-        `}
-      onClick={handleUpgradeClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {isLastUpgrade && !isRequirementsMet ? (
-        <div className="Upgrade__placeholder">
-          <p>???</p>
-        </div>
-      ) : (
+    <>
+      <div
+        className={`Upgrade 
+          ${!isEnoughMoney ? 'Upgrade--nonavailable' : ''} 
+          ${isHidden ? 'Upgrade--hidden' : ''}
+          ${isInvisible ? 'Upgrade--invisible' : ''}
+          `}
+        onClick={handleUpgradeClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <img
           className="Upgrade__img"
           src={id === 1 ? getTrainerImage(level) : img}
           alt={title}
         />
-      )}
-      <div className="Upgrade__info">
-        <p className="Upgrade__title">{isLastUpgrade && !isRequirementsMet ? '???' : title}</p>
-        {isLastUpgrade && !isRequirementsMet && (
-          <div className="Upgrade__unlock-requirement">
-            <p>Улучшите предыдущую карточку до 50 уровня</p>
+        <div className="Upgrade__info">
+          <p className="Upgrade__title">{title}</p>
+          <div className="Upgrade__price-level">
+            <div className="Upgrade__price-block">
+              <p className="Upgrade__price">
+                {abbreviateNum(priceWithMults)}
+              </p>
+              <img src="money.png" alt="" />
+            </div>
+            <p className="Upgrade__level">{level === 0 ? '' : level.toString()}</p>
           </div>
-        )}
-        <div className="Upgrade__price-level">
-          <div className="Upgrade__price-block">
-            <p className="Upgrade__price">
-              {isLastUpgrade && !isRequirementsMet ? '???' : abbreviateNum(priceWithDiscount)}
-            </p>
-            <img src="money.png" alt="" />
-          </div>
-          <p className="Upgrade__level">{level === 0 ? '' : level.toString()}</p>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
