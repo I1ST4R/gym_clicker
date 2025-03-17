@@ -1,43 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './css/DnkUpgrades.css';
 import DnkUpgrade from './DnkUpgrade.jsx';
-import Tooltip from './Tooltip.jsx'; 
 
 import { AppContext } from './main/AppContext.jsx';
 
 function DnkUpgrades({ }) {
-  const{
-    setMaxDelay, 
-    maxDelay, 
+  const {
+    setMaxDelay,
+    maxDelay,
     setMinDelay,
     minDelay,
     setMultiplier,
     multiplier,
-    setCountDiamond,
-    countDiamond,
     setDnkUpgrades,
     countDnk,
     setCountDnk,
-    isDnkHovered,
     dnkUpgrades,
     setPriceMultiplier,
-    increaseMultiplier,
     setIncreaseMultiplier,
     setCooldwonDiscount,
-    tooltipPosition,
-    end,
   } = useContext(AppContext);
-
-  let tooltipContent = null;
-  let tooltipType = null;
-  if (isDnkHovered && tooltipContent != null) {
-    console.log(1)
-    const dnk = dnkUpgrades[tooltipPosition.id - 1];
-    tooltipContent = {
-      benefit: dnk.benefit,
-    };
-    tooltipType = 'Dnk';
-  }
 
   const handleUpgradeLevelChange = (id) => {
     const updatedDnkUpgrades = dnkUpgrades.map((dnkUpgrade) => {
@@ -45,12 +27,12 @@ function DnkUpgrades({ }) {
       if (dnkUpgrade.id === id) {
         setCountDnk(countDnk - 1n)
         const updatedDUpgrade = {
-          ...dnkUpgrade, 
+          ...dnkUpgrade,
           level: dnkUpgrade.level + 1,
         }
         let increase = Math.pow(1.01, dnkUpgrade.level)
         let decrease = Math.pow(0.99, dnkUpgrade.level)
-        switch (id){
+        switch (id) {
           case 1:
             setPriceMultiplier(decrease)
             break;
@@ -73,10 +55,8 @@ function DnkUpgrades({ }) {
       return dnkUpgrade;
     })
 
-    setDnkUpgrades(updatedDnkUpgrades); 
+    setDnkUpgrades(updatedDnkUpgrades);
   };
-
-  
 
   return (
     <div className="DnkUpgrades">
@@ -97,14 +77,7 @@ function DnkUpgrades({ }) {
         ))}
       </div>
 
-      {/* Подсказка */}
-      {(isDnkHovered) && (
-        <Tooltip
-          position={{ top: 480, right: tooltipPosition.right }}
-          content={tooltipContent}
-          type={tooltipType}
-        />
-      )}
+
     </div>
   );
 }

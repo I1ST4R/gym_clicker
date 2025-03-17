@@ -67,7 +67,6 @@ function Buster({
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
       top: cardRect.top,
-      right: 500,
       id: id,
     });
     setIsBusterHovered(true);

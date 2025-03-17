@@ -196,7 +196,7 @@ const UpgradesParams = [
 ].map((upgrade, index) => {
   const id = index + 1; 
   const img = `Upgrades/upgrade${id}.png`; 
-  const resultImg = upgrade.resultImg ? `Upgrades/upgradeResult${id}.png` : false; 
+  const resultImg = upgrade.id != 1 ? `Upgrades/upgradeResult${id}.png` : false; 
 
   let initialPrice, initialIncrease
   if(index + 1 < 7){

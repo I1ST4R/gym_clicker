@@ -8,7 +8,7 @@
   padding: 10px;
   text-align: justify;
   border-radius: 5px;
-  z-index: 10; 
+  z-index: 52; 
 }
 
 .Tooltip__last{
@@ -26,4 +26,15 @@
 .Tooltip__price-block img{
   width:23px;
   height:23px;
+}
+
+.Tooltip__point{
+  display:flex;
+  gap:5px;
+  margin-bottom: 20px;
+}
+
+.Tooltip__point img{
+  width:40px;
+  height:40px;
 }

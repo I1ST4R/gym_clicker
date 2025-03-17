@@ -6,130 +6,76 @@ import DnkUpgradesParams from '../js/DnkUpgradesParams.js';
 // Создаем контекст
 export const AppContext = createContext();
 
-// Создаем провайдер
+// Вспомогательная функция для загрузки состояния из localStorage
+const loadState = (key, defaultValue, parser = (val) => val) => {
+  const savedValue = localStorage.getItem(key);
+  return savedValue ? parser(savedValue) : defaultValue;
+};
+
+// Вспомогательная функция для сохранения состояния в localStorage
+const saveState = (key, value) => {
+  localStorage.setItem(key, value);
+};
+
+// Функция для парсинга BigInt из JSON
+const bigIntParser = (key, value) => {
+  if (typeof value === 'string' && /^\d+n$/.test(value)) {
+    return BigInt(value.slice(0, -1));
+  }
+  return value;
+};
+
+// Провайдер контекста
 export const AppProvider = ({ children }) => {
   // Состояния для BigInt
-  const [countMoney, setCountMoney] = useState(() => {
-    const savedCountMoney = localStorage.getItem('countMoney');
-    return savedCountMoney ? BigInt(savedCountMoney) : BigInt('0');
-  });
+  const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('10000000000000000000000000000000000'), BigInt));
+  const [countDnk, setCountDnk] = useState(() => loadState('countDnk', BigInt('0'), BigInt));
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('1000000000000000000000000000'), BigInt));
+  const [actIncreaseMoney, setActIncreaseMoney] = useState(() => loadState('actIncreaseMoney', BigInt('1'), BigInt));
 
-  const [showCustomAlert, setShowCustomAlert] = useState(false);
+  // Состояния для чисел
+  const [multiplier, setMultiplier] = useState(() => loadState('multiplier', 30, parseInt));
+  const [priceMultiplier, setPriceMultiplier] = useState(() => loadState('priceMultiplier', 1, parseInt));
+  const [increaseMultiplier, setIncreaseMultiplier] = useState(() => loadState('increaseMultiplier', 1, parseInt));
+  const [minDelay, setMinDelay] = useState(() => loadState('minDelay', 300000, parseInt));
+  const [maxDelay, setMaxDelay] = useState(() => loadState('maxDelay', 600000, parseInt));
 
-  const [countDnk, setCountDnk] = useState(() => {
-    const savedCountDnk = localStorage.getItem('countDnk');
-    return savedCountDnk ? BigInt(savedCountDnk) : BigInt('0');
-  });
-
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => {
-    const savedPasIncreaseMoney = localStorage.getItem('pasIncreaseMoney');
-    return savedPasIncreaseMoney ? BigInt(savedPasIncreaseMoney) : BigInt('10000000');
-  });
-  
-  const [actIncreaseMoney, setActIncreaseMoney] = useState(() => {
-    const savedActIncreaseMoney = localStorage.getItem('actIncreaseMoney');
-    return savedActIncreaseMoney ? BigInt(savedActIncreaseMoney) : BigInt('1');
-  });
-
-  const [multiplier, setMultiplier] = useState(() => {
-    const savedMultiplier = localStorage.getItem('multiplier');
-    return savedMultiplier ? parseInt(savedMultiplier) : 30;
-  });
-
-  const [priceMultiplier, setPriceMultiplier] = useState(() => {
-    const savedPriceMultiplier = localStorage.getItem('priceMultiplier');
-    return savedPriceMultiplier ? parseInt(savedPriceMultiplier) : 1
-  });
-
-  const [increaseMultiplier, setIncreaseMultiplier] = useState(() => {
-    const savedIncreaseMultiplier = localStorage.getItem('increaseMultiplier');
-    return savedIncreaseMultiplier ? parseInt(savedIncreaseMultiplier) : 1;
-  });
-
-  // Остальные состояния
-  const [minDelay, setMinDelay] = useState(() => {
-    const savedMinDelay = localStorage.getItem('minDelay');
-    return savedMinDelay ? parseInt(savedMinDelay, 10) : 300000;
-  });
-
-  const [maxDelay, setMaxDelay] = useState(() => {
-    const savedMaxDelay = localStorage.getItem('maxDelay');
-    return savedMaxDelay ? parseInt(savedMaxDelay, 10) :  600000;
-  });
-
-  const [trainerImage, setTrainerImage] = useState(() => {
-    const savedTrainerImage = localStorage.getItem('trainerImage');
-    return savedTrainerImage || "Trainer/img1.png";
-  });
-
-  const [resultImages, setResultImages] = useState(() => {
-    const savedResultImages = localStorage.getItem('resultImages');
-    return savedResultImages ? JSON.parse(savedResultImages) : [];
-  });
+  // Состояния для строк и объектов
+  const [trainerImage, setTrainerImage] = useState(() => loadState('trainerImage', "Trainer/img1.png"));
+  const [resultImages, setResultImages] = useState(() => loadState('resultImages', [], JSON.parse));
 
   // Состояния для массивов объектов
-  const [upgrades, setUpgrades] = useState(() => {
-    const savedUpgrades = localStorage.getItem('upgrades');
-    return savedUpgrades ? JSON.parse(savedUpgrades, (key, value) => {
-      if (typeof value === 'string' && /^\d+n$/.test(value)) {
-        return BigInt(value.slice(0, -1));
-      }
-      return value;
-    }) : UpgradesParams;
-  });
+  const [upgrades, setUpgrades] = useState(() => loadState('upgrades', UpgradesParams, (val) => JSON.parse(val, bigIntParser)));
+  const [dnkUpgrades, setDnkUpgrades] = useState(() => loadState('dnkUpgrades', DnkUpgradesParams, (val) => JSON.parse(val, bigIntParser)));
+  const [busters, setBusters] = useState(() => loadState('busters', BustersParams, (val) => JSON.parse(val, bigIntParser)));
 
-  const [dnkUpgrades, setDnkUpgrades] = useState(() => {
-    const savedDnkUpgrades = localStorage.getItem('dnkUpgrades');
-    return savedDnkUpgrades ? JSON.parse(savedDnkUpgrades, (key, value) => {
-      if (typeof value === 'string' && /^\d+n$/.test(value)) {
-        return BigInt(value.slice(0, -1));
-      }
-      return value;
-    }) : DnkUpgradesParams;
-  });
+  // Состояния для булевых значений
+  const [isDiscountExists, setIsDiscountExists] = useState(() => loadState('isDiscountExists', false, JSON.parse));
+  const [storyIntroShown, setStoryIntroShown] = useState(() => loadState('storyIntroShown', false, JSON.parse));
+  const [storyAutroShown, setStoryAutroShown] = useState(() => loadState('storyAutroShown', false, JSON.parse));
+  const [end, setEnd] = useState(() => loadState('end', false, JSON.parse));
+  const [showCustomAlert, setShowCustomAlert] = useState(false);
 
-  const [busters, setBusters] = useState(() => {
-    const savedBusters = localStorage.getItem('busters');
-    return savedBusters ? JSON.parse(savedBusters, (key, value) => {
-      if (typeof value === 'string' && /^\d+n$/.test(value)) {
-        return BigInt(value.slice(0, -1));
-      }
-      return value;
-    }) : BustersParams;
-  });
+  // Состояния для управления CustomAlert
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertOnConfirm, setAlertOnConfirm] = useState(() => () => {});
+  const [alertOnCancel, setAlertOnCancel] = useState(() => () => {});
 
-  const [isDiscountExists, setIsDiscountExists] = useState(() => {
-    const savedIsDiscountExists = localStorage.getItem('isDiscountExists');
-    return savedIsDiscountExists ? JSON.parse(savedIsDiscountExists) : false;
-  });
-
-  const [cooldwonDiscount, setCooldwonDiscount] = useState(() => {
-    const savedCooldwonDiscount = localStorage.getItem('cooldwonDiscount');
-    return savedCooldwonDiscount ? JSON.parse(savedCooldwonDiscount) : 1;
-  });
-
-  const [storyIntroShown, setStoryIntroShown] = useState(() => {
-    const savedStoryIntroShown = localStorage.getItem('storyIntroShown');
-    return savedStoryIntroShown ? JSON.parse(savedStoryIntroShown) : false;
-  });
-
-  const [storyAutroShown, setStoryAutroShown] = useState(() => {
-    const savedStoryAutroShown = localStorage.getItem('storyAutroShown');
-    return savedStoryAutroShown ? JSON.parse(savedStoryAutroShown) : false;
-  });
-
+  // Состояния для тултипов и ховеров
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, right: 0, id: 1 });
   const [isUpgradeHovered, setIsUpgradeHovered] = useState(false);
   const [isDnkHovered, setIsDnkHovered] = useState(false);
   const [isBusterHovered, setIsBusterHovered] = useState(false);
-  const [end, setEnd] = useState(false);
+  const [isCounterHovered, setIsCounterHovered] = useState(false);
+
+  // Состояние для ширины окна
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   // Функция для сброса прогресса
-  const resetProgress = () => {
-    // Сбрасываем состояния, кроме dnkUpgrades, priceMultiplier, increaseMultiplier, cooldwonDiscount, maxDelay, minDelay, multiplier
+  const resetProgress = (resetAdditionalStates = false) => {
+    // Стандартный сброс
     setCountMoney(BigInt('100000000000000000000000000'));
-    setPasIncreaseMoney(BigInt('10000000'));
+    setPasIncreaseMoney(BigInt('100000000000000000000000000'));
     setActIncreaseMoney(BigInt('1'));
     setTrainerImage("Trainer/img1.png");
     setResultImages([]);
@@ -139,24 +85,53 @@ export const AppProvider = ({ children }) => {
     setStoryIntroShown(false);
     setStoryAutroShown(false);
     setEnd(false);
-    setShowCustomAlert(false)
+    setShowCustomAlert(false);
+    setAlertMessage("");
+    setAlertOnConfirm(() => () => {});
+    setAlertOnCancel(() => () => {});
   
-    // Очищаем localStorage, кроме countDnk, dnkUpgrades, priceMultiplier, increaseMultiplier, cooldwonDiscount, maxDelay, minDelay, multiplier
-    localStorage.removeItem('countMoney');
-    localStorage.removeItem('pasIncreaseMoney');
-    localStorage.removeItem('actIncreaseMoney');
-    localStorage.removeItem('trainerImage');
-    localStorage.removeItem('resultImages');
-    localStorage.removeItem('upgrades');
-    localStorage.removeItem('busters');
-    localStorage.removeItem('isDiscountExists');
-    localStorage.removeItem('storyIntroShown');
-    localStorage.removeItem('storyAutroShown');
-    localStorage.removeItem('end');
+    // Если resetAdditionalStates === true, сбрасываем дополнительные хуки
+    if (resetAdditionalStates) {
+      setCountDnk(BigInt('0'));
+      setMultiplier(30);
+      setPriceMultiplier(1);
+      setIncreaseMultiplier(1);
+      setMinDelay(300000);
+      setMaxDelay(600000);
+      setDnkUpgrades(DnkUpgradesParams);
+      setTooltipPosition({ top: 0, right: 0, id: 1 });
+      setIsUpgradeHovered(false);
+      setIsDnkHovered(false);
+      setIsBusterHovered(false);
+      setWindowWidth(window.innerWidth);
+    }
   
-    /*window.location.reload();*/
+    // Очистка localStorage
+    const keysToRemove = [
+      'countMoney', 'pasIncreaseMoney', 'actIncreaseMoney', 'trainerImage', 'resultImages',
+      'upgrades', 'busters', 'isDiscountExists', 'storyIntroShown', 'storyAutroShown', 'end',
+      'alertMessage', 'alertOnConfirm', 'alertOnCancel'
+    ];
+  
+    if (resetAdditionalStates) {
+      keysToRemove.push(
+        'countDnk', 'multiplier', 'priceMultiplier', 'increaseMultiplier', 'minDelay', 'maxDelay',
+        'dnkUpgrades', 'tooltipPosition', 'isUpgradeHovered', 'isDnkHovered', 'isBusterHovered', 'windowWidth'
+      );
+    }
+  
+    keysToRemove.forEach(key => localStorage.removeItem(key));
   };
 
+  // Функция для отображения CustomAlert
+  const showAlert = (message, onConfirm, onCancel) => {
+    setAlertMessage(message);
+    setAlertOnConfirm(() => onConfirm);
+    setAlertOnCancel(() => onCancel);
+    setShowCustomAlert(true);
+  };
+
+  // Сохранение состояний в localStorage
   useEffect(() => {
     const stateToSave = {
       countMoney: countMoney.toString(),
@@ -170,108 +145,59 @@ export const AppProvider = ({ children }) => {
       maxDelay: maxDelay.toString(),
       trainerImage,
       resultImages: JSON.stringify(resultImages),
-      upgrades: JSON.stringify(upgrades, (key, value) => {
-        if (typeof value === 'bigint') {
-          return value.toString() + 'n';
-        }
-        return value;
-      }),
-      dnkUpgrades: JSON.stringify(dnkUpgrades, (key, value) => {
-        if (typeof value === 'bigint') {
-          return value.toString() + 'n';
-        }
-        return value;
-      }),
-      busters: JSON.stringify(busters, (key, value) => {
-        if (typeof value === 'bigint') {
-          return value.toString() + 'n';
-        }
-        return value;
-      }),
+      upgrades: JSON.stringify(upgrades, (key, value) => (typeof value === 'bigint' ? `${value}n` : value)),
+      dnkUpgrades: JSON.stringify(dnkUpgrades, (key, value) => (typeof value === 'bigint' ? `${value}n` : value)),
+      busters: JSON.stringify(busters, (key, value) => (typeof value === 'bigint' ? `${value}n` : value)),
       isDiscountExists: JSON.stringify(isDiscountExists),
-      cooldwonDiscount: JSON.stringify(cooldwonDiscount),
       storyIntroShown: JSON.stringify(storyIntroShown),
       storyAutroShown: JSON.stringify(storyAutroShown),
+      end: JSON.stringify(end),
+      alertMessage,
+      alertOnConfirm: alertOnConfirm.toString(),
+      alertOnCancel: alertOnCancel.toString(),
     };
 
-    Object.entries(stateToSave).forEach(([key, value]) => {
-      localStorage.setItem(key, value);
-    });
+    Object.entries(stateToSave).forEach(([key, value]) => saveState(key, value));
   }, [
-    countMoney,
-    countDnk,
-    pasIncreaseMoney,
-    actIncreaseMoney,
-    multiplier,
-    priceMultiplier,
-    increaseMultiplier,
-    minDelay,
-    maxDelay,
-    trainerImage,
-    resultImages,
-    upgrades,
-    dnkUpgrades,
-    busters,
-    isDiscountExists,
-    cooldwonDiscount,
-    storyIntroShown,
-    storyAutroShown,
+    countMoney, countDnk, pasIncreaseMoney, actIncreaseMoney, multiplier, priceMultiplier,
+    increaseMultiplier, minDelay, maxDelay, trainerImage, resultImages, upgrades, dnkUpgrades,
+    busters, isDiscountExists, storyIntroShown, storyAutroShown, end, alertMessage,
+    alertOnConfirm, alertOnCancel,
   ]);
 
   return (
     <AppContext.Provider
       value={{
-        countMoney,
-        setCountMoney,
-        countDnk,
-        setCountDnk,
-        multiplier,
-        setMultiplier,
-        priceMultiplier,
-        setPriceMultiplier,
-        increaseMultiplier,
-        setIncreaseMultiplier,
-        minDelay,
-        setMinDelay,
-        maxDelay,
-        setMaxDelay,
-        trainerImage,
-        setTrainerImage,
-        pasIncreaseMoney,
-        setPasIncreaseMoney,
-        actIncreaseMoney,
-        setActIncreaseMoney,
-        resultImages,
-        setResultImages,
-        upgrades,
-        setUpgrades,
-        dnkUpgrades,
-        setDnkUpgrades,
-        busters,
-        setBusters,
-        isDiscountExists,
-        setIsDiscountExists,
-        cooldwonDiscount,
-        setCooldwonDiscount,
-        storyIntroShown,
-        setStoryIntroShown,
-        storyAutroShown,
-        setStoryAutroShown,
-        tooltipPosition,
-        setTooltipPosition,
-        isUpgradeHovered,
-        setIsUpgradeHovered,
-        isDnkHovered,
-        setIsDnkHovered,
-        isBusterHovered,
-        setIsBusterHovered,
-        end,
-        setEnd,
-        windowWidth,
-        setWindowWidth,
+        countMoney, setCountMoney,
+        countDnk, setCountDnk,
+        pasIncreaseMoney, setPasIncreaseMoney,
+        actIncreaseMoney, setActIncreaseMoney,
+        multiplier, setMultiplier,
+        priceMultiplier, setPriceMultiplier,
+        increaseMultiplier, setIncreaseMultiplier,
+        minDelay, setMinDelay,
+        maxDelay, setMaxDelay,
+        trainerImage, setTrainerImage,
+        resultImages, setResultImages,
+        upgrades, setUpgrades,
+        dnkUpgrades, setDnkUpgrades,
+        busters, setBusters,
+        isDiscountExists, setIsDiscountExists,
+        storyIntroShown, setStoryIntroShown,
+        storyAutroShown, setStoryAutroShown,
+        tooltipPosition, setTooltipPosition,
+        isUpgradeHovered, setIsUpgradeHovered,
+        isDnkHovered, setIsDnkHovered,
+        isBusterHovered, setIsBusterHovered,
+        isCounterHovered, setIsCounterHovered,
+        end, setEnd,
+        windowWidth, setWindowWidth,
         resetProgress,
-        showCustomAlert,
-        setShowCustomAlert
+        showCustomAlert, setShowCustomAlert,
+        alertMessage, setAlertMessage,
+        alertOnConfirm, setAlertOnConfirm,
+        alertOnCancel, setAlertOnCancel,
+        showAlert, 
       }}
     >
       {children}

@@ -10,11 +10,25 @@ function Counter() {
     countDiamond,
     pasIncreaseMoney,
     countMoney,
+    setIsCounterHovered,
+    setTooltipPosition,
   } = useContext(AppContext); 
 
   const [hasDiamondBeenPositive, setHasDiamondBeenPositive] = useState(false);
   const [hasPasIncreaseMoneyBeenPositive, setHasPasIncreaseMoneyBeenPositive] = useState(false);
 
+  const handleMouseEnter = (event) => {
+    const cardRect = event.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      top: cardRect.top,
+      id:1
+    });
+    setIsCounterHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsCounterHovered(false);
+  };
 
   useEffect(() => {
     if (countDiamond > 0) {
@@ -29,7 +43,11 @@ function Counter() {
   }, [pasIncreaseMoney]);
 
   return (
-    <div className="Counters">
+    <div 
+      className="Counters"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {(hasDiamondBeenPositive || countDiamond > 0) && (
         <div className="Counter">
           <span>{abbreviateNum(countDiamond)}</span>

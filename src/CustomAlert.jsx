@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useContext } from 'react';
 import './css/CustomAlert.css';
+import { AppContext } from './main/AppContext.jsx';
 
 function CustomAlert({ message, onConfirm, onCancel }) {
+  const {
+    showCustomAlert,
+  } = useContext(AppContext);
+  if (!showCustomAlert) return
   return (
     <div className="custom-alert-overlay">
       <div className="custom-alert">

@@ -11,18 +11,20 @@ function DnkUpgrade({
   }) {
 
   const {
-    countDiamond,
     setTooltipPosition,
     setIsDnkHovered,
+    tooltipPosition,
+    countDnk,
   } = useContext(AppContext);
   
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
-      right: window.innerWidth - cardRect.left - 220, 
+      right: window.innerWidth - cardRect.right - 30,
+      top:460, 
       id: id,
     });
-    setIsDnkHovered(true);
+    setIsDnkHovered(true)
   };
 
   const handleMouseLeave = () => {

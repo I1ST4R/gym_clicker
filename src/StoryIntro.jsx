@@ -6,6 +6,8 @@ const StoryIntro = ({ onClose }) => {
 
   const {
     setStoryIntroShown,
+    storyIntroShown,
+    end,
   } = useContext(AppContext);
 
   const [currentSlide, setCurrentSlide] = useState(0);

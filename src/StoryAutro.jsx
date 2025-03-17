@@ -4,7 +4,12 @@ import { AppContext } from './main/AppContext.jsx';
 
 const StoryAutro = (onClose) => {
 
-  const {setStoryAutroShown} = useContext(AppContext);
+  const {
+    setStoryAutroShown,
+    storyAutroShown,
+    end,
+  } = useContext(AppContext);
+  
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [

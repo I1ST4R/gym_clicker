@@ -1,0 +1,40 @@
+
+.footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  color:black;
+  background: linear-gradient(133deg, #566270 0%, #283444 100%);
+  width:100vw;
+  height:50px;
+  font-size:18px;
+}
+
+.footer__point{
+  color:rgb(230, 230, 230);
+  display:flex;
+  align-items: center;
+  cursor: pointer;
+  gap:5px;
+}
+
+.footer__point img{
+  width:30px;
+  height:30px;
+  user-select: none;
+}
+
+.footer__container{
+  width:800px;
+  height:100%;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin:auto;
+}
+
+.footer button{
+  height:80%;
+  background-color: #f44336;
+  color: white;
+}

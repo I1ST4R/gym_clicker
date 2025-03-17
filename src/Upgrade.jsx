@@ -4,7 +4,6 @@ import upgradeLevelUp from '../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from './js/numberAbbreviator.js';
 import getTrainerImage from './js/TrainerLevels.js';
 import { AppContext } from './main/AppContext.jsx';
-import CustomAlert from './CustomAlert'; // Импортируем CustomAlert
 
 function Upgrade({
   id,
@@ -27,15 +26,13 @@ function Upgrade({
     setTooltipPosition,
     setIsUpgradeHovered,
     setTrainerImage,
+    showAlert, 
     setShowCustomAlert,
   } = useContext(AppContext);
-
-  const [isAlerted, setIsAlerted] = useState(false);
 
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
-      right: 500,
       top: cardRect.top,
       id: id,
     });
@@ -44,7 +41,7 @@ function Upgrade({
 
   const handleMouseLeave = () => {
     setIsUpgradeHovered(false);
-  };
+  }
 
   let priceWithMults, dnkMult;
   let discount = (isDiscountExists ? 1 : 2) / 2;
@@ -59,7 +56,6 @@ function Upgrade({
 
   const isEnoughMoney = countMoney >= priceWithMults;
   const isLastUpgrade = id === upgrades.length;
-  const isSmallNumber = initialIncrease < 1000000;
 
   const doChanges = () => {
     onUpgradeLevelChange(id);
@@ -69,7 +65,16 @@ function Upgrade({
 
   const handleUpgradeClick = () => {
     if (isEnoughMoney && isLastUpgrade) {
-      setShowCustomAlert(true);
+      showAlert(
+        "При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?",
+        () => {
+          setShowCustomAlert(false)
+          setEnd(true)
+        },
+        () => {
+          setShowCustomAlert(false)
+        }
+      );
       return;
     }
     if (isEnoughMoney) {
