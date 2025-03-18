@@ -1,0 +1,47 @@
+.DnkProgressBar {
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  top: 0px;
+  right: 550px;
+  display: flex;
+  align-items: center;
+  z-index: 35;
+  font-size: 20px;
+}
+
+.DnkProgressBar__progress-bar-container {
+  flex: 1;
+  margin-right: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative; 
+  height: 50px; 
+}
+
+.DnkProgressBar__progress-bar {
+  height: 100%; 
+  background-color: rgb(216, 47, 48);
+}
+
+.DnkProgressBar__remaining-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  color: black;
+  font-weight: bold;
+  white-space: nowrap; 
+}
+
+.DnkProgressBar__counter {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.DnkProgressBar__counter img {
+  width: 30px;
+  height: 30px;
+}

@@ -10,10 +10,10 @@ import Tooltip from '../Tooltip.jsx';
 import CustomAlert from '../CustomAlert';
 import Footer from '../Footer';
 import '../css/App.css';
-import abbreviateNum from '../js/numberAbbreviator.js';
 import { AppContext } from './AppContext.jsx';
 import SliderContainer from '../SliderContainer';
 import ResultImages from '../ResultImages'; 
+import DnkProgressBar from '../DnkProgressBar';
 
 function App() {
   const {
@@ -113,7 +113,10 @@ function App() {
       <ResultImages 
         resultImages={resultImages} 
         windowWidth={windowWidth} 
-      /> 
+      />
+      {(countDnk != 0n) &&
+        <DnkProgressBar/>
+      } 
       <CustomAlert
         message={alertMessage}
         onConfirm={alertOnConfirm}

@@ -30,7 +30,7 @@ export const AppProvider = ({ children }) => {
   // Состояния для BigInt
   const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('10000000000000000000000000000000000'), BigInt));
   const [countDnk, setCountDnk] = useState(() => loadState('countDnk', BigInt('0'), BigInt));
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('1000000000000000000000000000'), BigInt));
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('10'), BigInt));
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => loadState('actIncreaseMoney', BigInt('1'), BigInt));
 
   // Состояния для чисел
