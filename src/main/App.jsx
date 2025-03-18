@@ -12,7 +12,7 @@ import Footer from '../Footer';
 import '../css/App.css';
 import { AppContext } from './AppContext.jsx';
 import SliderContainer from '../SliderContainer';
-import ResultImages from '../ResultImages'; 
+import ImageSections from '../ImageSections.jsx'; 
 import DnkProgressBar from '../DnkProgressBar';
 
 function App() {
@@ -73,6 +73,7 @@ function App() {
   }, [countDnk]);
 
   //ивент на изменение окна для адаптива
+  /*
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -80,7 +81,7 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [setWindowWidth]);
-
+  */
   //для слайдера
   const swiperRef = useRef(null);
   const goNext = () => {
@@ -110,10 +111,7 @@ function App() {
       {(isBusterHovered || isUpgradeHovered || isCounterHovered || isDnkHovered) &&
         <Tooltip position={tooltipPosition}/>
       }
-      <ResultImages 
-        resultImages={resultImages} 
-        windowWidth={windowWidth} 
-      />
+      <ImageSections/>
       {(countDnk != 0n) &&
         <DnkProgressBar/>
       } 

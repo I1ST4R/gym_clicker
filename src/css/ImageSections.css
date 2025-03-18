@@ -1,0 +1,26 @@
+
+.image-container {
+  position:fixed;
+  left:0;
+  width: 400px;
+  height: 100vh;
+  overflow-y: scroll;
+  padding: 16px; 
+  background-image: url("Upgrades/upgrades-back.jpg");
+}
+
+.image-container__spase{
+  height:50px;
+}
+
+
+.image-section {
+  height: 100px;
+  width: 100%;
+  position: relative;
+  border: 1px solid #ddd;
+  margin-bottom: 8px; 
+  border-radius: 4px; 
+  background-color: #f9f9f9; 
+  background-color:black;
+}
