@@ -3,6 +3,20 @@ import './css/Buster.css';
 import abbreviateNum from './js/numberAbbreviator.js';
 import { AppContext } from './main/AppContext.jsx';
 
+// Кастомный хук для управления curCooldown
+const useBusterCooldown = (id, initialCooldown) => {
+  const [curCooldown, setCurCooldown] = useState(() => {
+    const savedCooldown = localStorage.getItem(`buster_${id}_cooldown`);
+    return savedCooldown ? parseInt(savedCooldown, 10) : initialCooldown;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(`buster_${id}_cooldown`, curCooldown);
+  }, [curCooldown, id]);
+
+  return [curCooldown, setCurCooldown];
+};
+
 function Buster({
   id,
   title,
@@ -15,54 +29,46 @@ function Buster({
   isActive,
   onBusterLevelChange,
   onActivateBuster,
-  curCooldown,
 }) {
   const {
     setTooltipPosition,
     setIsBusterHovered,
     pasIncreaseMoney,
-    cooldwonDiscount,
+    cooldownDiscount,
     busters,
     end,
   } = useContext(AppContext);
 
+  // Используем кастомный хук для управления curCooldown
+  const [curCooldown, setCurCooldown] = useBusterCooldown(id, 0);
+
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
-
-  useEffect(() => {
-    setLocalCurCooldown(0)
-  }, [end]);
-
-  const [localCurCooldown, setLocalCurCooldown] = useState(curCooldown);
 
   const isMaxLevel = level >= maxLvl;
   const isEnoughClients = pasIncreaseMoney >= initialPrice;
 
+  // Таймер перезарядки
   useEffect(() => {
-    if (localCurCooldown > 0) {
+    if (curCooldown > 0) {
       intervalRef.current = setInterval(() => {
-        setLocalCurCooldown((prev) => {
-          if (prev <= 100) {
-            clearInterval(intervalRef.current);
-            isActive = true;
-            return 0;
-          } else {
-            return prev - 100;
-          }
-        });
+        setCurCooldown((prev) => prev - 100); // Уменьшаем curCooldown на 100 мс
       }, 100);
     } else {
       clearInterval(intervalRef.current);
     }
-    return () => clearInterval(intervalRef.current);
-  }, [localCurCooldown]);
 
+    return () => clearInterval(intervalRef.current);
+  }, [curCooldown]);
+
+  // Форматирование времени для отображения
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60000);
     const seconds = Math.floor((time % 60000) / 1000);
     return minutes > 0 ? `${minutes} мин. ${seconds} сек.` : `${seconds} сек.`;
   };
 
+  // Обработчик наведения мыши
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
@@ -76,37 +82,39 @@ function Buster({
     setIsBusterHovered(false);
   };
 
+  // Обработчик улучшения бустера
   const handleUpgradeBusterClick = () => {
     if (isEnoughClients && !isMaxLevel) {
-      level += 1;
       onBusterLevelChange(id);
     }
   };
 
+  // Обработчик активации бустера
   const handleActivateBusterClick = () => {
-    if (!isActive || localCurCooldown > 0 || level === 0) return;
-    isActive = false;
-    if (time > 0) {
+    if (isActive && curCooldown === 0 && level !== 0) {
+      // Запускаем время действия бустера
       timeoutRef.current = setTimeout(() => {
-        setLocalCurCooldown(Math.floor(cooldown * cooldwonDiscount));
+        // После завершения времени действия запускаем перезарядку
+        setCurCooldown(Math.floor(cooldown * cooldownDiscount));
       }, time);
-    } else {
-      setLocalCurCooldown(Math.floor(cooldown * cooldwonDiscount));
+
+      // Вызываем внешний обработчик активации бустера
+      onActivateBuster(id, time);
     }
-    onActivateBuster(id, time);
   };
 
+  // Очистка таймеров при размонтировании
   useEffect(() => {
     return () => {
-      timeoutRef.current ? clearTimeout(timeoutRef.current) : "";
-      intervalRef.current ? clearInterval(intervalRef.current) : "";
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
 
   return (
     <div
       className={`Buster 
-        ${!isActive || localCurCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''} 
+        ${!isActive || curCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''} 
       `}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -124,19 +132,18 @@ function Buster({
         <p className="Buster__title">{title}</p>
         <div className="Buster__timers">
           <div className="Buster__timer">
-            {time != 0 ? (
+            {time !== 0 ? (
               <>
                 <img src="Busters/time.png" alt="" />
                 <p>{`${time / 1000} сек.`}</p>
               </>
             ) : (
-              <>
-              </>
+              <></>
             )}
           </div>
           <div className="Buster__timer">
             <img src="Busters/cooldown.png" alt="" />
-            <p>{localCurCooldown > 0 ? formatTime(localCurCooldown) : "Готово"}</p>
+            <p>{curCooldown > 0 ? formatTime(curCooldown) : "Готово"}</p>
           </div>
         </div>
         <div className="Buster__price-level">

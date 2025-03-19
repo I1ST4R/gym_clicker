@@ -17,6 +17,7 @@ function Client() {
     pasIncreaseMoney,
     actIncreaseMoney,
     multiplier,
+    isClientImgAdded
   } = useContext(AppContext)
 
   const numOfClicks = 10
@@ -49,7 +50,7 @@ function Client() {
   useEffect(() => {
     const randomDelay = getRandomRange(minDelay, maxDelay)
     const timer = setTimeout(async () => {
-      const randomIndex = Math.floor(Math.random() * ClientsBefore.length)
+      const randomIndex = getRandomRange(0, 4 + (5 * isClientImgAdded))
       try {
         const loadedImage = await loadImage(ClientsBefore[randomIndex])
         setImage(loadedImage.src)
@@ -60,7 +61,7 @@ function Client() {
       const clientRect = document.querySelector(".Client").getBoundingClientRect()
       const menuRect = document.querySelector(".slider-container").getBoundingClientRect()
       setPosition({
-        x: getRandomRange(50, window.innerWidth - clientRect.width - menuRect.width - 50),
+        x: getRandomRange(430, window.innerWidth - clientRect.width - 530 - 50),
         y: getRandomRange(50, window.innerHeight - clientRect.height - 50),
       })
 
@@ -80,7 +81,7 @@ function Client() {
     if (!isClientUpgraded) {
       if (100 - progress <= step) {
         new Audio(clientUpgrade).play()
-        const randomIndex = Math.floor(Math.random() * ClientsAfter.length)
+        const randomIndex = getRandomRange(0, 4 + (5 * isClientImgAdded))
         setImage(ClientsAfter[randomIndex])
         setIsClientUpgraded(true)
         new Audio(clientThanksgiving).play()

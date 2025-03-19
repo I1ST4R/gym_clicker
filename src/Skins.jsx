@@ -10,6 +10,7 @@ function Skins() {
     countDiamond,
     setCountDiamond,
     setBackgroundImage,
+    setIsClientImgAdded,
   } = useContext(AppContext);
 
   const handleActiveChanges = () => {
@@ -20,6 +21,9 @@ function Skins() {
         case 1:
         case 2:
           setBackgroundImage(activeItem.img);
+          break;
+        case 3:
+          setIsClientImgAdded(true)
           break;
         default:
           break;

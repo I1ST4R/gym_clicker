@@ -29,7 +29,13 @@ function Tooltip({ position }) {
 
   if(isDnkHovered && countDnk === 0n) return
   if (isSkinHovered) {
-    console.log("SkinHovered")
+    const skin = diamondPurchases[tooltipPosition.id - 1];
+    tooltipContent = {
+      desc: skin.desc,
+      price: skin.price,
+      isBuyed: skin.isBuyed,
+    };
+    tooltipType = 'Skin';
   } else if (isDnkHovered) {
     const dnk = dnkUpgrades[tooltipPosition.id - 1];
     tooltipContent = {
@@ -70,6 +76,18 @@ function Tooltip({ position }) {
         width: tooltipType === "Counters" ? "300px" : "",
       }}
     >
+      {tooltipType === 'Skin' && (
+        <>
+          <p>{tooltipContent.desc}</p>
+          { !tooltipContent.isBuyed &&
+            (<p className="Tooltip__price-info">
+              {`Цена: ${tooltipContent.price}`}
+            </p>)
+          }
+          
+        </>
+      )}
+
       {tooltipType === 'Dnk' && <p>{tooltipContent.benefit}</p>}
 
       {tooltipType === 'Busters' && (

@@ -15,6 +15,7 @@ function Skin({
     countDiamond,
     setTooltipPosition,
     setIsSkinHovered,
+    tooltipPosition,
   } = useContext(AppContext);
 
   const isEnoughtDiamonds = countDiamond >= price;

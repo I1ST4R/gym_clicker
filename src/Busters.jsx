@@ -1,21 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import './css/slide.css';
 import Buster from './Buster.jsx';
 import { AppContext } from './main/AppContext.jsx';
 
 function Busters({ onIncreaseDiamond }) {
   const {
-    setBusters,
     busters,
+    setBusters,
     setCountMoney,
     setPasIncreaseMoney,
     pasIncreaseMoney,
     setActIncreaseMoney,
     actIncreaseMoney,
     setIsDiscountExists,
+    cooldownDiscount,
   } = useContext(AppContext);
 
+  // Обработчик изменения уровня бустера
   const handleBusterLevelChange = (id) => {
+    console.log(1)
     const updatedBusters = busters.map((buster) => {
       if (buster.id === id) {
         const isFirstLevel = buster.level === 0;
@@ -32,9 +35,23 @@ function Busters({ onIncreaseDiamond }) {
   };
 
   const handleActivateBuster = (id, time) => {
-    const buster = busters.find(b => b.id === id);
+    const updatedBusters = busters.map((buster) => {
+      if (buster.id === id) {
+        return {
+          ...buster,
+          curCooldown: Math.floor(buster.cooldown * cooldownDiscount),
+          isActive: false, 
+        };
+      }
+      return buster;
+    });
+    console.log(updatedBusters)
+    setBusters(updatedBusters);
+  
+    // Логика эффектов бустера
+    const buster = busters.find((b) => b.id === id);
     if (!buster || buster.level === 0) return;
-
+  
     switch (id) {
       case 1:
         const actIncreaseMoneyBefore = actIncreaseMoney;

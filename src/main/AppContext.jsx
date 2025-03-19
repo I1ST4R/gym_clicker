@@ -29,14 +29,15 @@ const bigIntParser = (key, value) => {
 // Провайдер контекста
 export const AppProvider = ({ children }) => {
   // Состояния для BigInt
-  const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('10000000000000000000000000000000000'), BigInt));
+  const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('0'), BigInt));
   const [countDnk, setCountDnk] = useState(() => loadState('countDnk', BigInt('0'), BigInt));
   const [countDiamond, setCountDiamond] = useState(() => loadState('countDiamond', BigInt('10'), BigInt)); // Новое состояние
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('10'), BigInt));
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('110000'), BigInt));
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => loadState('actIncreaseMoney', BigInt('1'), BigInt));
 
   // Состояния для чисел
   const [multiplier, setMultiplier] = useState(() => loadState('multiplier', 30, parseInt));
+  const [cooldownDiscount, setCooldownDiscount] = useState(() => loadState('cooldownDiscount', 1, parseInt));
   const [priceMultiplier, setPriceMultiplier] = useState(() => loadState('priceMultiplier', 1, parseInt));
   const [increaseMultiplier, setIncreaseMultiplier] = useState(() => loadState('increaseMultiplier', 1, parseInt));
   const [minDelay, setMinDelay] = useState(() => loadState('minDelay', 300000, parseInt));
@@ -72,8 +73,9 @@ export const AppProvider = ({ children }) => {
   const [isCounterHovered, setIsCounterHovered] = useState(false);
   const [isSkinHovered, setIsSkinHovered] = useState(false);
 
-  // Новое состояние для фонового изображения
+  // состояния для обликов
   const [backgroundImage, setBackgroundImage] = useState(() => loadState('backgroundImage', null));
+  const [isClientImgAdded, setIsClientImgAdded] = useState(() => loadState('isClientImgAdded', false, JSON.parse));
 
   // Функция для сброса прогресса
   const resetProgress = (resetAdditionalStates = false) => {
@@ -97,14 +99,12 @@ export const AppProvider = ({ children }) => {
     // Если resetAdditionalStates === true, сбрасываем дополнительные хуки
     if (resetAdditionalStates) {
       setCountDnk(BigInt('0'));
-      setCountDiamond(BigInt('0')); // Сброс нового состояния
       setMultiplier(30);
       setPriceMultiplier(1);
       setIncreaseMultiplier(1);
       setMinDelay(300000);
       setMaxDelay(600000);
       setDnkUpgrades(DnkUpgradesParams);
-      setDiamondPurchases([]); // Сброс нового массива
       setTooltipPosition({ top: 0, right: 0, id: 1 });
       setIsUpgradeHovered(false);
       setIsDnkHovered(false);
@@ -115,13 +115,13 @@ export const AppProvider = ({ children }) => {
     const keysToRemove = [
       'countMoney', 'pasIncreaseMoney', 'actIncreaseMoney', 'trainerImage', 'resultImages',
       'upgrades', 'busters', 'isDiscountExists', 'storyIntroShown', 'storyAutroShown', 'end',
-      'alertMessage', 'alertOnConfirm', 'alertOnCancel', 'backgroundImage', // Добавляем backgroundImage
+      'alertMessage', 'alertOnConfirm', 'alertOnCancel', 
     ];
 
     if (resetAdditionalStates) {
       keysToRemove.push(
-        'countDnk', 'countDiamond', 'multiplier', 'priceMultiplier', 'increaseMultiplier', 'minDelay', 'maxDelay',
-        'dnkUpgrades', 'diamondPurchases', 'tooltipPosition', 'isUpgradeHovered', 'isDnkHovered', 'isBusterHovered'
+        'countDnk', 'countDiamond', 'multiplier', 'cooldownDiscount', 'priceMultiplier', 'increaseMultiplier', 'minDelay', 'maxDelay',
+        'dnkUpgrades', 'diamondPurchases', 'tooltipPosition', 'isUpgradeHovered', 'isDnkHovered', 'isBusterHovered', 'backgroundImage', 'isClientImgAdded'
       );
     }
 
@@ -145,6 +145,7 @@ export const AppProvider = ({ children }) => {
       pasIncreaseMoney: pasIncreaseMoney.toString(),
       actIncreaseMoney: actIncreaseMoney.toString(),
       multiplier: multiplier.toString(),
+      cooldownDiscount: cooldownDiscount.toString(),
       priceMultiplier: priceMultiplier.toString(),
       increaseMultiplier: increaseMultiplier.toString(),
       minDelay: minDelay.toString(),
@@ -162,15 +163,16 @@ export const AppProvider = ({ children }) => {
       alertMessage,
       alertOnConfirm: alertOnConfirm.toString(),
       alertOnCancel: alertOnCancel.toString(),
-      backgroundImage, // Сохраняем фоновое изображение
+      backgroundImage, 
+      isClientImgAdded,
     };
 
     Object.entries(stateToSave).forEach(([key, value]) => saveState(key, value));
   }, [
-    countMoney, countDnk, countDiamond, pasIncreaseMoney, actIncreaseMoney, multiplier, priceMultiplier,
+    countMoney, countDnk, countDiamond, pasIncreaseMoney, actIncreaseMoney, multiplier, cooldownDiscount, priceMultiplier,
     increaseMultiplier, minDelay, maxDelay, trainerImage, resultImages, upgrades, dnkUpgrades,
     busters, diamondPurchases, isDiscountExists, storyIntroShown, storyAutroShown, end, alertMessage,
-    alertOnConfirm, alertOnCancel, backgroundImage, // Добавляем backgroundImage в зависимости
+    alertOnConfirm, alertOnCancel, backgroundImage, isClientImgAdded,
   ]);
 
   return (
@@ -182,6 +184,7 @@ export const AppProvider = ({ children }) => {
         pasIncreaseMoney, setPasIncreaseMoney,
         actIncreaseMoney, setActIncreaseMoney,
         multiplier, setMultiplier,
+        cooldownDiscount, setCooldownDiscount,
         priceMultiplier, setPriceMultiplier,
         increaseMultiplier, setIncreaseMultiplier,
         minDelay, setMinDelay,
@@ -208,6 +211,7 @@ export const AppProvider = ({ children }) => {
         alertOnConfirm, setAlertOnConfirm,
         alertOnCancel, setAlertOnCancel,
         showAlert,
+        isClientImgAdded, setIsClientImgAdded,
         backgroundImage, setBackgroundImage, // Передача нового состояния
       }}
     >

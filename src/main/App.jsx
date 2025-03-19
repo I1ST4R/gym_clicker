@@ -26,6 +26,7 @@ function App() {
     tooltipPosition,
     storyAutroShown,
     end,
+    isSkinHovered,
     alertMessage,
     alertOnConfirm,
     alertOnCancel,
@@ -110,7 +111,7 @@ function App() {
         goNext={goNext}
         goPrev={goPrev}
       />
-      {(isBusterHovered || isUpgradeHovered || isCounterHovered || isDnkHovered) &&
+      {(isBusterHovered || isUpgradeHovered || isCounterHovered || isDnkHovered || isSkinHovered) &&
         <Tooltip position={tooltipPosition} />
       }
       <ImageSections />
