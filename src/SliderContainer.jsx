@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import Upgrades from './Upgrades.jsx';
 import Busters from './Busters.jsx';
+import Skins from './Skins.jsx';
 import './css/SliderStyles.css';
 
 const SliderContainer = () => {
@@ -42,9 +43,9 @@ const SliderContainer = () => {
           nextEl: '.button-next',
         }}
       >
-        <SwiperSlide><Upgrades /></SwiperSlide>
-        <SwiperSlide><Busters /></SwiperSlide>
-        <SwiperSlide>Скоро тут что-то будет</SwiperSlide>
+        <SwiperSlide><Upgrades/></SwiperSlide>
+        <SwiperSlide><Busters/></SwiperSlide>
+        <SwiperSlide><Skins/></SwiperSlide>
       </Swiper>
     </div>
   );

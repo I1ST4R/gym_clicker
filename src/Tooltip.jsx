@@ -16,6 +16,8 @@ function Tooltip({ position }) {
     increaseMultiplier,
     countDnk,
     setIsDnkHovered,
+    diamondPurchases,
+    isSkinHovered,
   } = useContext(AppContext);
 
   let tooltipContent = null;
@@ -26,7 +28,9 @@ function Tooltip({ position }) {
   },[countDnk])
 
   if(isDnkHovered && countDnk === 0n) return
-  if (isDnkHovered) {
+  if (isSkinHovered) {
+    console.log("SkinHovered")
+  } else if (isDnkHovered) {
     const dnk = dnkUpgrades[tooltipPosition.id - 1];
     tooltipContent = {
       benefit: dnk.benefit,

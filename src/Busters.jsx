@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './css/Busters.css';
+import './css/slide.css';
 import Buster from './Buster.jsx';
 import { AppContext } from './main/AppContext.jsx';
 
@@ -75,11 +75,11 @@ function Busters({ onIncreaseDiamond }) {
   };
 
   return (
-    <div className="Busters">
-      <div className="Busters__title">
+    <div className="slide">
+      <div className="slide__title">
         <p>Бустеры</p>
       </div>
-      <div className="Busters__container">
+      <div className="slide__flex-container">
         {busters.map((buster) => (
           <Buster
             key={buster.id}

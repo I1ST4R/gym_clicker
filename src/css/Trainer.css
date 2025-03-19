@@ -7,7 +7,7 @@
   font-size: 40px;
   position: absolute; 
   top: 50%;
-  left: calc(50% - 240px); 
+  left: calc(50% - 50px); 
   transform: translate(-50%, -50%); 
   z-index:30;
 }

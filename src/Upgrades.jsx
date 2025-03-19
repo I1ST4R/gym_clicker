@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import './css/Upgrades.css';
+import React, {useContext } from 'react';
+import './css/slide.css';
 import Upgrade from './Upgrade.jsx';
 
 import { AppContext } from './main/AppContext.jsx';
@@ -55,11 +55,11 @@ function Upgrades() {
   };
 
   return (
-    <div className="Upgrades">
-      <div className="Upgrades__title">
+    <div className="slide">
+      <div className="slide__title">
         <p>Улучшения</p>
       </div>
-      <div className="Upgrades__container">
+      <div className="slide__flex-container">
         {upgrades.map((upgrade) => (
           <Upgrade
             key={upgrade.id}
@@ -67,7 +67,7 @@ function Upgrades() {
             onUpgradeLevelChange={handleUpgradeLevelChange}
           />
         ))}
-        <div className="Upgrades__space">
+        <div className="slide__space">
         </div>
       </div>
     </div>

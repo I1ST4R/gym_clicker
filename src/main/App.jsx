@@ -12,7 +12,7 @@ import Footer from '../Footer';
 import '../css/App.css';
 import { AppContext } from './AppContext.jsx';
 import SliderContainer from '../SliderContainer';
-import ImageSections from '../ImageSections.jsx'; 
+import ImageSections from '../ImageSections.jsx';
 import DnkProgressBar from '../DnkProgressBar';
 
 function App() {
@@ -26,7 +26,6 @@ function App() {
     tooltipPosition,
     storyAutroShown,
     end,
-    windowWidth, setWindowWidth,
     alertMessage,
     alertOnConfirm,
     alertOnCancel,
@@ -35,14 +34,27 @@ function App() {
     isCounterHovered,
     isDnkHovered,
     storyIntroShown,
+    backgroundImage, // Получаем фоновое изображение из контекста
   } = useContext(AppContext);
 
-  //активный доход (за клик)
+  // Изменение фона для всей страницы
+  useEffect(() => {
+    if (backgroundImage) {
+      document.body.style.backgroundImage = `url(${backgroundImage})`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundRepeat = 'no-repeat';
+    } else {
+      document.body.style.backgroundImage = 'none';
+    }
+  }, [backgroundImage]); // Зависимость от backgroundImage
+
+  // Активный доход (за клик)
   const incrementCountMoneyForClick = () => {
     setCountMoney(countMoney + actIncreaseMoney);
   };
 
-  //пассивный доход (в сек.)
+  // Пассивный доход (в сек.)
   useEffect(() => {
     const interval = setInterval(() => {
       setCountMoney((prevCountMoney) => prevCountMoney + pasIncreaseMoney);
@@ -50,7 +62,7 @@ function App() {
     return () => clearInterval(interval);
   }, [pasIncreaseMoney, setCountMoney]);
 
-  //расчет днк
+  // Расчет днк
   useEffect(() => {
     const log3 = (value) => {
       if (value < 3n) return 0n;
@@ -67,22 +79,12 @@ function App() {
     setCountDnk(increaseDnk);
   }, [pasIncreaseMoney]);
 
-  //сброс прогресса
+  // Сброс прогресса
   useEffect(() => {
-    countDnk === 0n && storyAutroShown ? resetProgress() : ""
+    countDnk === 0n && storyAutroShown ? resetProgress() : "";
   }, [countDnk]);
 
-  //ивент на изменение окна для адаптива
-  /*
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [setWindowWidth]);
-  */
-  //для слайдера
+  // Для слайдера
   const swiperRef = useRef(null);
   const goNext = () => {
     if (swiperRef.current && swiperRef.current.swiper) {
@@ -96,32 +98,32 @@ function App() {
   };
 
   return (
-    <>
+    <div className="App">
       {end && !storyAutroShown && <StoryAutro />}
-      {end && storyAutroShown && countDnk != 0 && <DnkUpgrades />}
+      {end && storyAutroShown && countDnk !== 0n && <DnkUpgrades />}
       {!end && !storyIntroShown && <StoryIntro />}
 
-      <Client/>
-      <Trainer onClick={incrementCountMoneyForClick}/>
-      <Counters/>
-      <SliderContainer 
-        goNext={goNext} 
-        goPrev={goPrev} 
-      /> 
+      <Client />
+      <Trainer onClick={incrementCountMoneyForClick} />
+      <Counters />
+      <SliderContainer
+        goNext={goNext}
+        goPrev={goPrev}
+      />
       {(isBusterHovered || isUpgradeHovered || isCounterHovered || isDnkHovered) &&
-        <Tooltip position={tooltipPosition}/>
+        <Tooltip position={tooltipPosition} />
       }
-      <ImageSections/>
-      {(countDnk != 0n) &&
-        <DnkProgressBar/>
-      } 
+      <ImageSections />
+      {(countDnk !== 0n) &&
+        <DnkProgressBar />
+      }
       <CustomAlert
         message={alertMessage}
         onConfirm={alertOnConfirm}
         onCancel={alertOnCancel}
       />
-      <Footer/>
-    </>
+      <Footer />
+    </div>
   );
 }
 

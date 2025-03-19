@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import BustersParams from '../js/BustersParams.js';
 import UpgradesParams from '../js/UpgradesParams.js';
 import DnkUpgradesParams from '../js/DnkUpgradesParams.js';
+import DiamondPurchasesParams from '../js/DiamondPurchasesParams.js';
 
 // Создаем контекст
 export const AppContext = createContext();
@@ -30,6 +31,7 @@ export const AppProvider = ({ children }) => {
   // Состояния для BigInt
   const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('10000000000000000000000000000000000'), BigInt));
   const [countDnk, setCountDnk] = useState(() => loadState('countDnk', BigInt('0'), BigInt));
+  const [countDiamond, setCountDiamond] = useState(() => loadState('countDiamond', BigInt('10'), BigInt)); // Новое состояние
   const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('10'), BigInt));
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => loadState('actIncreaseMoney', BigInt('1'), BigInt));
 
@@ -48,6 +50,7 @@ export const AppProvider = ({ children }) => {
   const [upgrades, setUpgrades] = useState(() => loadState('upgrades', UpgradesParams, (val) => JSON.parse(val, bigIntParser)));
   const [dnkUpgrades, setDnkUpgrades] = useState(() => loadState('dnkUpgrades', DnkUpgradesParams, (val) => JSON.parse(val, bigIntParser)));
   const [busters, setBusters] = useState(() => loadState('busters', BustersParams, (val) => JSON.parse(val, bigIntParser)));
+  const [diamondPurchases, setDiamondPurchases] = useState(() => loadState('diamondPurchases', DiamondPurchasesParams, JSON.parse)); // Новый массив
 
   // Состояния для булевых значений
   const [isDiscountExists, setIsDiscountExists] = useState(() => loadState('isDiscountExists', false, JSON.parse));
@@ -67,9 +70,10 @@ export const AppProvider = ({ children }) => {
   const [isDnkHovered, setIsDnkHovered] = useState(false);
   const [isBusterHovered, setIsBusterHovered] = useState(false);
   const [isCounterHovered, setIsCounterHovered] = useState(false);
+  const [isSkinHovered, setIsSkinHovered] = useState(false);
 
-  // Состояние для ширины окна
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // Новое состояние для фонового изображения
+  const [backgroundImage, setBackgroundImage] = useState(() => loadState('backgroundImage', null));
 
   // Функция для сброса прогресса
   const resetProgress = (resetAdditionalStates = false) => {
@@ -89,37 +93,38 @@ export const AppProvider = ({ children }) => {
     setAlertMessage("");
     setAlertOnConfirm(() => () => {});
     setAlertOnCancel(() => () => {});
-  
+
     // Если resetAdditionalStates === true, сбрасываем дополнительные хуки
     if (resetAdditionalStates) {
       setCountDnk(BigInt('0'));
+      setCountDiamond(BigInt('0')); // Сброс нового состояния
       setMultiplier(30);
       setPriceMultiplier(1);
       setIncreaseMultiplier(1);
       setMinDelay(300000);
       setMaxDelay(600000);
       setDnkUpgrades(DnkUpgradesParams);
+      setDiamondPurchases([]); // Сброс нового массива
       setTooltipPosition({ top: 0, right: 0, id: 1 });
       setIsUpgradeHovered(false);
       setIsDnkHovered(false);
       setIsBusterHovered(false);
-      setWindowWidth(window.innerWidth);
     }
-  
+
     // Очистка localStorage
     const keysToRemove = [
       'countMoney', 'pasIncreaseMoney', 'actIncreaseMoney', 'trainerImage', 'resultImages',
       'upgrades', 'busters', 'isDiscountExists', 'storyIntroShown', 'storyAutroShown', 'end',
-      'alertMessage', 'alertOnConfirm', 'alertOnCancel'
+      'alertMessage', 'alertOnConfirm', 'alertOnCancel', 'backgroundImage', // Добавляем backgroundImage
     ];
-  
+
     if (resetAdditionalStates) {
       keysToRemove.push(
-        'countDnk', 'multiplier', 'priceMultiplier', 'increaseMultiplier', 'minDelay', 'maxDelay',
-        'dnkUpgrades', 'tooltipPosition', 'isUpgradeHovered', 'isDnkHovered', 'isBusterHovered', 'windowWidth'
+        'countDnk', 'countDiamond', 'multiplier', 'priceMultiplier', 'increaseMultiplier', 'minDelay', 'maxDelay',
+        'dnkUpgrades', 'diamondPurchases', 'tooltipPosition', 'isUpgradeHovered', 'isDnkHovered', 'isBusterHovered'
       );
     }
-  
+
     keysToRemove.forEach(key => localStorage.removeItem(key));
   };
 
@@ -136,6 +141,7 @@ export const AppProvider = ({ children }) => {
     const stateToSave = {
       countMoney: countMoney.toString(),
       countDnk: countDnk.toString(),
+      countDiamond: countDiamond.toString(), // Сохранение нового состояния
       pasIncreaseMoney: pasIncreaseMoney.toString(),
       actIncreaseMoney: actIncreaseMoney.toString(),
       multiplier: multiplier.toString(),
@@ -148,6 +154,7 @@ export const AppProvider = ({ children }) => {
       upgrades: JSON.stringify(upgrades, (key, value) => (typeof value === 'bigint' ? `${value}n` : value)),
       dnkUpgrades: JSON.stringify(dnkUpgrades, (key, value) => (typeof value === 'bigint' ? `${value}n` : value)),
       busters: JSON.stringify(busters, (key, value) => (typeof value === 'bigint' ? `${value}n` : value)),
+      diamondPurchases: JSON.stringify(diamondPurchases), 
       isDiscountExists: JSON.stringify(isDiscountExists),
       storyIntroShown: JSON.stringify(storyIntroShown),
       storyAutroShown: JSON.stringify(storyAutroShown),
@@ -155,14 +162,15 @@ export const AppProvider = ({ children }) => {
       alertMessage,
       alertOnConfirm: alertOnConfirm.toString(),
       alertOnCancel: alertOnCancel.toString(),
+      backgroundImage, // Сохраняем фоновое изображение
     };
 
     Object.entries(stateToSave).forEach(([key, value]) => saveState(key, value));
   }, [
-    countMoney, countDnk, pasIncreaseMoney, actIncreaseMoney, multiplier, priceMultiplier,
+    countMoney, countDnk, countDiamond, pasIncreaseMoney, actIncreaseMoney, multiplier, priceMultiplier,
     increaseMultiplier, minDelay, maxDelay, trainerImage, resultImages, upgrades, dnkUpgrades,
-    busters, isDiscountExists, storyIntroShown, storyAutroShown, end, alertMessage,
-    alertOnConfirm, alertOnCancel,
+    busters, diamondPurchases, isDiscountExists, storyIntroShown, storyAutroShown, end, alertMessage,
+    alertOnConfirm, alertOnCancel, backgroundImage, // Добавляем backgroundImage в зависимости
   ]);
 
   return (
@@ -170,6 +178,7 @@ export const AppProvider = ({ children }) => {
       value={{
         countMoney, setCountMoney,
         countDnk, setCountDnk,
+        countDiamond, setCountDiamond, // Передача нового состояния
         pasIncreaseMoney, setPasIncreaseMoney,
         actIncreaseMoney, setActIncreaseMoney,
         multiplier, setMultiplier,
@@ -182,6 +191,7 @@ export const AppProvider = ({ children }) => {
         upgrades, setUpgrades,
         dnkUpgrades, setDnkUpgrades,
         busters, setBusters,
+        diamondPurchases, setDiamondPurchases, // Передача нового массива
         isDiscountExists, setIsDiscountExists,
         storyIntroShown, setStoryIntroShown,
         storyAutroShown, setStoryAutroShown,
@@ -190,14 +200,15 @@ export const AppProvider = ({ children }) => {
         isDnkHovered, setIsDnkHovered,
         isBusterHovered, setIsBusterHovered,
         isCounterHovered, setIsCounterHovered,
+        isSkinHovered, setIsSkinHovered,
         end, setEnd,
-        windowWidth, setWindowWidth,
         resetProgress,
         showCustomAlert, setShowCustomAlert,
         alertMessage, setAlertMessage,
         alertOnConfirm, setAlertOnConfirm,
         alertOnCancel, setAlertOnCancel,
-        showAlert, 
+        showAlert,
+        backgroundImage, setBackgroundImage, // Передача нового состояния
       }}
     >
       {children}

@@ -2,7 +2,7 @@
   font-size:30px;
   position:absolute;
   top:20px;
-  left: calc(50% - 240px);
+  left: calc(50% - 50px);
   transform: translateX(-50%);
   user-select:none;
   display:flex;

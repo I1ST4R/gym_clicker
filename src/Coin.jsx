@@ -7,7 +7,7 @@ function Coin({ id, startX, startY, onComplete }) {
   useEffect(() => {
     const coin = coinRef.current;
 
-    coin.style.left = `${startX - (window.innerWidth/2 - 330)}px`;
+    coin.style.left = `${startX - (window.innerWidth/2 - 130)}px`;
     coin.style.top = `${startY - (window.innerHeight/2 - 110)}px`;
     coin.classList.add('Money--animate');
     const handleAnimationEnd = () => {
