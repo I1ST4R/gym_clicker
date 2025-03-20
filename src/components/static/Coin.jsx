@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import './css/Coin.css';
+import '../../css/Coin.css';
 
 function Coin({ id, startX, startY, onComplete }) {
   const coinRef = useRef(null);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './css/Counters.css'; 
-import abbreviateNum from './js/numberAbbreviator.js';
+import '../../css/Counters.css'; 
+import abbreviateNum from '../../js/numberAbbreviator.js';
 
-import { AppContext } from './main/AppContext.jsx';
+import { AppContext } from '../main/AppContext.jsx';
 
 function Counter() {
 

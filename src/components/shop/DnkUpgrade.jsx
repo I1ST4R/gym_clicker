@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './css/DnkUpgrade.css';
+import '../../css/DnkUpgrade.css';
 
-import { AppContext } from './main/AppContext.jsx';
+import { AppContext } from '../main/AppContext.jsx';
 
 function DnkUpgrade({
   id,

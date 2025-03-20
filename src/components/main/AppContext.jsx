@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
-import BustersParams from '../js/BustersParams.js';
-import UpgradesParams from '../js/UpgradesParams.js';
-import DnkUpgradesParams from '../js/DnkUpgradesParams.js';
-import DiamondPurchasesParams from '../js/DiamondPurchasesParams.js';
+import BustersParams from '../../js/BustersParams.js';
+import UpgradesParams from '../../js/UpgradesParams.js';
+import DnkUpgradesParams from '../../js/DnkUpgradesParams.js';
+import DiamondPurchasesParams from '../../js/DiamondPurchasesParams.js';
 
 // Создаем контекст
 export const AppContext = createContext();
@@ -32,7 +32,7 @@ export const AppProvider = ({ children }) => {
   const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('0'), BigInt));
   const [countDnk, setCountDnk] = useState(() => loadState('countDnk', BigInt('0'), BigInt));
   const [countDiamond, setCountDiamond] = useState(() => loadState('countDiamond', BigInt('10'), BigInt)); // Новое состояние
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('110000'), BigInt));
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('100000000000000000000'), BigInt));
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => loadState('actIncreaseMoney', BigInt('1'), BigInt));
 
   // Состояния для чисел
@@ -75,13 +75,15 @@ export const AppProvider = ({ children }) => {
 
   // состояния для обликов
   const [backgroundImage, setBackgroundImage] = useState(() => loadState('backgroundImage', null));
+  const [cursorImage, setCursorImage] = useState(() => loadState('cursorImage', null));
   const [isClientImgAdded, setIsClientImgAdded] = useState(() => loadState('isClientImgAdded', false, JSON.parse));
+  const [backgroundRightImage, setBackgroundRightImage] = useState(() => loadState('backgroundRightImage', true, JSON.parse));
 
   // Функция для сброса прогресса
   const resetProgress = (resetAdditionalStates = false) => {
     // Стандартный сброс
     setCountMoney(BigInt('100000000000000000000000000'));
-    setPasIncreaseMoney(BigInt('100000000000000000000000000'));
+    setPasIncreaseMoney(BigInt('0'));
     setActIncreaseMoney(BigInt('1'));
     setTrainerImage("Trainer/img1.png");
     setResultImages([]);
@@ -121,7 +123,7 @@ export const AppProvider = ({ children }) => {
     if (resetAdditionalStates) {
       keysToRemove.push(
         'countDnk', 'countDiamond', 'multiplier', 'cooldownDiscount', 'priceMultiplier', 'increaseMultiplier', 'minDelay', 'maxDelay',
-        'dnkUpgrades', 'diamondPurchases', 'tooltipPosition', 'isUpgradeHovered', 'isDnkHovered', 'isBusterHovered', 'backgroundImage', 'isClientImgAdded'
+        'dnkUpgrades', 'diamondPurchases', 'tooltipPosition', 'isUpgradeHovered', 'isDnkHovered', 'isBusterHovered', 'backgroundImage', 'isClientImgAdded', 'cursorImage', 'backgroundRightImage'
       );
     }
 
@@ -164,7 +166,9 @@ export const AppProvider = ({ children }) => {
       alertOnConfirm: alertOnConfirm.toString(),
       alertOnCancel: alertOnCancel.toString(),
       backgroundImage, 
+      cursorImage,
       isClientImgAdded,
+      backgroundRightImage,
     };
 
     Object.entries(stateToSave).forEach(([key, value]) => saveState(key, value));
@@ -172,7 +176,7 @@ export const AppProvider = ({ children }) => {
     countMoney, countDnk, countDiamond, pasIncreaseMoney, actIncreaseMoney, multiplier, cooldownDiscount, priceMultiplier,
     increaseMultiplier, minDelay, maxDelay, trainerImage, resultImages, upgrades, dnkUpgrades,
     busters, diamondPurchases, isDiscountExists, storyIntroShown, storyAutroShown, end, alertMessage,
-    alertOnConfirm, alertOnCancel, backgroundImage, isClientImgAdded,
+    alertOnConfirm, alertOnCancel, backgroundImage, cursorImage, isClientImgAdded, backgroundRightImage,
   ]);
 
   return (
@@ -212,7 +216,9 @@ export const AppProvider = ({ children }) => {
         alertOnCancel, setAlertOnCancel,
         showAlert,
         isClientImgAdded, setIsClientImgAdded,
-        backgroundImage, setBackgroundImage, // Передача нового состояния
+        backgroundImage, setBackgroundImage, 
+        cursorImage, setCursorImage,
+        backgroundRightImage, setBackgroundRightImage,
       }}
     >
       {children}

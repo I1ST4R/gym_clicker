@@ -1,7 +1,7 @@
 import React, { useContext,  useEffect } from 'react';
-import './css/Tooltip.css';
-import { AppContext } from './main/AppContext.jsx';
-import abbreviateNum from './js/numberAbbreviator.js';
+import '../../css/Tooltip.css';
+import { AppContext } from '../main/AppContext.jsx';
+import abbreviateNum from '../../js/numberAbbreviator.js';
 
 function Tooltip({ position }) {
   const {

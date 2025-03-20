@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
-import './css/Upgrade.css';
-import upgradeLevelUp from '../public/sounds/upgradeLevelUp.mp3';
-import abbreviateNum from './js/numberAbbreviator.js';
-import getTrainerImage from './js/TrainerLevels.js';
-import { AppContext } from './main/AppContext.jsx';
+import '../../css/Upgrade.css';
+import upgradeLevelUp from '../../../public/sounds/upgradeLevelUp.mp3';
+import abbreviateNum from '../../js/numberAbbreviator.js';
+import getTrainerImage from '../../js/TrainerLevels.js';
+import { AppContext } from '../main/AppContext.jsx';
 
 function Upgrade({
   id,

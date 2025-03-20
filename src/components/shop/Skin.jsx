@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import './css/Skin.css';
-import { AppContext } from './main/AppContext.jsx';
+import '../../css/Skin.css';
+import { AppContext } from '../main/AppContext.jsx';
 
 function Skin({
   id,

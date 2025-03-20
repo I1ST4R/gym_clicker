@@ -4,7 +4,7 @@ import 'swiper/swiper-bundle.css';
 import Upgrades from './Upgrades.jsx';
 import Busters from './Busters.jsx';
 import Skins from './Skins.jsx';
-import './css/SliderStyles.css';
+import '../../css/SliderStyles.css';
 
 const SliderContainer = () => {
   const swiperRef = useRef(null);

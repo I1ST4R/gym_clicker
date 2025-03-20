@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
-import { AppContext } from './main/AppContext.jsx';
+import { AppContext } from '../main/AppContext.jsx';
 import ImageSection from './ImageSection';
-import './css/ImageSections.css'; // Импортируем стили
+import '../../css/ImageSections.css'; 
 
 function ImageSections() {
   const { pasIncreaseMoney, actIncreaseMoney, upgrades, resultImages, setResultImages } = useContext(AppContext);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './css/DnkUpgrades.css';
+import '../../css/DnkUpgrades.css';
 import DnkUpgrade from './DnkUpgrade.jsx';
 
-import { AppContext } from './main/AppContext.jsx';
+import { AppContext } from '../main/AppContext.jsx';
 
 function DnkUpgrades({ }) {
   const {

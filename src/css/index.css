@@ -48,6 +48,7 @@ body {
   width: 100vw !important;
   height:100vh;
   overflow-y: hidden;
+  cursor:url(dumbbell.png), pointer;
 }
 
 h1 {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import './css/Buster.css';
-import abbreviateNum from './js/numberAbbreviator.js';
-import { AppContext } from './main/AppContext.jsx';
+import '../../css/Buster.css';
+import abbreviateNum from '../../js/numberAbbreviator.js';
+import { AppContext } from '../main/AppContext.jsx';
 
 // Кастомный хук для управления curCooldown
 const useBusterCooldown = (id, initialCooldown) => {

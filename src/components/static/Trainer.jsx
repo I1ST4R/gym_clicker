@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './css/Trainer.css';
-import moneyClick from '../public/sounds/moneyClick.mp3';
+import '../../css/Trainer.css';
+import moneyClick from '../../../public/sounds/moneyClick.mp3';
 import Coin from './Coin';
 
-import { AppContext } from './main/AppContext.jsx';
+import { AppContext } from '../main/AppContext.jsx';
 
 function Trainer({ onClick }) {
   const {

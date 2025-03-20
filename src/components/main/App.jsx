@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import 'swiper/swiper-bundle.css';
-import Trainer from '../Trainer.jsx';
-import Counters from '../Counters.jsx';
-import Client from '../Client.jsx';
-import DnkUpgrades from '../DnkUpgrades.jsx';
-import StoryIntro from '../StoryIntro.jsx';
-import StoryAutro from '../StoryAutro.jsx';
-import Tooltip from '../Tooltip.jsx';
-import CustomAlert from '../CustomAlert';
-import Footer from '../Footer';
-import '../css/App.css';
+import Trainer from '../static/Trainer.jsx';
+import Counters from '../static/Counters.jsx';
+import Client from '../showingComponents/Client.jsx';
+import DnkUpgrades from '../shop/DnkUpgrades.jsx';
+import StoryIntro from '../showingComponents/StoryIntro.jsx';
+import StoryAutro from '../showingComponents/StoryAutro.jsx';
+import Tooltip from '../showingComponents/Tooltip.jsx';
+import CustomAlert from '../showingComponents/CustomAlert';
+import Footer from '../static/Footer';
+import '../../css/App.css';
 import { AppContext } from './AppContext.jsx';
-import SliderContainer from '../SliderContainer';
-import ImageSections from '../ImageSections.jsx';
-import DnkProgressBar from '../DnkProgressBar';
+import SliderContainer from '../shop/SliderContainer.jsx';
+import ImageSections from '../showingComponents/ImageSections.jsx';
+import DnkProgressBar from '../showingComponents/DnkProgressBar';
 
 function App() {
   const {

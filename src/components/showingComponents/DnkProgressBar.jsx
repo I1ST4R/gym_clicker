@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { AppContext } from './main/AppContext.jsx';
-import abbreviateNum from './js/numberAbbreviator.js';
-import './css/DnkProgressBar.css';
+import { AppContext } from '../main/AppContext.jsx';
+import abbreviateNum from '../../js/numberAbbreviator.js';
+import '../../css/DnkProgressBar.css';
 
 function DnkProgressBar() {
   const { pasIncreaseMoney, countDnk } = useContext(AppContext);

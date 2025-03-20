@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react'
-import './css/Client.css'
-import ClientsAfter from './js/ClientsAfter.js'
-import ClientsBefore from './js/ClientsBefore.js'
-import clientClick from '../public/sounds/clientClick.mp3'
-import clientUpgrade from '../public/sounds/clientUpgrade.mp3'
-import clientThanksgiving from '../public/sounds/clientThanksgiving.mp3'
-import abbreviateNum from './js/numberAbbreviator.js'
-import { AppContext } from './main/AppContext.jsx'
+import '../../css/Client.css'
+import ClientsAfter from '../../js/ClientsAfter.js'
+import ClientsBefore from '../../js/ClientsBefore.js'
+import clientClick from '../../../public/sounds/clientClick.mp3'
+import clientUpgrade from '../../../public/sounds/clientUpgrade.mp3'
+import clientThanksgiving from '../../../public/sounds/clientThanksgiving.mp3'
+import abbreviateNum from '../../js/numberAbbreviator.js'
+import { AppContext } from '../main/AppContext.jsx'
 
 function Client() {
   const {

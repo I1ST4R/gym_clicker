@@ -1,6 +1,6 @@
 import React, {useContext } from 'react';
-import './css/CustomAlert.css';
-import { AppContext } from './main/AppContext.jsx';
+import '../../css/CustomAlert.css';
+import { AppContext } from '../main/AppContext.jsx';
 
 function CustomAlert({ message, onConfirm, onCancel }) {
   const {

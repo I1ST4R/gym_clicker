@@ -1,6 +1,6 @@
 import React, { useState, useContext  } from 'react';
-import './css/StoryIntro.css';
-import { AppContext } from './main/AppContext.jsx';
+import '../../css/StoryIntro.css';
+import { AppContext } from '../main/AppContext.jsx';
 
 const StoryIntro = ({ onClose }) => {
 

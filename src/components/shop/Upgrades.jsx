@@ -1,8 +1,8 @@
 import React, {useContext } from 'react';
-import './css/slide.css';
+import '../../css/slide.css';
 import Upgrade from './Upgrade.jsx';
 
-import { AppContext } from './main/AppContext.jsx';
+import { AppContext } from '../main/AppContext.jsx';
 
 function Upgrades() {
   const {
