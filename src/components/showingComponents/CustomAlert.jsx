@@ -1,12 +1,14 @@
-import React, {useContext } from 'react';
+import React from 'react';
 import '../../css/CustomAlert.css';
-import { AppContext } from '../main/AppContext.jsx';
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
 
 function CustomAlert({ message, onConfirm, onCancel }) {
   const {
-    showCustomAlert,
-  } = useContext(AppContext);
-  if (!showCustomAlert) return
+    alert: { showCustomAlert },
+  } = useUIContext();
+
+  if (!showCustomAlert) return null;
+
   return (
     <div className="custom-alert-overlay">
       <div className="custom-alert">

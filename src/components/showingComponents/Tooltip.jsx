@@ -1,33 +1,38 @@
-import React, { useContext,  useEffect } from 'react';
+import React, { useEffect } from 'react';
 import '../../css/Tooltip.css';
-import { AppContext } from '../main/AppContext.jsx';
 import abbreviateNum from '../../js/numberAbbreviator.js';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
+import { useShopContext } from '../main/ShopContext'; // Кастомный хук для ShopContext
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
 
 function Tooltip({ position }) {
+  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    tooltipPosition,
-    isUpgradeHovered,
-    isBusterHovered,
-    isCounterHovered,
-    isDnkHovered,
-    upgrades,
-    busters,
-    dnkUpgrades,
-    increaseMultiplier,
-    countDnk,
-    setIsDnkHovered,
-    diamondPurchases,
-    isSkinHovered,
-  } = useContext(AppContext);
+    counters: { countDnk },
+  } = useStatsContext();
+
+  // Используем кастомный хук для доступа к данным из ShopContext
+  const {
+    upgrades: { upgrades },
+    busters: { busters },
+    dnk: { dnkUpgrades, increaseMultiplier },
+    skins: { diamondPurchases },
+  } = useShopContext();
+
+  // Используем кастомный хук для доступа к данным из UIContext
+  const {
+    tooltip: { tooltipPosition, setIsDnkHovered, isUpgradeHovered, isBusterHovered, isCounterHovered, isDnkHovered, isSkinHovered },
+  } = useUIContext();
 
   let tooltipContent = null;
   let tooltipType = 'null';
 
-  useEffect(()=>{
-    if (countDnk === 0n) setIsDnkHovered(false)
-  },[countDnk])
+  useEffect(() => {
+    if (countDnk === 0n) setIsDnkHovered(false);
+  }, [countDnk]);
 
-  if(isDnkHovered && countDnk === 0n) return
+  if (isDnkHovered && countDnk === 0n) return null;
+
   if (isSkinHovered) {
     const skin = diamondPurchases[tooltipPosition.id - 1];
     tooltipContent = {
@@ -79,12 +84,11 @@ function Tooltip({ position }) {
       {tooltipType === 'Skin' && (
         <>
           <p>{tooltipContent.desc}</p>
-          { !tooltipContent.isBuyed &&
-            (<p className="Tooltip__price-info">
+          {!tooltipContent.isBuyed && (
+            <p className="Tooltip__price-info">
               {`Цена: ${tooltipContent.price}`}
-            </p>)
-          }
-          
+            </p>
+          )}
         </>
       )}
 

@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import '../../css/Skin.css';
-import { AppContext } from '../main/AppContext.jsx';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
 
 function Skin({
   id,
@@ -11,14 +12,17 @@ function Skin({
   onActivate,
   onBuy
 }) {
+  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    countDiamond,
-    setTooltipPosition,
-    setIsSkinHovered,
-    tooltipPosition,
-  } = useContext(AppContext);
+    counters: { countDiamond },
+  } = useStatsContext();
 
-  const isEnoughtDiamonds = countDiamond >= price;
+  // Используем кастомный хук для доступа к данным из UIContext
+  const {
+    tooltip: { setTooltipPosition, setIsSkinHovered },
+  } = useUIContext();
+
+  const isEnoughtDiamonds = countDiamond >= BigInt(price);
 
   const handleSkinClick = () => {
     if (isBuyed) {

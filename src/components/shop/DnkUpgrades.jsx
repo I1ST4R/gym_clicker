@@ -1,59 +1,66 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import '../../css/DnkUpgrades.css';
 import DnkUpgrade from './DnkUpgrade.jsx';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
+import { useShopContext } from '../main/ShopContext'; // Кастомный хук для ShopContext
 
-import { AppContext } from '../main/AppContext.jsx';
-
-function DnkUpgrades({ }) {
+function DnkUpgrades() {
+  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    setMaxDelay,
-    maxDelay,
-    setMinDelay,
-    minDelay,
-    setMultiplier,
-    multiplier,
-    setDnkUpgrades,
-    countDnk,
-    setCountDnk,
-    dnkUpgrades,
-    setPriceMultiplier,
-    setIncreaseMultiplier,
-    setCooldwonDiscount,
-  } = useContext(AppContext);
+    counters: { countDnk, setCountDnk },
+    delay: { minDelay, setMinDelay, maxDelay, setMaxDelay },
+  } = useStatsContext();
+
+  // Используем кастомный хук для доступа к данным из ShopContext
+  const {
+    dnk: {
+      dnkUpgrades,
+      setDnkUpgrades,
+      multiplier,
+      setMultiplier,
+      priceMultiplier,
+      setPriceMultiplier,
+      increaseMultiplier,
+      setIncreaseMultiplier,
+      cooldownDiscount,
+      setCooldownDiscount,
+    },
+  } = useShopContext();
 
   const handleUpgradeLevelChange = (id) => {
     const updatedDnkUpgrades = dnkUpgrades.map((dnkUpgrade) => {
-
       if (dnkUpgrade.id === id) {
-        setCountDnk(countDnk - 1n)
+        setCountDnk(countDnk - 1n);
         const updatedDUpgrade = {
           ...dnkUpgrade,
           level: dnkUpgrade.level + 1,
-        }
-        let increase = Math.pow(1.01, dnkUpgrade.level)
-        let decrease = Math.pow(0.99, dnkUpgrade.level)
+        };
+        let increase = Math.pow(1.01, dnkUpgrade.level);
+        let decrease = Math.pow(0.99, dnkUpgrade.level);
         switch (id) {
           case 1:
-            setPriceMultiplier(decrease)
+            setPriceMultiplier(decrease);
             break;
           case 2:
-            setIncreaseMultiplier(increase)
+            setIncreaseMultiplier(increase);
             break;
           case 3:
-            setCooldwonDiscount(decrease)
+            setCooldownDiscount(decrease);
             break;
           case 4:
-            setMaxDelay(Math.floor(maxDelay * 0.99))
-            setMinDelay(Math.floor(minDelay * 0.99))
+            setMaxDelay(Math.floor(maxDelay * 0.99));
+            setMinDelay(Math.floor(minDelay * 0.99));
             break;
           case 5:
-            setMultiplier(multiplier * 1.01)
+            setMultiplier(multiplier * 1.01);
+            break;
+          default:
             break;
         }
         return updatedDUpgrade;
       }
       return dnkUpgrade;
-    })
+    });
 
     setDnkUpgrades(updatedDnkUpgrades);
   };
@@ -61,7 +68,7 @@ function DnkUpgrades({ }) {
   return (
     <div className="DnkUpgrades">
       <div className="DnkUpgrades__counter">
-        {countDnk}
+        {countDnk.toString()}
         <img src="dnk.png" alt="" />
       </div>
       <p className="DnkUpgrades__title">Мутации</p>
@@ -76,8 +83,6 @@ function DnkUpgrades({ }) {
           />
         ))}
       </div>
-
-
     </div>
   );
 }

@@ -1,15 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import '../../css/StoryIntro.css';
-import { AppContext } from '../main/AppContext.jsx';
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
 
-const StoryAutro = (onClose) => {
-
+const StoryAutro = () => {
   const {
-    setStoryAutroShown,
-    storyAutroShown,
-    end,
-  } = useContext(AppContext);
-  
+    story: { setStoryAutroShown },
+  } = useUIContext();
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
@@ -51,7 +48,7 @@ const StoryAutro = (onClose) => {
   };
 
   const handleClose = () => {
-    setStoryAutroShown(true)
+    setStoryAutroShown(true);
   };
 
   return (

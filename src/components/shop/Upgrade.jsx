@@ -1,9 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import '../../css/Upgrade.css';
 import upgradeLevelUp from '../../../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from '../../js/numberAbbreviator.js';
 import getTrainerImage from '../../js/TrainerLevels.js';
-import { AppContext } from '../main/AppContext.jsx';
+import { useStatsContext } from '../main/StatsContext'; 
+import { useShopContext } from '../main/ShopContext'; 
+import { useUIContext } from '../main/UIContext'; 
 
 function Upgrade({
   id,
@@ -16,19 +18,23 @@ function Upgrade({
   isInvisible,
   onUpgradeLevelChange,
 }) {
+
   const {
-    upgrades,
-    setCountMoney,
-    countMoney,
-    isDiscountExists,
-    setEnd,
-    priceMultiplier,
-    setTooltipPosition,
-    setIsUpgradeHovered,
-    setTrainerImage,
-    showAlert, 
-    setShowCustomAlert,
-  } = useContext(AppContext);
+    counters: { countMoney, setCountMoney },
+    end: { setEnd },
+  } = useStatsContext();
+
+  const {
+    upgrades: { upgrades },
+    dnk: { priceMultiplier },
+    busters: { isDiscountExists },
+  } = useShopContext();
+
+  const {
+    tooltip: { setTooltipPosition, setIsUpgradeHovered },
+    alert: { showAlert, setShowCustomAlert },
+    trainerImage: { setTrainerImage },
+  } = useUIContext();
 
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
@@ -41,7 +47,7 @@ function Upgrade({
 
   const handleMouseLeave = () => {
     setIsUpgradeHovered(false);
-  }
+  };
 
   let priceWithMults, dnkMult;
   let discount = (isDiscountExists ? 1 : 2) / 2;
@@ -49,9 +55,9 @@ function Upgrade({
     dnkMult = priceMultiplier;
     priceWithMults = BigInt(Math.floor(initialPrice * dnkMult * discount));
   } else {
-    dnkMult = BigInt(Math.floor((priceMultiplier * 100)));
+    dnkMult = BigInt(Math.floor(priceMultiplier * 100));
     let flooredPrice = BigInt(initialPrice);
-    priceWithMults = BigInt(flooredPrice / 1000n * dnkMult * BigInt(discount * 10));
+    priceWithMults = BigInt((flooredPrice / 1000n) * dnkMult * BigInt(discount * 10));
   }
 
   const isEnoughMoney = countMoney >= priceWithMults;
@@ -60,7 +66,9 @@ function Upgrade({
   const doChanges = () => {
     onUpgradeLevelChange(id);
     setCountMoney(countMoney - priceWithMults);
-    id === 1 ? setTrainerImage(getTrainerImage(level + 1)) : "";
+    if (id === 1) {
+      setTrainerImage(getTrainerImage(level + 1));
+    }
   };
 
   const handleUpgradeClick = () => {
@@ -68,11 +76,11 @@ function Upgrade({
       showAlert(
         "При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?",
         () => {
-          setShowCustomAlert(false)
-          setEnd(true)
+          setShowCustomAlert(false);
+          setEnd(true);
         },
         () => {
-          setShowCustomAlert(false)
+          setShowCustomAlert(false);
         }
       );
       return;
@@ -90,7 +98,7 @@ function Upgrade({
           ${!isEnoughMoney ? 'Upgrade--nonavailable' : ''} 
           ${isHidden ? 'Upgrade--hidden' : ''}
           ${isInvisible ? 'Upgrade--invisible' : ''}
-          `}
+        `}
         onClick={handleUpgradeClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

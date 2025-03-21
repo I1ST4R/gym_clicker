@@ -1,25 +1,31 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../../css/slide.css';
 import Skin from './Skin.jsx';
-import { AppContext } from '../main/AppContext.jsx';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
+import { useShopContext } from '../main/ShopContext'; // Кастомный хук для ShopContext
 
 function Skins() {
+  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    diamondPurchases,
-    setDiamondPurchases,
-    countDiamond,
-    setCountDiamond,
-    setBackgroundImage,
-    setIsClientImgAdded,
-    cursorImage,
-    setCursorImage,
-    backgroundRightImage,
-    setBackgroundRightImage,
-  } = useContext(AppContext);
+    counters: { countDiamond, setCountDiamond },
+  } = useStatsContext();
+
+  // Используем кастомный хук для доступа к данным из ShopContext
+  const {
+    skins: {
+      diamondPurchases, setDiamondPurchases,
+      setIsClientImgAdded, isClientImgAdded,
+      setBackgroundImage,
+      cursorImage, setCursorImage,
+      backgroundRightImage, setBackgroundRightImage,
+      backgroundLeftImage, setBackgroundLeftImage,
+      setIsBgCharacterAdded
+    },
+  } = useShopContext();
 
   // Обработчик изменений активного элемента
   const handleActiveChanges = () => {
-    const activeItem = diamondPurchases.find(item => item.isActive);
+    const activeItem = diamondPurchases.find((item) => item.isActive);
 
     if (activeItem) {
       switch (activeItem.id) {
@@ -27,6 +33,9 @@ function Skins() {
         case 2:
         case 3:
         case 4:
+        case 9:
+        case 11:
+        case 12:
           setBackgroundImage(activeItem.img);
           break;
         case 5:
@@ -36,7 +45,13 @@ function Skins() {
           setCursorImage(activeItem.img);
           break;
         case 7:
-          setBackgroundRightImage(false); 
+          setBackgroundRightImage(false);
+          break;
+        case 8:
+          setIsBgCharacterAdded(true);
+          break;
+        case 10:
+          setBackgroundLeftImage(false);
           break;
         default:
           break;
@@ -63,6 +78,28 @@ function Skins() {
       });
     }
   }, [backgroundRightImage]);
+
+  // Убираем фон у элементов с классами image-container и image-section, если backgroundLeftImage === false
+  useEffect(() => {
+    const imageContainerElements = document.querySelectorAll('.image-container');
+    const imageSectionElements = document.querySelectorAll('.image-section');
+
+    if (backgroundLeftImage === false) {
+      imageContainerElements.forEach((element) => {
+        element.style.background = 'none'; // Убираем фон
+      });
+      imageSectionElements.forEach((element) => {
+        element.style.background = 'none'; // Убираем фон
+      });
+    } else {
+      imageContainerElements.forEach((element) => {
+        element.style.background = ''; // Возвращаем фон по умолчанию
+      });
+      imageSectionElements.forEach((element) => {
+        element.style.background = ''; // Возвращаем фон по умолчанию
+      });
+    }
+  }, [backgroundLeftImage]);
 
   // Применяем кастомный курсор ко всем элементам
   useEffect(() => {
@@ -93,10 +130,10 @@ function Skins() {
 
   // Обработчик активации элемента
   const handleActivate = (id) => {
-    const activeItem = diamondPurchases.find(item => item.id === id);
+    const activeItem = diamondPurchases.find((item) => item.id === id);
     if (!activeItem) return;
 
-    const updatedPurchases = diamondPurchases.map(item => {
+    const updatedPurchases = diamondPurchases.map((item) => {
       // Делаем активным только выбранный элемент
       if (item.id === id) {
         return { ...item, isActive: true };
@@ -113,12 +150,12 @@ function Skins() {
 
   // Обработчик покупки элемента
   const handleBuy = (id) => {
-    const itemToBuy = diamondPurchases.find(item => item.id === id);
+    const itemToBuy = diamondPurchases.find((item) => item.id === id);
 
     if (itemToBuy && !itemToBuy.isBuyed && countDiamond >= BigInt(itemToBuy.price)) {
       setCountDiamond(countDiamond - BigInt(itemToBuy.price));
 
-      const updatedPurchases = diamondPurchases.map(item => {
+      const updatedPurchases = diamondPurchases.map((item) => {
         if (item.id === id) {
           return { ...item, isBuyed: true, isActive: true };
         }

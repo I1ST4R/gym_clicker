@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import '../../css/Counters.css'; 
+import React, { useEffect, useState } from 'react';
+import '../../css/Counters.css';
 import abbreviateNum from '../../js/numberAbbreviator.js';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
 
-import { AppContext } from '../main/AppContext.jsx';
+function Counters() {
+  // Используем кастомный хук для доступа к данным из StatsContext
+  const {
+    counters: { countDiamond, countMoney },
+    increases: {pasIncreaseMoney}
+  } = useStatsContext();
 
-function Counter() {
-
-  const{
-    countDiamond,
-    pasIncreaseMoney,
-    countMoney,
-    setIsCounterHovered,
-    setTooltipPosition,
-  } = useContext(AppContext); 
+  // Используем кастомный хук для доступа к данным из UIContext
+  const {
+    tooltip: { setTooltipPosition, setIsCounterHovered },
+  } = useUIContext();
 
   const [hasDiamondBeenPositive, setHasDiamondBeenPositive] = useState(false);
   const [hasPasIncreaseMoneyBeenPositive, setHasPasIncreaseMoneyBeenPositive] = useState(false);
@@ -21,7 +23,7 @@ function Counter() {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
       top: cardRect.top,
-      id:1
+      id: 1,
     });
     setIsCounterHovered(true);
   };
@@ -43,7 +45,7 @@ function Counter() {
   }, [pasIncreaseMoney]);
 
   return (
-    <div 
+    <div
       className="Counters"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -70,4 +72,4 @@ function Counter() {
   );
 }
 
-export default Counter;
+export default Counters;

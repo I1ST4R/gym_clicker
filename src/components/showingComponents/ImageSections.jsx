@@ -1,11 +1,18 @@
-import React, { useEffect, useContext } from 'react';
-import { AppContext } from '../main/AppContext.jsx';
+import React, { useEffect } from 'react';
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для ShopContext
+import { useShopContext } from '../main/ShopContext'; // Кастомный хук для ShopContext
 import ImageSection from './ImageSection';
 import '../../css/ImageSections.css'; 
 
 function ImageSections() {
-  const { pasIncreaseMoney, actIncreaseMoney, upgrades, resultImages, setResultImages } = useContext(AppContext);
+  const {
+    resultImages: { resultImages, setResultImages },
+  } = useUIContext();
 
+  const {
+    upgrades: { upgrades },
+  } = useShopContext();
+  
   // Генерация случайных позиций для картинок
   const generateRandomPosition = () => {
     const width = 80; // Фиксированная ширина картинки
@@ -51,7 +58,7 @@ function ImageSections() {
       }
     });
     setResultImages(newResultImages);
-  }, [pasIncreaseMoney, actIncreaseMoney, upgrades, setResultImages]);
+  }, [upgrades, setResultImages]);
 
   // Группируем картинки по улучшениям
   const groupedImages = {};

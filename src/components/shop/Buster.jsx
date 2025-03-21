@@ -1,21 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../css/Buster.css';
 import abbreviateNum from '../../js/numberAbbreviator.js';
-import { AppContext } from '../main/AppContext.jsx';
-
-// Кастомный хук для управления curCooldown
-const useBusterCooldown = (id, initialCooldown) => {
-  const [curCooldown, setCurCooldown] = useState(() => {
-    const savedCooldown = localStorage.getItem(`buster_${id}_cooldown`);
-    return savedCooldown ? parseInt(savedCooldown, 10) : initialCooldown;
-  });
-
-  useEffect(() => {
-    localStorage.setItem(`buster_${id}_cooldown`, curCooldown);
-  }, [curCooldown, id]);
-
-  return [curCooldown, setCurCooldown];
-};
+import { useStatsContext } from '../main/StatsContext'; 
+import { useShopContext } from '../main/ShopContext'; 
+import { useUIContext } from '../main/UIContext'; 
+import { useBusterCooldown } from '../main/ShopContext';
 
 function Buster({
   id,
@@ -31,24 +20,32 @@ function Buster({
   onActivateBuster,
 }) {
   const {
-    setTooltipPosition,
-    setIsBusterHovered,
-    pasIncreaseMoney,
-    cooldownDiscount,
-    busters,
-    end,
-  } = useContext(AppContext);
+    increases: { pasIncreaseMoney },
+  } = useStatsContext();
+  const {
+    dnk: { cooldownDiscount },
+    formatTime,
+  } = useShopContext();
+  const {
+    tooltip: { setTooltipPosition, setIsBusterHovered },
+  } = useUIContext();
 
-  // Используем кастомный хук для управления curCooldown
-  const [curCooldown, setCurCooldown] = useBusterCooldown(id, 0);
-
+  //таймеры
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  const isMaxLevel = level >= maxLvl;
-  const isEnoughClients = pasIncreaseMoney >= initialPrice;
+  // Очистка таймеров при размонтировании
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
 
   // Таймер перезарядки
+  const [curCooldown, setCurCooldown] = useBusterCooldown(id, 0);
+
   useEffect(() => {
     if (curCooldown > 0) {
       intervalRef.current = setInterval(() => {
@@ -61,12 +58,6 @@ function Buster({
     return () => clearInterval(intervalRef.current);
   }, [curCooldown]);
 
-  // Форматирование времени для отображения
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60000);
-    const seconds = Math.floor((time % 60000) / 1000);
-    return minutes > 0 ? `${minutes} мин. ${seconds} сек.` : `${seconds} сек.`;
-  };
 
   // Обработчик наведения мыши
   const handleMouseEnter = (event) => {
@@ -82,12 +73,17 @@ function Buster({
     setIsBusterHovered(false);
   };
 
+
   // Обработчик улучшения бустера
+  const isMaxLevel = level >= maxLvl;
+  const isEnoughClients = pasIncreaseMoney >= initialPrice;
+
   const handleUpgradeBusterClick = () => {
     if (isEnoughClients && !isMaxLevel) {
       onBusterLevelChange(id);
     }
   };
+  
 
   // Обработчик активации бустера
   const handleActivateBusterClick = () => {
@@ -97,19 +93,10 @@ function Buster({
         // После завершения времени действия запускаем перезарядку
         setCurCooldown(Math.floor(cooldown * cooldownDiscount));
       }, time);
-
       // Вызываем внешний обработчик активации бустера
       onActivateBuster(id, time);
     }
   };
-
-  // Очистка таймеров при размонтировании
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, []);
 
   return (
     <div

@@ -1,19 +1,16 @@
-import React, { useState, useContext  } from 'react';
+import React, { useState } from 'react';
 import '../../css/StoryIntro.css';
-import { AppContext } from '../main/AppContext.jsx';
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
 
-const StoryIntro = ({ onClose }) => {
-
+const StoryIntro = () => {
   const {
-    setStoryIntroShown,
-    storyIntroShown,
-    end,
-  } = useContext(AppContext);
+    story: { setStoryIntroShown },
+  } = useUIContext();
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-    { 
+    {  
       image: 'StoryIntro/img1.png', 
       caption: 'Вы - директор крупной компании, которая занимается проиводством спортивного питания, а также имеет собственные спортивные залы по всему миру. Вы счастливы.' 
     },

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import 'swiper/swiper-bundle.css';
+import React, { useEffect } from 'react';
 import Trainer from '../static/Trainer.jsx';
 import Counters from '../static/Counters.jsx';
 import Client from '../showingComponents/Client.jsx';
@@ -10,93 +9,47 @@ import Tooltip from '../showingComponents/Tooltip.jsx';
 import CustomAlert from '../showingComponents/CustomAlert';
 import Footer from '../static/Footer';
 import '../../css/App.css';
-import { AppContext } from './AppContext.jsx';
 import SliderContainer from '../shop/SliderContainer.jsx';
 import ImageSections from '../showingComponents/ImageSections.jsx';
 import DnkProgressBar from '../showingComponents/DnkProgressBar';
+import BgCharacterBlock from '../shop/BgCharacterBlock.jsx';
+import { useStatsContext } from './StatsContext'; // Кастомный хук для StatsContext
+import { useShopContext } from './ShopContext'; // Кастомный хук для ShopContext
+import { useUIContext } from './UIContext'; // Кастомный хук для UIContext
 
 function App() {
+  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    countMoney, setCountMoney,
-    countDnk, setCountDnk,
-    pasIncreaseMoney,
-    actIncreaseMoney,
-    resultImages,
-    resetProgress,
-    tooltipPosition,
-    storyAutroShown,
-    end,
-    isSkinHovered,
-    alertMessage,
-    alertOnConfirm,
-    alertOnCancel,
-    isBusterHovered,
-    isUpgradeHovered,
-    isCounterHovered,
-    isDnkHovered,
-    storyIntroShown,
-    backgroundImage, // Получаем фоновое изображение из контекста
-  } = useContext(AppContext);
+    counters: { countMoney, countDnk, setCountMoney, setCountDnk, incrementCountMoneyForClick },
+    increases: { pasIncreaseMoney, actIncreaseMoney },
+    end: { end, setEnd },
+    resetStats, 
+  } = useStatsContext();
 
-  // Изменение фона для всей страницы
-  useEffect(() => {
-    if (backgroundImage) {
-      document.body.style.backgroundImage = `url(${backgroundImage})`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center';
-      document.body.style.backgroundRepeat = 'no-repeat';
-    } else {
-      document.body.style.backgroundImage = 'none';
-    }
-  }, [backgroundImage]); // Зависимость от backgroundImage
+  // Используем кастомный хук для доступа к данным из ShopContext
+  const {
+    skins: { backgroundImage, setBackgroundImage },
+    resetShop,
+  } = useShopContext();
 
-  // Активный доход (за клик)
-  const incrementCountMoneyForClick = () => {
-    setCountMoney(countMoney + actIncreaseMoney);
-  };
-
-  // Пассивный доход (в сек.)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCountMoney((prevCountMoney) => prevCountMoney + pasIncreaseMoney);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [pasIncreaseMoney, setCountMoney]);
-
-  // Расчет днк
-  useEffect(() => {
-    const log3 = (value) => {
-      if (value < 3n) return 0n;
-      let count = 0n;
-      while (value >= 3n) {
-        value /= 3n;
-        count += 1n;
-      }
-      return count;
-    };
-
-    const divisor = 1000000000000000000n;
-    const increaseDnk = log3(pasIncreaseMoney / divisor);
-    setCountDnk(increaseDnk);
-  }, [pasIncreaseMoney]);
+  // Используем кастомный хук для доступа к данным из UIContext
+  const {
+    alert: { alertMessage, alertOnConfirm, alertOnCancel },
+    tooltip: { tooltipPosition, isUpgradeHovered, isDnkHovered, isBusterHovered, isCounterHovered, isSkinHovered },
+    story: { storyIntroShown, storyAutroShown },
+    trainerImage: { trainerImage },
+    resultImages: { resultImages },
+    resetUI,
+  } = useUIContext();
 
   // Сброс прогресса
   useEffect(() => {
-    countDnk === 0n && storyAutroShown ? resetProgress() : "";
-  }, [countDnk]);
-
-  // Для слайдера
-  const swiperRef = useRef(null);
-  const goNext = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.slideNext();
+    if (countDnk === 0n && storyAutroShown) {
+      resetStats()
+      resetShop()
+      resetUI()
     }
-  };
-  const goPrev = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.slidePrev();
-    }
-  };
+  }, [countDnk, storyAutroShown]);
 
   return (
     <div className="App">
@@ -105,12 +58,14 @@ function App() {
       {!end && !storyIntroShown && <StoryIntro />}
 
       <Client />
-      <Trainer onClick={incrementCountMoneyForClick} />
+      <Trainer/>
       <Counters />
       <SliderContainer
-        goNext={goNext}
-        goPrev={goPrev}
+        goNext={() => {}}
+        goPrev={() => {}}
       />
+
+      <BgCharacterBlock />
       {(isBusterHovered || isUpgradeHovered || isCounterHovered || isDnkHovered || isSkinHovered) &&
         <Tooltip position={tooltipPosition} />
       }

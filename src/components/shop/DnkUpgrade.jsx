@@ -1,30 +1,32 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import '../../css/DnkUpgrade.css';
-
-import { AppContext } from '../main/AppContext.jsx';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
 
 function DnkUpgrade({
   id,
   img,
   benefit,
   onUpgradeLevelChange,
-  }) {
-
+}) {
+  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    setTooltipPosition,
-    setIsDnkHovered,
-    tooltipPosition,
-    countDnk,
-  } = useContext(AppContext);
-  
+    counters: { countDnk },
+  } = useStatsContext();
+
+  // Используем кастомный хук для доступа к данным из UIContext
+  const {
+    tooltip: { setTooltipPosition, setIsDnkHovered },
+  } = useUIContext();
+
   const handleMouseEnter = (event) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
       right: window.innerWidth - cardRect.right - 30,
-      top:460, 
+      top: 460,
       id: id,
     });
-    setIsDnkHovered(true)
+    setIsDnkHovered(true);
   };
 
   const handleMouseLeave = () => {
@@ -32,18 +34,20 @@ function DnkUpgrade({
   };
 
   const handleUpgradeClick = () => {
-    onUpgradeLevelChange(id);
+    if (countDnk >= 1n) {
+      onUpgradeLevelChange(id);
+    }
   };
 
   return (
-    <div className='DnkUpgrade'
-    onMouseEnter={handleMouseEnter} 
-    onMouseLeave={handleMouseLeave}
-    onClick={handleUpgradeClick}
+    <div
+      className='DnkUpgrade'
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleUpgradeClick}
     >
-      <img className='DnkUpgrade__img' src={img} alt="" /> 
+      <img className='DnkUpgrade__img' src={img} alt="" />
     </div>
-
   );
 }
 

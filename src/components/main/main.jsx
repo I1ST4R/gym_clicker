@@ -2,12 +2,18 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '../../css/index.css';
 import App from './App.jsx';
-import { AppProvider } from './AppContext.jsx'; 
+import { ShopProvider } from './ShopContext'; 
+import { StatsProvider } from './StatsContext';
+import { UIProvider } from './UIContext';
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <AppProvider> 
+        <UIProvider>     
+        <StatsProvider>     
+        <ShopProvider>     
             <App />
-        </AppProvider>
+        </ShopProvider>
+        </StatsProvider>
+        </UIProvider>
     </StrictMode>
 );

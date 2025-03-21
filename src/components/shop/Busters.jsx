@@ -1,24 +1,24 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import '../../css/slide.css';
 import Buster from './Buster.jsx';
-import { AppContext } from '../main/AppContext.jsx';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
+import { useShopContext } from '../main/ShopContext'; // Кастомный хук для ShopContext
 
-function Busters({ onIncreaseDiamond }) {
+function Busters({}) {
+  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    busters,
-    setBusters,
-    setCountMoney,
-    setPasIncreaseMoney,
-    pasIncreaseMoney,
-    setActIncreaseMoney,
-    actIncreaseMoney,
-    setIsDiscountExists,
-    cooldownDiscount,
-  } = useContext(AppContext);
+    counters: { setCountMoney },
+    increases: { pasIncreaseMoney, setPasIncreaseMoney, actIncreaseMoney, setActIncreaseMoney },
+  } = useStatsContext();
+
+  // Используем кастомный хук для доступа к данным из ShopContext
+  const {
+    busters: { busters, setBusters, setIsDiscountExists },
+    dnk: { cooldownDiscount },
+  } = useShopContext();
 
   // Обработчик изменения уровня бустера
   const handleBusterLevelChange = (id) => {
-    console.log(1)
     const updatedBusters = busters.map((buster) => {
       if (buster.id === id) {
         const isFirstLevel = buster.level === 0;
@@ -34,24 +34,24 @@ function Busters({ onIncreaseDiamond }) {
     setBusters(updatedBusters);
   };
 
+  // Обработчик активации бустера
   const handleActivateBuster = (id, time) => {
     const updatedBusters = busters.map((buster) => {
       if (buster.id === id) {
         return {
           ...buster,
           curCooldown: Math.floor(buster.cooldown * cooldownDiscount),
-          isActive: false, 
+          isActive: false,
         };
       }
       return buster;
     });
-    console.log(updatedBusters)
     setBusters(updatedBusters);
-  
+
     // Логика эффектов бустера
     const buster = busters.find((b) => b.id === id);
     if (!buster || buster.level === 0) return;
-  
+
     switch (id) {
       case 1:
         const actIncreaseMoneyBefore = actIncreaseMoney;

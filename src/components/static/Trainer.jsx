@@ -1,21 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/Trainer.css';
 import moneyClick from '../../../public/sounds/moneyClick.mp3';
 import Coin from './Coin';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для ShopContext
+import { useUIContext } from '../main/UIContext'; // Кастомный хук для ShopContext
 
-import { AppContext } from '../main/AppContext.jsx';
-
-function Trainer({ onClick }) {
+function Trainer({}) {
+  // Используем кастомный хук для доступа к данным из ShopContext
   const {
-    trainerImage
-  } = useContext(AppContext);
+    trainerImage: { trainerImage },
+  } = useUIContext();
+
+  const {
+    counters: {incrementCountMoneyForClick}
+  } = useStatsContext();
 
   const [isJumping, setIsJumping] = useState(false);
   const [coins, setCoins] = useState([]);
 
   const handleClick = (event) => {
     setIsJumping(true);
-    onClick();
+    incrementCountMoneyForClick();
 
     new Audio(moneyClick).play();
 

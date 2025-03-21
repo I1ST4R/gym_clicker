@@ -1,15 +1,18 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { AppContext } from '../main/AppContext.jsx';
+import React, { useEffect, useState } from 'react';
+import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
 import abbreviateNum from '../../js/numberAbbreviator.js';
 import '../../css/DnkProgressBar.css';
 
 function DnkProgressBar() {
-  const { pasIncreaseMoney, countDnk } = useContext(AppContext);
+  const {
+    counters: { countDnk },
+    increases: { pasIncreaseMoney },
+  } = useStatsContext();
+
   const [progressForShow, setProgressForShow] = useState(0);
   const [requiredPasIncrease, setRequiredPasIncrease] = useState(1n);
 
   useEffect(() => {
-
     const divisor = 1000000000000000000n;
     const nextDnkLevel = countDnk + 1n;
     const prevRequiredPasIncrease = BigInt(3n ** countDnk * divisor - 1n);

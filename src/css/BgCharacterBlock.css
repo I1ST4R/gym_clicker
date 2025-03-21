@@ -1,0 +1,18 @@
+/* BgCharacterBlock.css */
+.bg-character-block {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 560px;
+  right: 530px;
+  z-index: 1000;
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-character-block p {
+  font-size:20px;
+  color: white;
+  text-align: center;
+  margin-top: 150px;
+}
