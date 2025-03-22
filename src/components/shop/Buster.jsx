@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import '../../css/Buster.css';
 import abbreviateNum from '../../js/numberAbbreviator.js';
-import { useStatsContext } from '../main/StatsContext'; 
-import { useShopContext } from '../main/ShopContext'; 
-import { useUIContext } from '../main/UIContext'; 
-import { useBusterCooldown } from '../main/ShopContext';
+import { useStatsContext } from '../main/StatsContext';
+import { useShopContext } from '../main/ShopContext';
+import { useUIContext } from '../main/UIContext';
+import { useBusterTimers } from '../main/hooks/useBusterTimers.jsx'; 
 
 function Buster({
   id,
@@ -16,63 +16,21 @@ function Buster({
   maxLvl,
   level,
   isActive,
-  onBusterLevelChange,
-  onActivateBuster,
 }) {
+
   const {
-    increases: { pasIncreaseMoney },
+    increases: { pasIncreaseMoney, setPasIncreaseMoney, actIncreaseMoney, setActIncreaseMoney },
+    counters: {setCountMoney}
   } = useStatsContext();
   const {
     dnk: { cooldownDiscount },
-    formatTime,
+    busters:{ formatTime, handleActivateBuster, handleBusterLevelChange },
   } = useShopContext();
   const {
-    tooltip: { setTooltipPosition, setIsBusterHovered },
+    tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
   } = useUIContext();
 
-  //таймеры
-  const intervalRef = useRef(null);
-  const timeoutRef = useRef(null);
-
-  // Очистка таймеров при размонтировании
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, []);
-
-
-  // Таймер перезарядки
-  const [curCooldown, setCurCooldown] = useBusterCooldown(id, 0);
-
-  useEffect(() => {
-    if (curCooldown > 0) {
-      intervalRef.current = setInterval(() => {
-        setCurCooldown((prev) => prev - 100); // Уменьшаем curCooldown на 100 мс
-      }, 100);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-
-    return () => clearInterval(intervalRef.current);
-  }, [curCooldown]);
-
-
-  // Обработчик наведения мыши
-  const handleMouseEnter = (event) => {
-    const cardRect = event.currentTarget.getBoundingClientRect();
-    setTooltipPosition({
-      top: cardRect.top,
-      id: id,
-    });
-    setIsBusterHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsBusterHovered(false);
-  };
-
+  const { curCooldown, startBusterTimer } = useBusterTimers(0, cooldown, cooldownDiscount);
 
   // Обработчик улучшения бустера
   const isMaxLevel = level >= maxLvl;
@@ -80,31 +38,30 @@ function Buster({
 
   const handleUpgradeBusterClick = () => {
     if (isEnoughClients && !isMaxLevel) {
-      onBusterLevelChange(id);
+      handleBusterLevelChange(id, cooldownDiscount, );
     }
   };
-  
 
   // Обработчик активации бустера
   const handleActivateBusterClick = () => {
     if (isActive && curCooldown === 0 && level !== 0) {
-      // Запускаем время действия бустера
-      timeoutRef.current = setTimeout(() => {
-        // После завершения времени действия запускаем перезарядку
-        setCurCooldown(Math.floor(cooldown * cooldownDiscount));
-      }, time);
-      // Вызываем внешний обработчик активации бустера
-      onActivateBuster(id, time);
+      startBusterTimer(time, () => handleActivateBuster(id, time, cooldownDiscount, {
+        setCountMoney,
+        pasIncreaseMoney,
+        setPasIncreaseMoney,
+        actIncreaseMoney,
+        setActIncreaseMoney,
+      }));
     }
   };
 
   return (
     <div
-      className={`Buster 
-        ${!isActive || curCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''} 
-      `}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      className={`Buster ${
+        !isActive || curCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''
+      }`}
+      onMouseEnter={(event) => handleTooltipMouseEnter(event, id, 'buster')}
+      onMouseLeave={handleTooltipMouseLeave}
     >
       <img
         onClick={handleActivateBusterClick}
@@ -112,10 +69,7 @@ function Buster({
         src={img}
         alt={title}
       />
-      <div
-        className="Buster__info"
-        onClick={handleActivateBusterClick}
-      >
+      <div className="Buster__info" onClick={handleActivateBusterClick}>
         <p className="Buster__title">{title}</p>
         <div className="Buster__timers">
           <div className="Buster__timer">
@@ -130,7 +84,7 @@ function Buster({
           </div>
           <div className="Buster__timer">
             <img src="Busters/cooldown.png" alt="" />
-            <p>{curCooldown > 0 ? formatTime(curCooldown) : "Готово"}</p>
+            <p>{curCooldown > 0 ? formatTime(curCooldown) : 'Готово'}</p>
           </div>
         </div>
         <div className="Buster__price-level">
@@ -144,15 +98,14 @@ function Buster({
               </div>
             </>
           )}
-          <p className="Buster__level">{level === 0 ? "" : level}</p>
+          <p className="Buster__level">{level === 0 ? '' : level}</p>
         </div>
       </div>
 
       <div
-        className={`
-          ${isEnoughClients ? "Buster__upgrader--availavle" : ""}
-          Buster__upgrader
-        `}
+        className={`${
+          isEnoughClients ? 'Buster__upgrader--availavle' : ''
+        } Buster__upgrader`}
         onClick={handleUpgradeBusterClick}
       >
         <img src="Busters/upgrade.png" alt="" />

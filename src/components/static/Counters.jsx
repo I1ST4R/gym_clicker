@@ -1,73 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import '../../css/Counters.css';
 import abbreviateNum from '../../js/numberAbbreviator.js';
-import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
-import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
+import { useStatsContext } from '../main/StatsContext';
+import { useUIContext } from '../main/UIContext';
+import { getCountersData } from '../../js/CountersParams.js'; 
 
 function Counters() {
-  // Используем кастомный хук для доступа к данным из StatsContext
   const {
     counters: { countDiamond, countMoney },
-    increases: {pasIncreaseMoney}
+    increases: { pasIncreaseMoney },
   } = useStatsContext();
 
-  // Используем кастомный хук для доступа к данным из UIContext
   const {
-    tooltip: { setTooltipPosition, setIsCounterHovered },
+    tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
   } = useUIContext();
 
-  const [hasDiamondBeenPositive, setHasDiamondBeenPositive] = useState(false);
-  const [hasPasIncreaseMoneyBeenPositive, setHasPasIncreaseMoneyBeenPositive] = useState(false);
-
-  const handleMouseEnter = (event) => {
-    const cardRect = event.currentTarget.getBoundingClientRect();
-    setTooltipPosition({
-      top: cardRect.top,
-      id: 1,
-    });
-    setIsCounterHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsCounterHovered(false);
-  };
+  const [diamondPositive, setDiamondPositive] = useState(false);
+  const [pasPositive, setPasPositive] = useState(false);
 
   useEffect(() => {
-    if (countDiamond > 0) {
-      setHasDiamondBeenPositive(true);
-    }
+    if (countDiamond > 0) setDiamondPositive(true);
   }, [countDiamond]);
 
   useEffect(() => {
-    if (pasIncreaseMoney > 0) {
-      setHasPasIncreaseMoneyBeenPositive(true);
-    }
+    if (pasIncreaseMoney > 0) setPasPositive(true);
   }, [pasIncreaseMoney]);
+
+  const counters = getCountersData(countDiamond, pasIncreaseMoney, countMoney, diamondPositive, pasPositive);
 
   return (
     <div
       className="Counters"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={(event) => handleTooltipMouseEnter(event, 1, 'counter')}
+      onMouseLeave={handleTooltipMouseLeave}
     >
-      {(hasDiamondBeenPositive || countDiamond > 0) && (
-        <div className="Counter">
-          <span>{abbreviateNum(countDiamond)}</span>
-          <img className="Counter__img" src="diamond.png" alt="" />
-        </div>
+      {counters.map(
+        ({ value, img, condition }, index) =>
+          condition && (
+            <div className="Counter" key={index}>
+              <span>{abbreviateNum(value)}</span>
+              <img className="Counter__img" src={img} alt="" />
+            </div>
+          )
       )}
-
-      {(hasPasIncreaseMoneyBeenPositive || pasIncreaseMoney > 0) && (
-        <div className="Counter">
-          <span>{abbreviateNum(pasIncreaseMoney)}</span>
-          <img className="Counter__img" src="client.png" alt="" />
-        </div>
-      )}
-
-      <div className="Counter">
-        <span>{abbreviateNum(countMoney)}</span>
-        <img className="Counter__img" src="money.png" alt="" />
-      </div>
     </div>
   );
 }

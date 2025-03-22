@@ -67,7 +67,7 @@ function App() {
 
       <BgCharacterBlock />
       {(isBusterHovered || isUpgradeHovered || isCounterHovered || isDnkHovered || isSkinHovered) &&
-        <Tooltip position={tooltipPosition} />
+        <Tooltip/>
       }
       <ImageSections />
       {(countDnk !== 0n) &&

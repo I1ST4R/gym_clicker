@@ -13,7 +13,6 @@ const BgCharacterBlock = () => {
 
   // Находим активный элемент
   const activeItem = diamondPurchases.find((item) => item.id === 8);
-  console.log(isBgCharacterAdded, activeItem)
 
   if(!isBgCharacterAdded || !activeItem) return
 

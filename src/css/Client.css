@@ -20,7 +20,8 @@
 .Client__progressbar{
   height:32px;
   margin:3px 5px;
-  border:3px solid black;
+  border-radius: 5px;
+  background-color: #e0e0e0;
 }
 
 .Client__progress{
@@ -29,6 +30,7 @@
   background-color: green;
   box-sizing: border-box;
   border:2px solid transparent;
+  border-radius: 5px;
 }
 
 .Client__bonus{

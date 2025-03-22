@@ -16,17 +16,17 @@ export const useStatsContext = () => {
 export const StatsProvider = ({ children }) => {
 
   //counters:
-  const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('0'), BigInt));
+  const [countMoney, setCountMoney] = useState(() => loadState('countMoney', BigInt('15000'), BigInt));
   const [countDnk, setCountDnk] = useState(() => loadState('countDnk', BigInt('0'), BigInt));
-  const [countDiamond, setCountDiamond] = useState(() => loadState('countDiamond', BigInt('10'), BigInt));
+  const [countDiamond, setCountDiamond] = useState(() => loadState('countDiamond', BigInt('30'), BigInt));
 
   //increases:
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('100000000000000000000'), BigInt));
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useState(() => loadState('pasIncreaseMoney', BigInt('10000000000000000000000000'), BigInt));
   const [actIncreaseMoney, setActIncreaseMoney] = useState(() => loadState('actIncreaseMoney', BigInt('1'), BigInt));
 
   //delay:
-  const [minDelay, setMinDelay] = useState(() => loadState('minDelay', 300000, parseInt));
-  const [maxDelay, setMaxDelay] = useState(() => loadState('maxDelay', 600000, parseInt));
+  const [minDelay, setMinDelay] = useState(() => loadState('minDelay', 10000, parseInt));
+  const [maxDelay, setMaxDelay] = useState(() => loadState('maxDelay', 20000, parseInt));
 
   //end:
   const [end, setEnd] = useState(() => loadState('end', false, JSON.parse));
@@ -63,7 +63,7 @@ export const StatsProvider = ({ children }) => {
 
   const resetStats = (resetAdditionalStates = false) => {
     // Стандартный сброс
-    setCountMoney(BigInt('100000000000000000000000000'));
+    setCountMoney(BigInt('150'));
     setPasIncreaseMoney(BigInt('0'));
     setActIncreaseMoney(BigInt('1'));
     setCountDnk(BigInt('0'));
@@ -127,7 +127,7 @@ export const StatsProvider = ({ children }) => {
           end, setEnd,
         },
 
-        resetStats,
+        resetStats
       }}
     >
       {children}

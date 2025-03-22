@@ -1,7 +1,8 @@
 import React from 'react';
 import '../../css/Skin.css';
-import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
-import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
+import { useStatsContext } from '../main/StatsContext';
+import { useUIContext } from '../main/UIContext';
+import { useShopContext } from '../main/ShopContext';
 
 function Skin({
   id,
@@ -9,48 +10,33 @@ function Skin({
   price,
   isActive,
   isBuyed,
-  onActivate,
-  onBuy
 }) {
-  // Используем кастомный хук для доступа к данным из StatsContext
   const {
-    counters: { countDiamond },
+    counters: { countDiamond, setCountDiamond },
   } = useStatsContext();
-
-  // Используем кастомный хук для доступа к данным из UIContext
   const {
-    tooltip: { setTooltipPosition, setIsSkinHovered },
+    tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
   } = useUIContext();
+  const {
+    skins: { handleActivate, handleBuy },
+  } = useShopContext();
 
   const isEnoughtDiamonds = countDiamond >= BigInt(price);
 
   const handleSkinClick = () => {
     if (isBuyed) {
-      onActivate(id);
+      handleActivate(id); 
     } else if (isEnoughtDiamonds) {
-      onBuy(id);
+      handleBuy(id, countDiamond, setCountDiamond); 
     }
-  };
-
-  const handleMouseEnter = (event) => {
-    const cardRect = event.currentTarget.getBoundingClientRect();
-    setTooltipPosition({
-      top: cardRect.top,
-      id: id,
-    });
-    setIsSkinHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsSkinHovered(false);
   };
 
   return (
     <div 
       className={`Skin ${isActive ? "Skin--active" : ""}`}
       onClick={handleSkinClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={(event) => handleTooltipMouseEnter(event, id, 'skin')}
+      onMouseLeave={handleTooltipMouseLeave}
     >
       <img className='Skin__img' src={img} alt="" /> 
     </div>
