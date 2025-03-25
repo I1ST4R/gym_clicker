@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import { useShopContext } from '../main/ShopContext'; // Импортируем контекст
+import { useShopContext } from '../main/contexts/ShopContext'; // Импортируем контекст
 import '../../css/BgCharacterBlock.css'; // Импортируем стили
 
 const BgCharacterBlock = () => {
-  // Используем кастомный хук для доступа к данным из ShopContext
   const {
     skins: {
       isBgCharacterAdded,
@@ -11,7 +10,6 @@ const BgCharacterBlock = () => {
     },
   } = useShopContext();
 
-  // Находим активный элемент
   const activeItem = diamondPurchases.find((item) => item.id === 8);
 
   if(!isBgCharacterAdded || !activeItem) return

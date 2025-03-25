@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../../css/StoryIntro.css';
-import { useUIContext } from '../main/UIContext';
-import { StoryAutroSlides } from '../../js/StoryAutroSlides'; 
+import '../../../css/StoryIntro.css';
+import { useUIContext } from '../../main/contexts/UIContext';
+import { StoryAutroSlides } from '../../../js/StoryAutroSlides'; 
 
 const StoryAutro = () => {
   const {

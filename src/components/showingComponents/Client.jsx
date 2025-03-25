@@ -6,8 +6,8 @@ import clientClick from '../../../public/sounds/clientClick.mp3';
 import clientUpgrade from '../../../public/sounds/clientUpgrade.mp3';
 import clientThanksgiving from '../../../public/sounds/clientThanksgiving.mp3';
 import abbreviateNum from '../../js/numberAbbreviator.js';
-import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
-import { useShopContext } from '../main/ShopContext'; // Кастомный хук для ShopContext
+import { useStatsContext } from '../main/contexts/StatsContext'; // Кастомный хук для StatsContext
+import { useShopContext } from '../main/contexts/ShopContext'; // Кастомный хук для ShopContext
 
 function Client() {
   // Используем кастомный хук для доступа к данным из StatsContext

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUIContext } from '../main/UIContext';
+import { useUIContext } from '../../main/contexts/UIContext';
 
 function BustersTooltip() {
   const {

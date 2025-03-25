@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useUIContext } from '../main/UIContext';
-import { useStatsContext } from '../main/StatsContext'; // Получаем данные из StatsContext
+import { useUIContext } from '../main/contexts/UIContext';
+import { useStatsContext } from '../main/contexts/StatsContext'; 
 import abbreviateNum from '../../js/numberAbbreviator.js';
 import '../../css/DnkProgressBar.css';
 

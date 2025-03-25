@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import Upgrades from './Upgrades.jsx';
-import Busters from './Busters.jsx';
-import Skins from './Skins.jsx';
+import Upgrades from './Upgrades/Upgrades.jsx';
+import Busters from './Busters/Busters.jsx';
+import Skins from './Skins/Skins.jsx';
 import '../../css/SliderStyles.css';
 
 const SliderContainer = () => {

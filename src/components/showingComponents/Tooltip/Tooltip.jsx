@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import '../../css/Tooltip.css';
-import { useStatsContext } from '../main/StatsContext';
-import { useShopContext } from '../main/ShopContext';
-import { useUIContext } from '../main/UIContext';
+import '../../../css/Tooltip.css';
+import { useStatsContext } from '../../main/contexts/StatsContext';
+import { useShopContext } from '../../main/contexts/ShopContext';
+import { useUIContext } from '../../main/contexts/UIContext';
 import SkinTooltip from './SkinTooltip';
 import DnkTooltip from './DnkTooltip';
 import BustersTooltip from './BustersTooltip';

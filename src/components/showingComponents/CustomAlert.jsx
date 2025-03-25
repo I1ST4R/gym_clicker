@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../css/CustomAlert.css';
-import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
+import { useUIContext } from '../main/contexts/UIContext'; 
 
 function CustomAlert({ message, onConfirm, onCancel }) {
   const {

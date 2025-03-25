@@ -1,8 +1,8 @@
 import React from 'react';
-import '../../css/slide.css';
+import '../../../css/slide.css';
 import Buster from './Buster.jsx';
-import { useStatsContext } from '../main/StatsContext';
-import { useShopContext } from '../main/ShopContext';
+import { useStatsContext } from '../../main/contexts/StatsContext.jsx';
+import { useShopContext } from '../../main/contexts/ShopContext.jsx';
 
 function Busters() {
   const {

@@ -1,8 +1,8 @@
 import React from 'react';
-import '../../css/Skin.css';
-import { useStatsContext } from '../main/StatsContext';
-import { useUIContext } from '../main/UIContext';
-import { useShopContext } from '../main/ShopContext';
+import '../../../css/Skin.css';
+import { useStatsContext } from '../../main/contexts/StatsContext';
+import { useUIContext } from '../../main/contexts/UIContext';
+import { useShopContext } from '../../main/contexts/ShopContext';
 
 function Skin({
   id,

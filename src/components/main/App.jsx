@@ -2,23 +2,23 @@ import React, { useEffect } from 'react';
 import Trainer from '../static/Trainer.jsx';
 import Counters from '../static/Counters.jsx';
 import Client from '../showingComponents/Client.jsx';
-import DnkUpgrades from '../shop/DnkUpgrades.jsx';
-import StoryIntro from '../showingComponents/StoryIntro.jsx';
-import StoryAutro from '../showingComponents/StoryAutro.jsx';
-import Tooltip from '../showingComponents/Tooltip.jsx';
+import DnkUpgrades from '../shop/DnkUpgrades/DnkUpgrades.jsx';
+import StoryIntro from '../showingComponents/stories/StoryIntro.jsx';
+import StoryAutro from '../showingComponents/stories/StoryAutro.jsx';
+import Tooltip from '../showingComponents/Tooltip/Tooltip.jsx';
 import CustomAlert from '../showingComponents/CustomAlert';
 import Footer from '../static/Footer';
 import '../../css/App.css';
 import SliderContainer from '../shop/SliderContainer.jsx';
-import ImageSections from '../showingComponents/ImageSections.jsx';
+import ImageSections from '../showingComponents/ImageSections/ImageSections.jsx';
 import DnkProgressBar from '../showingComponents/DnkProgressBar';
 import BgCharacterBlock from '../shop/BgCharacterBlock.jsx';
-import { useStatsContext } from './StatsContext'; // Кастомный хук для StatsContext
-import { useShopContext } from './ShopContext'; // Кастомный хук для ShopContext
-import { useUIContext } from './UIContext'; // Кастомный хук для UIContext
+import { useStatsContext } from './contexts/StatsContext'; 
+import { useShopContext } from './contexts/ShopContext'; 
+import { useUIContext } from './contexts/UIContext'; 
 
 function App() {
-  // Используем кастомный хук для доступа к данным из StatsContext
+
   const {
     counters: { countMoney, countDnk, setCountMoney, setCountDnk, incrementCountMoneyForClick },
     increases: { pasIncreaseMoney, actIncreaseMoney },

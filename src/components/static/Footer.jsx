@@ -1,8 +1,8 @@
 import React from 'react';
 import '../../css/Footer.css';
-import { useUIContext } from '../main/UIContext'; // Кастомный хук для UIContext
-import { useStatsContext } from '../main/StatsContext'; // Кастомный хук для StatsContext
-import { useShopContext } from '../main/ShopContext'; // Кастомный хук для StatsContext
+import { useUIContext } from '../main/contexts/UIContext'; // Кастомный хук для UIContext
+import { useStatsContext } from '../main/contexts/StatsContext'; // Кастомный хук для StatsContext
+import { useShopContext } from '../main/contexts/ShopContext'; // Кастомный хук для StatsContext
 
 function Footer() {
   

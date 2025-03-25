@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useUIContext } from '../main/UIContext';
-import { useShopContext } from '../main/ShopContext';
+import { useUIContext } from '../../main/contexts/UIContext';
+import { useShopContext } from '../../main/contexts/ShopContext';
 import ImageSection from './ImageSection';
-import '../../css/ImageSections.css';
+import '../../../css/ImageSections.css';
 
 function ImageSections() {
   const {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../../css/Counters.css';
 import abbreviateNum from '../../js/numberAbbreviator.js';
-import { useStatsContext } from '../main/StatsContext';
-import { useUIContext } from '../main/UIContext';
+import { useStatsContext } from '../main/contexts/StatsContext';
+import { useUIContext } from '../main/contexts/UIContext';
 import { getCountersData } from '../../js/CountersParams.js'; 
 
 function Counters() {

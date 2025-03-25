@@ -1,7 +1,7 @@
 import React from 'react';
-import '../../css/slide.css';
+import '../../../css/slide.css';
 import Upgrade from './Upgrade.jsx';
-import { useShopContext } from '../main/ShopContext';
+import { useShopContext } from '../../main/contexts/ShopContext.jsx';
 
 function Upgrades() {
   const {

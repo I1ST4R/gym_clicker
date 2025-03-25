@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import '../../css/slide.css';
+import '../../../css/slide.css';
 import Skin from './Skin.jsx';
-import { useStatsContext } from '../main/StatsContext'; 
-import { useShopContext } from '../main/ShopContext'; 
+import { useStatsContext } from '../../main/contexts/StatsContext.jsx'; 
+import { useShopContext } from '../../main/contexts/ShopContext.jsx'; 
 
 function Skins() {
   const {

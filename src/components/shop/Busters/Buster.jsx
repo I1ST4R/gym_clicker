@@ -1,10 +1,10 @@
 import React from 'react';
-import '../../css/Buster.css';
-import abbreviateNum from '../../js/numberAbbreviator.js';
-import { useStatsContext } from '../main/StatsContext';
-import { useShopContext } from '../main/ShopContext';
-import { useUIContext } from '../main/UIContext';
-import { useBusterTimers } from '../main/hooks/useBusterTimers.jsx'; 
+import '../../../css/Buster.css';
+import abbreviateNum from '../../../js/numberAbbreviator.js';
+import { useStatsContext } from '../../main/contexts/StatsContext.jsx';
+import { useShopContext } from '../../main/contexts/ShopContext.jsx';
+import { useUIContext } from '../../main/contexts/UIContext.jsx';
+import { useBusterTimers } from '../../main/hooks/useBusterTimers.jsx'; 
 
 function Buster({
   id,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../../css/StoryIntro.css';
-import { useUIContext } from '../main/UIContext';
-import { StoryIntroSlides } from '../../js/StoryIntroSlides'; // Импортируем слайды
+import '../../../css/StoryIntro.css';
+import { useUIContext } from '../../main/contexts/UIContext';
+import { StoryIntroSlides } from '../../../js/StoryIntroSlides'; // Импортируем слайды
 
 const StoryIntro = () => {
   const {
