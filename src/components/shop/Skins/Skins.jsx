@@ -5,15 +5,10 @@ import { useStatsContext } from '../../main/contexts/StatsContext.jsx';
 import { useShopContext } from '../../main/contexts/ShopContext.jsx'; 
 
 function Skins() {
-  const {
-    counters: { countDiamond, setCountDiamond },
-  } = useStatsContext();
 
   const {
     skins: {
       diamondPurchases,
-      handleActivate,
-      handleBuy,
     },
   } = useShopContext();
 

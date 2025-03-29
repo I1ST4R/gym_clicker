@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../../css/Skin.css';
 import { useStatsContext } from '../../main/contexts/StatsContext';
 import { useUIContext } from '../../main/contexts/UIContext';
@@ -18,7 +18,7 @@ function Skin({
     tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
   } = useUIContext();
   const {
-    skins: { handleActivate, handleBuy },
+    skins: { handleActivate, handleBuy , diamondPurchases},
   } = useShopContext();
 
   const isEnoughtDiamonds = countDiamond >= BigInt(price);

@@ -39,36 +39,56 @@ export const useSkins = () => {
     isBgCharacterAdded
   ]);
 
-  // Обработка активных изменений
-  const handleActiveChanges = () => {
-    const activeItem = diamondPurchases.find((item) => item.isActive);
-
-    if (activeItem) {
-      switch (activeItem.id) {
-        case 1: case 2: case 3: case 4: case 9: case 11: case 12:
-          setBackgroundImage(activeItem.img);
-          break;
-        case 5: setIsClientImgAdded(true); break;
-        case 6: setCursorImage(activeItem.img); break;
-        case 7: setBackgroundRightImage(false); break;
-        case 8: setIsBgCharacterAdded(true); break;
-        case 10: setBackgroundLeftImage(false); break;
-        default: break;
-      }
-    }
-  };
-
-  useEffect(() => {
-    handleActiveChanges();
-  }, [diamondPurchases]);
-
-  // Активация предмета
   const handleActivate = (id) => {
-    setDiamondPurchases(prev => prev.map(item => ({
-      ...item,
-      isActive: item.id === id,
-      ...(item.changes === prev.find(i => i.id === id)?.changes && { isActive: false })
-    })));
+    setDiamondPurchases(prev => {
+      const activatedItem = prev.find(item => item.id === id);
+      if (!activatedItem) return prev;
+      
+      const activatedChanges = activatedItem.changes;
+      const isCurrentlyActive = activatedItem.isActive;
+      const willBeActive = !isCurrentlyActive;
+  
+      // Сначала обновляем визуальное состояние
+      const updatedPurchases = prev.map(item => {
+        if (item.id === id) {
+          return { ...item, isActive: willBeActive };
+        }
+        return {
+          ...item,
+          ...(item.changes === activatedChanges && { isActive: false })
+        };
+      });
+  
+      // Затем применяем эффекты синхронно с новым состоянием
+      if (willBeActive) {
+        switch (id) {
+          case 1: case 2: case 3: case 4: case 9: case 11: case 12:
+            setBackgroundImage(activatedItem.img);
+            break;
+          case 5: setIsClientImgAdded(true); break;
+          case 6: setCursorImage(activatedItem.img); break;
+          case 7: setBackgroundRightImage(false); break;
+          case 8: setIsBgCharacterAdded(true); break;
+          case 10: setBackgroundLeftImage(false); break;
+          default: break;
+        }
+      } else {
+        // Сбрасываем эффекты при деактивации
+        switch (id) {
+          case 1: case 2: case 3: case 4: case 9: case 11: case 12:
+            setBackgroundImage(null);
+            break;
+          case 5: setIsClientImgAdded(false); break;
+          case 6: setCursorImage(null); break;
+          case 7: setBackgroundRightImage(true); break;
+          case 8: setIsBgCharacterAdded(false); break;
+          case 10: setBackgroundLeftImage(true); break;
+          default: break;
+        }
+      }
+  
+      return updatedPurchases;
+    });
   };
 
   // Покупка предмета
@@ -79,10 +99,12 @@ export const useSkins = () => {
       setCountDiamond(countDiamond - BigInt(itemToBuy.price));
       setDiamondPurchases(prev => prev.map(item => 
         item.id === id 
-          ? { ...item, isBuyed: true, isActive: true } 
+          ? { ...item, isBuyed: true} 
           : item
       ));
     }
+
+    handleActivate(id)
   };
 
   // Эффекты для применения стилей
