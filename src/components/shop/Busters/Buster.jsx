@@ -1,10 +1,10 @@
 import React from 'react';
 import '../../../css/Buster.css';
 import abbreviateNum from '../../../js/numberAbbreviator.js';
+import { formatTime } from '../../../js/formatTime.js';
 import { useStatsContext } from '../../main/contexts/StatsContext.jsx';
 import { useShopContext } from '../../main/contexts/ShopContext.jsx';
 import { useUIContext } from '../../main/contexts/UIContext.jsx';
-import { useBusterTimers } from '../../main/hooks/useBusterTimers.jsx'; 
 
 function Buster({
   id,
@@ -12,64 +12,37 @@ function Buster({
   img,
   initialPrice,
   time,
-  cooldown,
   maxLvl,
   level,
   isActive,
+  isReady,
 }) {
-
+  const { increases: { pasIncreaseMoney } } = useStatsContext();
   const {
-    increases: { pasIncreaseMoney, setPasIncreaseMoney, actIncreaseMoney, setActIncreaseMoney },
-    counters: {setCountMoney}
-  } = useStatsContext();
-  const {
-    dnk: { cooldownDiscount },
-    busters:{ formatTime, handleActivateBuster, handleBusterLevelChange },
+    busters: { useBusterLevelChange, useBusterTimers, useBusterCooldown }
   } = useShopContext();
-  const {
-    tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
-  } = useUIContext();
+  const { tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave } } = useUIContext();
 
-  const { curCooldown, startBusterTimer } = useBusterTimers(0, cooldown, cooldownDiscount);
+  const [curCooldown, setCurCooldown] = useBusterCooldown(id);
+  const startBusterTimer = useBusterTimers(id);
+  const busterLevelChange = useBusterLevelChange();
 
-  // Обработчик улучшения бустера
   const isMaxLevel = level >= maxLvl;
   const isEnoughClients = pasIncreaseMoney >= initialPrice;
 
-  const handleUpgradeBusterClick = () => {
-    if (isEnoughClients && !isMaxLevel) {
-      handleBusterLevelChange(id, cooldownDiscount, );
-    }
-  };
-
-  // Обработчик активации бустера
-  const handleActivateBusterClick = () => {
-    if (isActive && curCooldown === 0 && level !== 0) {
-      startBusterTimer(time, () => handleActivateBuster(id, time, cooldownDiscount, {
-        setCountMoney,
-        pasIncreaseMoney,
-        setPasIncreaseMoney,
-        actIncreaseMoney,
-        setActIncreaseMoney,
-      }));
-    }
-  };
-
   return (
     <div
-      className={`Buster ${
-        !isActive || curCooldown > 0 || level === 0 ? 'Buster--nonavailable' : ''
-      }`}
+      className={`Buster ${!isReady || level === 0 ? 'Buster--nonavailable' : ''
+        }`}
       onMouseEnter={(event) => handleTooltipMouseEnter(event, id, 'buster')}
       onMouseLeave={handleTooltipMouseLeave}
     >
       <img
-        onClick={handleActivateBusterClick}
         className="Buster__img"
         src={img}
         alt={title}
       />
-      <div className="Buster__info" onClick={handleActivateBusterClick}>
+      <div className="Buster__info" onClick={() => startBusterTimer(setCurCooldown)}>
         <p className="Buster__title">{title}</p>
         <div className="Buster__timers">
           <div className="Buster__timer">
@@ -78,9 +51,7 @@ function Buster({
                 <img src="Busters/time.png" alt="" />
                 <p>{`${time / 1000} сек.`}</p>
               </>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
           <div className="Buster__timer">
             <img src="Busters/cooldown.png" alt="" />
@@ -103,10 +74,9 @@ function Buster({
       </div>
 
       <div
-        className={`${
-          isEnoughClients ? 'Buster__upgrader--availavle' : ''
-        } Buster__upgrader`}
-        onClick={handleUpgradeBusterClick}
+        className={`${isEnoughClients ? 'Buster__upgrader--availavle' : ''
+          } Buster__upgrader`}
+        onClick={() => busterLevelChange(id)}
       >
         <img src="Busters/upgrade.png" alt="" />
       </div>
@@ -114,4 +84,4 @@ function Buster({
   );
 }
 
-export default Buster;
+export default Buster

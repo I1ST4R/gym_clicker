@@ -1,7 +1,7 @@
 import { useBigIntState } from './useBigIntState';
 import React, { useEffect, } from 'react';
 
-export const useDna = () => {
+export const useDnk = () => {
   const [countDnk, setCountDnk] = useBigIntState('countDnk', '0');
 
   const resetDna = () => {
@@ -15,9 +15,9 @@ export const useDna = () => {
   };
 };
 
-export const useDnaCalculation = (pasIncreaseMoney, setCountDnk) => {
+export const useDnkCalculation = (pasIncreaseMoney, setCountDnk) => {
   useEffect(() => {
-    if (!pasIncreaseMoney || !setCountDnk) return;
+    if (!pasIncreaseMoney || !setCountDnk ) return;
 
     const log3 = (value) => {
       if (value < 3n) return 0n;

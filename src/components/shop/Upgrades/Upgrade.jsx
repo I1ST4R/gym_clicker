@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../../css/Upgrade.css';
 import upgradeLevelUp from '../../../../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from '../../../js/numberAbbreviator.js';
@@ -12,8 +12,7 @@ function Upgrade({
   title,
   img,
   level,
-  isHidden,
-  isInvisible,
+  isInvisible 
 }) {
   const {
     counters: { countMoney, setCountMoney },
@@ -21,7 +20,7 @@ function Upgrade({
     end: { setEnd },
   } = useStatsContext();
   const {
-    upgrades: { upgrades, handleUpgradeLevelChange, calculateUpgradePrice, isEnoughMoneyForUpgrade },
+    upgrades: { upgrades, handleUpgradeLevelChange, calculateUpgradePrice, isEnoughMoneyForUpgrade, changeVisibility},
     dnk: { priceMultiplier, increaseMultiplier },
     busters: { isDiscountExists, setIsDiscountExists },
   } = useShopContext();
@@ -69,11 +68,14 @@ function Upgrade({
     }
   };
 
+  useEffect(() => {
+    changeVisibility(countMoney)
+  },[countMoney])
+
   return (
     <div
       className={`Upgrade 
         ${!isEnoughMoney ? 'Upgrade--nonavailable' : ''} 
-        ${isHidden ? 'Upgrade--hidden' : ''}
         ${isInvisible ? 'Upgrade--invisible' : ''}
       `}
       onClick={handleUpgradeClick}

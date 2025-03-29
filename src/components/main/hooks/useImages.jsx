@@ -9,7 +9,7 @@ export const useImages = () => {
     const width = 80;
     const height = 80;
     return {
-      x: Math.random() * (400 - width),
+      x: Math.random() * (320 - width),
       y: Math.random() * (100 - height),
     };
   }, []);

@@ -11,7 +11,6 @@ import Footer from '../static/Footer';
 import '../../css/App.css';
 import SliderContainer from '../shop/SliderContainer.jsx';
 import ImageSections from '../showingComponents/ImageSections/ImageSections.jsx';
-import DnkProgressBar from '../showingComponents/DnkProgressBar';
 import BgCharacterBlock from '../shop/BgCharacterBlock.jsx';
 import { useStatsContext } from './contexts/StatsContext'; 
 import { useShopContext } from './contexts/ShopContext'; 
@@ -70,9 +69,6 @@ function App() {
         <Tooltip/>
       }
       <ImageSections />
-      {(countDnk !== 0n) &&
-        <DnkProgressBar />
-      }
       <CustomAlert
         message={alertMessage}
         onConfirm={alertOnConfirm}

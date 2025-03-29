@@ -1,10 +1,10 @@
 const DefaultBusterParams = {
   cooldown: 1800000,
   maxLvl: 10,
-  isActive: true,
+  isReady: true,
+  isActive: false,
   level: 0,
   upgradeInfo: "ожидание перезарядки бустера уменьшается на 7%",
-  curCooldown: 0,
 };
 
 const BustersParams = [

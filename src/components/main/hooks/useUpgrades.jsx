@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loadState, saveState, bigIntParser } from '../../../js/storage.js';
+import { useReset } from './useReset.jsx';
 import UpgradesParams from '../../../js/UpgradesParams.js';
 
 export const useUpgrades = () => {
@@ -71,6 +72,22 @@ export const useUpgrades = () => {
     setCountMoney(countMoney - calculateUpgradePrice(id, isDiscountExists, priceMultiplier));
   };
 
+
+  const changeVisibility = (countMoney) =>   {
+    const updatedUpgrades = upgrades.map((upgrade) => {
+      let updatedUpgrade
+      if(upgrade.initialPrice <= countMoney && upgrade.isInvisible){
+        updatedUpgrade = {
+          ...upgrade,
+          isInvisible : false,
+        }
+        return updatedUpgrade
+      }
+      return upgrade;
+    })
+    setUpgrades(updatedUpgrades);
+  }
+
   const calculateUpgradePrice = (id, isDiscountExists, priceMultiplier) => {
     const upgrade = upgrades.find((u) => u.id === id);
     if (!upgrade) return BigInt(0);
@@ -97,11 +114,18 @@ export const useUpgrades = () => {
     return countMoney >= price;
   };
 
+  const { reset } = useReset({
+    stateSetters: { upgardes: setUpgrades },
+    initialState: { upgardes: UpgradesParams }
+  });
+
   return {
     upgrades,
     setUpgrades,
     handleUpgradeLevelChange,
     calculateUpgradePrice,
     isEnoughMoneyForUpgrade,
+    changeVisibility,
+    reset,
   };
 };

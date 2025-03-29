@@ -6,11 +6,7 @@ import { useShopContext } from '../../main/contexts/ShopContext.jsx';
 
 function Busters() {
   const {
-    counters: { setCountMoney },
-    increases: { pasIncreaseMoney, setPasIncreaseMoney, actIncreaseMoney, setActIncreaseMoney },
-  } = useStatsContext();
-  const {
-    busters: { busters, handleBusterLevelChange, handleActivateBuster},
+    busters: { busters},
   } = useShopContext();
 
   return (

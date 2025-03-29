@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useActiveIncome } from '../hooks/useActiveIncome.jsx';
 import { usePassiveIncome, usePassiveIncomeEffect } from '../hooks/usePassiveIncome.jsx';
-import { useDna, useDnaCalculation } from '../hooks/useDnaCalculation.jsx';
+import { useDnk, useDnkCalculation } from '../hooks/useDnkCalculation.jsx';
 import { useBigIntState } from '../hooks/useBigIntState.jsx';
 import { loadState, saveState } from '../../../js/storage.js';
 
@@ -18,7 +18,7 @@ export const useStatsContext = () => {
 export const StatsProvider = ({ children }) => {
   const activeIncome = useActiveIncome();
   const passiveIncome = usePassiveIncome();
-  const dna = useDna();
+  const dna = useDnk();
 
   const [countDiamond, setCountDiamond] = useBigIntState('countDiamond', '30');
   const [minDelay, setMinDelay] = useState(() => {
@@ -35,26 +35,26 @@ export const StatsProvider = ({ children }) => {
   });
 
   // Подключение эффектов с проверкой
-  usePassiveIncomeEffect(passiveIncome.pasIncreaseMoney, activeIncome.setCountMoney);
-  useDnaCalculation(passiveIncome.pasIncreaseMoney, dna.setCountDnk);
+  usePassiveIncomeEffect(passiveIncome.pasIncreaseMoney, activeIncome.setCountMoney, passiveIncome.isPassiveIncreaseChanged);
+  useDnkCalculation(passiveIncome.pasIncreaseMoney, dna.setCountDnk);
 
   const resetStats = (resetAdditionalStates = false) => {
     activeIncome.resetActiveIncome();
     passiveIncome.resetPassiveIncome();
-    dna.resetDna();
-    setCountDiamond(BigInt('10'));
-    setMinDelay(300000);
-    setMaxDelay(600000);
     setEnd(false);
 
     const keysToRemove = [
-      'countMoney', 'pasIncreaseMoney', 'actIncreaseMoney', 'countDnk', 'countDiamond',
-      'minDelay', 'maxDelay', 'end',
+      'countMoney', 'pasIncreaseMoney', 'actIncreaseMoney', 'countDiamond',
+      'end',
     ];
 
     if (resetAdditionalStates) {
+      setCountDiamond(BigInt('0'));
+      setMinDelay(300000);
+      setMaxDelay(600000);
+
       keysToRemove.push(
-        'multiplier', 'priceMultiplier', 'increaseMultiplier', 'cooldownDiscount'
+        'multiplier', 'priceMultiplier', 'increaseMultiplier', 'cooldownDiscount', 'minDelay', 'maxDelay', 'countDnk',
       );
     }
 
@@ -85,6 +85,8 @@ export const StatsProvider = ({ children }) => {
           setPasIncreaseMoney: passiveIncome.setPasIncreaseMoney,
           actIncreaseMoney: activeIncome.actIncreaseMoney,
           setActIncreaseMoney: activeIncome.setActIncreaseMoney,
+          isPassiveIncreaseChanged: passiveIncome.isPassiveIncreaseChanged,
+          setIsPassiveIncreaseChanged: passiveIncome.setIsPassiveIncreaseChanged
         },
         delay: {
           minDelay,

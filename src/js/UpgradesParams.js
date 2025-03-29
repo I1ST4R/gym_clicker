@@ -1,6 +1,5 @@
 const DefaultUpgradeParams = {
-  isHidden: false,
-  isInvisible: false,
+  isInvisible: true,
   level: 0,
 };
 

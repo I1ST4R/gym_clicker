@@ -37,7 +37,7 @@
 }
 
 .Upgrade__title{
-  font-size:30px;
+  font-size:24px;
   margin:0;
   font-weight: bold;
   text-align: left;
@@ -75,14 +75,6 @@
 
 .Upgrade__price-block img{
   width:25px;
-}
-
-.Upgrade--hidden {
-  position:relative; 
-}
-
-.Upgrade--hidden .Upgrade__img{
-  opacity: 0;
 }
 
 .Upgrade--invisible{

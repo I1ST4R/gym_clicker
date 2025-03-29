@@ -1,6 +1,6 @@
 .slide{
   height:100vh;
-  padding: 10px 20px 20px 20px;
+  padding: 10px;
   background-image: url(../Upgrades/upgrades-back.jpg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -28,5 +28,5 @@
 .slide__grid-container{
   display:grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap:5px;
+  gap:10px;
 }

@@ -3,7 +3,7 @@ import { useBigIntState } from './useBigIntState';
 
 export const useActiveIncome = () => {
   const [actIncreaseMoney, setActIncreaseMoney] = useBigIntState('actIncreaseMoney', '1');
-  const [countMoney, setCountMoney] = useBigIntState('countMoney', '15000');
+  const [countMoney, setCountMoney] = useBigIntState('countMoney', '0');
 
   const incrementCountMoneyForClick = () => {
     setCountMoney(prev => prev + actIncreaseMoney);
