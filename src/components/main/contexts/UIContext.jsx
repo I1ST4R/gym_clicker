@@ -4,6 +4,7 @@ import { useTooltip } from '../hooks/useTooltip';
 import { useStory } from '../hooks/useStory';
 import { useImages } from '../hooks/useImages';
 import { useProgress } from '../hooks/useProgress';
+import { useClient } from '../hooks/Client/useClient';
 
 const UIContext = createContext();
 
@@ -22,6 +23,7 @@ export const UIProvider = ({ children }) => {
   const tooltip = useTooltip();
   const story = useStory();
   const images = useImages();
+  const client = useClient()
   const { calculateProgress } = useProgress();
 
   const resetUI = () => {
@@ -46,6 +48,7 @@ export const UIProvider = ({ children }) => {
           setResultImages: images.setResultImages,
           updateResultImages: images.updateResultImages,
         },
+        client,
         calculateProgress,
         resetUI,
       }}

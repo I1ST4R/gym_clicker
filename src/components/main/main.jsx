@@ -7,13 +7,13 @@ import { StatsProvider } from './contexts/StatsContext';
 import { UIProvider } from './contexts/UIContext';
 
 createRoot(document.getElementById('root')).render(
-    <StrictMode>
+    <StrictMode>   
+        <StatsProvider> 
+        <ShopProvider> 
         <UIProvider>     
-        <StatsProvider>     
-        <ShopProvider>     
             <App />
+        </UIProvider>
         </ShopProvider>
         </StatsProvider>
-        </UIProvider>
     </StrictMode>
 );
