@@ -34,8 +34,8 @@ function Tooltip({ position }) {
     <div
       className="Tooltip"
       style={{
-        top: tooltipType === "Dnk" ? 460 : `${tooltipPosition.top}px`,
-        right: tooltipType !== "Dnk" ? "460px" : `${tooltipPosition.right}px`,
+        top: `${tooltipPosition.top}px`,
+        right: `${tooltipPosition.right}px`,
         width: tooltipType === "Counters" ? "300px" : "",
       }}
     >

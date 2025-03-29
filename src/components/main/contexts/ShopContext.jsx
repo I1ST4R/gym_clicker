@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react';
-import { useUpgrades } from '../hooks/useUpgrades';
+import { useUpgrades } from '../hooks/Upgrades/useUpgrades';
 import { useBusters } from '../hooks/Busters/useBusters';
 import { useDnk } from '../hooks/useDnk';
 import { useSkins } from '../hooks/useSkins';

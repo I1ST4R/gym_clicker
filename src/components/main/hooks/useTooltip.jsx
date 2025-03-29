@@ -16,16 +16,28 @@ export const useTooltip = () => {
     const cardRect = event.currentTarget.getBoundingClientRect();
     setTooltipPosition({
       top: cardRect.top,
-      right: window.innerWidth - cardRect.right - 30,
+      right: 460,
       id: id,
     });
-  
+
     switch (type) {
-      case 'dnk': setIsDnkHovered(true); break;
+      case 'dnk':
+        setTooltipPosition({
+          top: 460,
+          right: window.innerWidth - cardRect.right - 30,
+        });
+        setIsDnkHovered(true);
+        break;
       case 'skin': setIsSkinHovered(true); break;
       case 'upgrade': setIsUpgradeHovered(true); break;
       case 'buster': setIsBusterHovered(true); break;
-      case 'counter': setIsCounterHovered(true); break;
+      case 'counter':
+        setTooltipPosition({
+          top:20,
+          right: 40,
+        });
+        setIsCounterHovered(true);
+        break;
       default: break;
     }
   }, []);

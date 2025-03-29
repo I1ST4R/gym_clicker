@@ -11,7 +11,7 @@ import Footer from '../static/Footer';
 import '../../css/App.css';
 import SliderContainer from '../shop/SliderContainer.jsx';
 import ImageSections from '../showingComponents/ImageSections/ImageSections.jsx';
-import BgCharacterBlock from '../shop/BgCharacterBlock.jsx';
+import BgCharacterBlock from '../showingComponents/BgCharacterBlock.jsx';
 import { useStatsContext } from './contexts/StatsContext'; 
 import { useShopContext } from './contexts/ShopContext'; 
 import { useUIContext } from './contexts/UIContext'; 

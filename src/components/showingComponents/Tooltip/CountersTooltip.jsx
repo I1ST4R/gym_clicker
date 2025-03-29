@@ -5,7 +5,7 @@ function CountersTooltip() {
     <>
       <div className="Tooltip__point">
         <img src="money.png" alt="" />
-        <p>- основная валюта, за нее полкупаются улучшения</p>
+        <p>- основная валюта, за нее покупаются улучшения</p>
       </div>
       <div className="Tooltip__point">
         <img src="client.png" alt="" />

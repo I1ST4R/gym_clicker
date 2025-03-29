@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import '../../../css/Upgrade.css';
 import upgradeLevelUp from '../../../../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from '../../../js/numberAbbreviator.js';
@@ -14,24 +14,31 @@ function Upgrade({
   level,
   isInvisible 
 }) {
-  const {
+  const { 
     counters: { countMoney, setCountMoney },
     increases: { pasIncreaseMoney, setPasIncreaseMoney, actIncreaseMoney, setActIncreaseMoney },
-    end: { setEnd },
+    end: { setEnd }
   } = useStatsContext();
-  const {
-    upgrades: { upgrades, handleUpgradeLevelChange, calculateUpgradePrice, isEnoughMoneyForUpgrade, changeVisibility},
+  
+  const { 
+    upgrades: { upgrades, setUpgrades, useUpgradeCalculations, useUpgradeVisibility, useUpgradeLevelChange },
     dnk: { priceMultiplier, increaseMultiplier },
-    busters: { isDiscountExists, setIsDiscountExists },
+    busters: { isDiscountExists, setIsDiscountExists }
   } = useShopContext();
+  
   const {
     tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
     alert: { showAlert, setShowCustomAlert },
     trainerImage: { setTrainerImage },
   } = useUIContext();
 
-  const priceWithMults = calculateUpgradePrice(id, isDiscountExists, priceMultiplier);
-  const isEnoughMoney = isEnoughMoneyForUpgrade(id, countMoney, isDiscountExists, priceMultiplier);
+  // Правильный вызов хуков
+  const { calculateUpgradePrice, isEnoughMoneyForUpgrade } = useUpgradeCalculations();
+  const handleUpgradeLevelChange = useUpgradeLevelChange();
+  useUpgradeVisibility();
+
+  const priceWithMults = calculateUpgradePrice(id);
+  const isEnoughMoney = isEnoughMoneyForUpgrade(id);
   const isLastUpgrade = id === upgrades.length;
 
   const handleUpgradeClick = () => {
@@ -49,28 +56,11 @@ function Upgrade({
       return;
     }
     if (isEnoughMoney) {
-      handleUpgradeLevelChange(id, 
-        {
-          isDiscountExists, setIsDiscountExists
-        },
-        {
-          priceMultiplier, increaseMultiplier
-        },
-        {
-          countMoney, setCountMoney,
-          pasIncreaseMoney, setPasIncreaseMoney,
-          actIncreaseMoney, setActIncreaseMoney,
-      });
-      if (id === 1) {
-        setTrainerImage(getTrainerImage(level + 1));
-      }
+      handleUpgradeLevelChange(id);
+      id === 1 ? setTrainerImage(getTrainerImage(level + 1)) : ""
       new Audio(upgradeLevelUp).play();
     }
   };
-
-  useEffect(() => {
-    changeVisibility(countMoney)
-  },[countMoney])
 
   return (
     <div
