@@ -1,11 +1,10 @@
 import { useBigIntState } from './useBigIntState';
 import { loadState, saveState} from '../../../js/storage.js';
 import React, { useEffect, useState } from 'react';
-import { useShopContext } from '../contexts/ShopContext.jsx';
 
 export const usePassiveIncome = () => {
 
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useBigIntState('pasIncreaseMoney', '20000000000000000000000');
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useBigIntState('pasIncreaseMoney', '1000000000000000000000000000000');
 
   const [isPassiveIncreaseChanged, setIsPassiveIncreaseChanged] = useState(() => {
     const loaded = loadState('isPassiveIncreaseChanged');

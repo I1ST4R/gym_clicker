@@ -1,4 +1,4 @@
-import { useBigIntState } from './useBigIntState';
+import { useBigIntState } from '../useBigIntState';
 import React, { useEffect, } from 'react';
 
 export const useDnk = () => {

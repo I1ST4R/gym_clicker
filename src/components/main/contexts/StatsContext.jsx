@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useActiveIncome } from '../hooks/useActiveIncome.jsx';
 import { usePassiveIncome, usePassiveIncomeEffect } from '../hooks/usePassiveIncome.jsx';
-import { useDnk, useDnkCalculation } from '../hooks/useDnkCalculation.jsx';
+import { useDnk, useDnkCalculation } from '../hooks/Dnk/useDnkCalculation.jsx';
 import { useBigIntState } from '../hooks/useBigIntState.jsx';
 import { loadState, saveState } from '../../../js/storage.js';
 
@@ -20,7 +20,7 @@ export const StatsProvider = ({ children }) => {
   const passiveIncome = usePassiveIncome();
   const dna = useDnk();
 
-  const [countDiamond, setCountDiamond] = useBigIntState('countDiamond', '30');
+  const [countDiamond, setCountDiamond] = useBigIntState('countDiamond', '0');
   const [minDelay, setMinDelay] = useState(() => {
     const loaded = loadState('minDelay');
     return loaded ? parseInt(loaded) : 10000;

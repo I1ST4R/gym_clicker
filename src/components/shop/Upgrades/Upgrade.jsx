@@ -15,15 +15,11 @@ function Upgrade({
   isInvisible 
 }) {
   const { 
-    counters: { countMoney, setCountMoney },
-    increases: { pasIncreaseMoney, setPasIncreaseMoney, actIncreaseMoney, setActIncreaseMoney },
     end: { setEnd }
   } = useStatsContext();
   
   const { 
-    upgrades: { upgrades, setUpgrades, useUpgradeCalculations, useUpgradeVisibility, useUpgradeLevelChange },
-    dnk: { priceMultiplier, increaseMultiplier },
-    busters: { isDiscountExists, setIsDiscountExists }
+    upgrades: { upgrades, useUpgradeCalculations, useUpgradeVisibility, useUpgradeLevelChange },
   } = useShopContext();
   
   const {

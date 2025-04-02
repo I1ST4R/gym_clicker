@@ -6,14 +6,9 @@ import { useStatsContext } from '../main/contexts/StatsContext';
 import { useUIContext } from '../main/contexts/UIContext'; 
 
 function Trainer({}) {
-  // Используем кастомный хук для доступа к данным из ShopContext
-  const {
-    trainerImage: { trainerImage },
-  } = useUIContext();
+  const {trainerImage: { trainerImage }} = useUIContext();
 
-  const {
-    counters: {incrementCountMoneyForClick}
-  } = useStatsContext();
+  const {counters: {incrementCountMoneyForClick}} = useStatsContext();
 
   const [isJumping, setIsJumping] = useState(false);
   const [coins, setCoins] = useState([]);

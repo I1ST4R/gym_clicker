@@ -13,19 +13,15 @@ function Counters() {
   } = useStatsContext();
 
   const {
-    tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
+    tooltip: { 
+      handleTooltipMouseEnter, 
+      handleTooltipMouseLeave, 
+      diamondPositive, setDiamondPositive,
+      pasPositive, setPasPositive},
   } = useUIContext();
 
-  const [diamondPositive, setDiamondPositive] = useState(false);
-  const [pasPositive, setPasPositive] = useState(false);
-
-  useEffect(() => {
-    if (countDiamond > 0) setDiamondPositive(true);
-  }, [countDiamond]);
-
-  useEffect(() => {
-    if (pasIncreaseMoney > 0) setPasPositive(true);
-  }, [pasIncreaseMoney]);
+  useEffect(() => { countDiamond > 0 ? setDiamondPositive(true): "" }, [countDiamond]);
+  useEffect(() => { pasIncreaseMoney > 0 ? setPasPositive(true): "" }, [pasIncreaseMoney]);
 
   const counters = getCountersData(countDiamond, pasIncreaseMoney, countMoney, diamondPositive, pasPositive);
 

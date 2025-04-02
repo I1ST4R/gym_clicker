@@ -1,6 +1,5 @@
-import { useCallback, useEffect } from 'react';
-import { useShopContext } from '../../main/contexts/ShopContext.jsx';
-import { useStatsContext } from '../contexts/StatsContext'; 
+import { useCallback } from 'react';
+import { useStatsContext } from '../../contexts/StatsContext'; 
 
 export const useProgress = () => {
 

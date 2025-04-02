@@ -18,17 +18,17 @@ function Skin({
     tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
   } = useUIContext();
   const {
-    skins: { handleActivate, handleBuy , diamondPurchases},
+    skins: { handleActivate, handleBuy},
   } = useShopContext();
 
   const isEnoughtDiamonds = countDiamond >= BigInt(price);
 
   const handleSkinClick = () => {
     if (isBuyed) {
-      handleActivate(id); 
-    } else if (isEnoughtDiamonds) {
-      handleBuy(id, countDiamond, setCountDiamond); 
+      handleActivate(id)
+      return
     }
+    if (isEnoughtDiamonds) handleBuy(id, countDiamond, setCountDiamond)
   };
 
   return (

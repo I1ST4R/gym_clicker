@@ -6,15 +6,11 @@ import { useShopContext } from '../../main/contexts/ShopContext.jsx';
 
 function DnkUpgrades() {
   const {
-    counters: { countDnk, setCountDnk },
-    delay: { minDelay, setMinDelay, maxDelay, setMaxDelay },
+    counters: { countDnk },
   } = useStatsContext();
 
   const {
-    dnk: {
-      dnkUpgrades,
-      handleDnkLevelChange,
-    },
+    dnk: {dnkUpgrades,},
   } = useShopContext();
 
   return (
@@ -31,7 +27,6 @@ function DnkUpgrades() {
           <DnkUpgrade
             key={dnkUpgrade.id}
             {...dnkUpgrade}
-            onUpgradeLevelChange={(id) => handleDnkLevelChange(id, countDnk, setCountDnk, minDelay, setMinDelay, maxDelay, setMaxDelay)}
           />
         ))}
       </div>

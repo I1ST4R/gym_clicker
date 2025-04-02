@@ -11,6 +11,8 @@ export const useTooltip = () => {
   const [isSkinHovered, setIsSkinHovered] = useState(false);
   const [tooltipContent, setTooltipContent] = useState(null);
   const [tooltipType, setTooltipType] = useState('null');
+  const [diamondPositive, setDiamondPositive] = useState(false);
+  const [pasPositive, setPasPositive] = useState(false);
 
   const handleTooltipMouseEnter = useCallback((event, id, type, right = 530) => {
     const cardRect = event.currentTarget.getBoundingClientRect();
@@ -21,6 +23,7 @@ export const useTooltip = () => {
     });
 
     switch (type) {
+      /*
       case 'dnk':
         setTooltipPosition({
           top: 460,
@@ -28,6 +31,7 @@ export const useTooltip = () => {
         });
         setIsDnkHovered(true);
         break;
+        */
       case 'skin': setIsSkinHovered(true); break;
       case 'upgrade': setIsUpgradeHovered(true); break;
       case 'buster': setIsBusterHovered(true); break;
@@ -130,6 +134,10 @@ export const useTooltip = () => {
     tooltipContent,
     setTooltipContent,
     tooltipType,
+    diamondPositive,
+    setDiamondPositive,
+    pasPositive,
+    setPasPositive,
     setTooltipType,
     updateTooltipContent,
     handleTooltipMouseEnter,

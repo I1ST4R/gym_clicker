@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect } from 'react';
 import { useUpgrades } from '../hooks/Upgrades/useUpgrades';
 import { useBusters } from '../hooks/Busters/useBusters';
-import { useDnk } from '../hooks/useDnk';
+import { useDnk } from '../hooks/Dnk/useDnk';
 import { useSkins } from '../hooks/useSkins';
 
 const ShopContext = createContext();

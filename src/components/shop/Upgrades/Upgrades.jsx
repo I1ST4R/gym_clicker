@@ -4,9 +4,7 @@ import Upgrade from './Upgrade.jsx';
 import { useShopContext } from '../../main/contexts/ShopContext.jsx';
 
 function Upgrades() {
-  const {
-    upgrades: { upgrades },
-  } = useShopContext();
+  const { upgrades: { upgrades } } = useShopContext();
 
   return (
     <div className="slide">

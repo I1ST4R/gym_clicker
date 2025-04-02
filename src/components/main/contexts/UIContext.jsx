@@ -3,7 +3,7 @@ import { useAlert } from '../hooks/useAlert';
 import { useTooltip } from '../hooks/useTooltip';
 import { useStory } from '../hooks/useStory';
 import { useImages } from '../hooks/useImages';
-import { useProgress } from '../hooks/useProgress';
+import { useProgress } from '../hooks/Dnk/useProgress';
 import { useClient } from '../hooks/Client/useClient';
 
 const UIContext = createContext();

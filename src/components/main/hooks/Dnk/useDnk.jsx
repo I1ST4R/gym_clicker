@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { loadState, saveState, bigIntParser } from '../../../js/storage.js';
-import DnkUpgradesParams from '../../../js/DnkUpgradesParams.js';
-import { useReset } from './useReset.jsx';
+import { loadState, saveState, bigIntParser } from '../../../../js/storage.js';
+import DnkUpgradesParams from '../../../../js/DnkUpgradesParams.js';
+import { useReset } from '../useReset.jsx';
+import { useDnkLevelChange } from './useDnkLevelChange.jsx';
 
 export const useDnk = () => {
   const [dnkUpgrades, setDnkUpgrades] = useState(() => 
@@ -24,38 +25,7 @@ export const useDnk = () => {
     saveState('cooldownDiscount', cooldownDiscount.toString());
   }, [dnkUpgrades, multiplier, priceMultiplier, increaseMultiplier, cooldownDiscount]);
 
-  const handleDnkLevelChange = (id, countDnk, setCountDnk, minDelay, setMinDelay, maxDelay, setMaxDelay) => {
-    setDnkUpgrades(prev => prev.map(dnkUpgrade => {
-      if (dnkUpgrade.id === id) {
-        setCountDnk(countDnk - 1n);
-        const increase = Math.pow(1.01, dnkUpgrade.level);
-        const decrease = Math.pow(0.99, dnkUpgrade.level);
-
-        switch (id) {
-          case 1: setPriceMultiplier(decrease); break;
-          case 2: setIncreaseMultiplier(increase); break;
-          case 3: setCooldownDiscount(decrease); break;
-          case 4: 
-            setMaxDelay(Math.floor(maxDelay * 0.99));
-            setMinDelay(Math.floor(minDelay * 0.99));
-            break;
-          case 5: setMultiplier(multiplier * 1.01); break;
-        }
-
-        return { ...dnkUpgrade, level: dnkUpgrade.level + 1 };
-      }
-      return dnkUpgrade;
-    }));
-  };
-
   const { reset } = useReset({
-    stateSetters: {
-      dnkUpgrades: setDnkUpgrades,
-      multiplier: setMultiplier,
-      priceMultiplier: setPriceMultiplier,
-      increaseMultiplier: setIncreaseMultiplier,
-      cooldownDiscount: setCooldownDiscount
-    },
     initialState: {
       dnkUpgrades: DnkUpgradesParams,
       multiplier: 30,
@@ -76,7 +46,7 @@ export const useDnk = () => {
     setIncreaseMultiplier,
     cooldownDiscount,
     setCooldownDiscount,
-    handleDnkLevelChange,
+    useDnkLevelChange,
     reset
   };
 };

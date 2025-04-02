@@ -14,7 +14,7 @@ function ImageSection({ image }) {
     pointerEvents: 'none',
   };
 
-  return <img className="image-section" src={image.src} style={style} alt="Result" />;
+  return <img src={image.src} style={style} alt="Result" />;
 }
 
 export default ImageSection;

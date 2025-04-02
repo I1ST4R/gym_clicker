@@ -18,9 +18,7 @@ function ImageSections() {
 
   const groupedImages = {};
   resultImages.forEach((image) => {
-    if (!groupedImages[image.upgradeId]) {
-      groupedImages[image.upgradeId] = [];
-    }
+    if (!groupedImages[image.upgradeId]) groupedImages[image.upgradeId] = [];
     groupedImages[image.upgradeId].push(image);
   });
 
