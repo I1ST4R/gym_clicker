@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loadState, saveState, bigIntParser } from '../../../../js/storage.js';
 import DnkUpgradesParams from '../../../../js/DnkUpgradesParams.js';
-import { useReset } from '../useReset.jsx';
 import { useDnkLevelChange } from './useDnkLevelChange.jsx';
 
 export const useDnk = () => {
@@ -25,15 +24,15 @@ export const useDnk = () => {
     saveState('cooldownDiscount', cooldownDiscount.toString());
   }, [dnkUpgrades, multiplier, priceMultiplier, increaseMultiplier, cooldownDiscount]);
 
-  const { reset } = useReset({
-    initialState: {
-      dnkUpgrades: DnkUpgradesParams,
-      multiplier: 30,
-      priceMultiplier: 1,
-      increaseMultiplier: 1,
-      cooldownDiscount: 1
+  const reset = (resetAdditionalStates) => {
+    if (resetAdditionalStates){
+      setDnkUpgrades(DnkUpgradesParams)
+      setMultiplier(30)
+      setPriceMultiplier(1)
+      setIncreaseMultiplier(1)
+      setCooldownDiscount(1)
     }
-  });
+  };
 
   return {
     dnkUpgrades,

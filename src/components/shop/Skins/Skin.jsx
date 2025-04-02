@@ -7,38 +7,36 @@ import { useShopContext } from '../../main/contexts/ShopContext';
 function Skin({
   id,
   img,
-  price,
   isActive,
   isBuyed,
 }) {
   const {
-    counters: { countDiamond, setCountDiamond },
-  } = useStatsContext();
-  const {
     tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
   } = useUIContext();
   const {
-    skins: { handleActivate, handleBuy},
+    skins: { useSkinActivate, useSkinBuy, useSkinStyles, diamondPurchases },
   } = useShopContext();
 
-  const isEnoughtDiamonds = countDiamond >= BigInt(price);
+  const handleActivate = useSkinActivate()
+  const handleBuy = useSkinBuy()
+  useSkinStyles()
 
   const handleSkinClick = () => {
     if (isBuyed) {
       handleActivate(id)
       return
     }
-    if (isEnoughtDiamonds) handleBuy(id, countDiamond, setCountDiamond)
+    handleBuy(id)
   };
 
   return (
-    <div 
+    <div
       className={`Skin ${isActive ? "Skin--active" : ""}`}
       onClick={handleSkinClick}
       onMouseEnter={(event) => handleTooltipMouseEnter(event, id, 'skin')}
       onMouseLeave={handleTooltipMouseLeave}
     >
-      <img className='Skin__img' src={img} alt="" /> 
+      <img className='Skin__img' src={img} alt="" />
     </div>
   );
 }

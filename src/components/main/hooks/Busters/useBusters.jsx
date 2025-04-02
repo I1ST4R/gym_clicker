@@ -6,7 +6,6 @@ import { useBusterActivate } from './useBusterActivate.jsx';
 import { useBusterLevelChange } from './useBusterLevelChange.jsx';
 import { useBusterTimers } from './useBusterTimers.jsx';
 import { useBusterCooldown } from './useBusterCooldown.jsx';
-import { useReset } from '../useReset.jsx';
 
 export const useBusters = () => {
   // Состояния с автоматической загрузкой/сохранением
@@ -24,16 +23,10 @@ export const useBusters = () => {
     saveState('isDiscountExists', JSON.stringify(isDiscountExists));
   }, [busters, isDiscountExists]);
 
-  const { reset } = useReset({
-    stateSetters: {
-      busters: setBusters,
-      isDiscountExists: setIsDiscountExists
-    },
-    initialState: {
-      busters: BustersParams,
-      isDiscountExists: false
-    }
-  });
+  const reset = (resetAdditionalStates) => {
+    setBusters(BustersParams)
+    setIsDiscountExists(false)
+  };
 
   return {
     busters,

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { loadState, saveState, bigIntParser } from '../../../../js/storage.js';
-import { useReset } from '../useReset.jsx';
 import UpgradesParams from '../../../../js/UpgradesParams.js';
 import { useUpgradeLevelChange } from './useUpgradeLevelChange';
 import { useUpgradeVisibility } from './useUpgradeVisibility';
@@ -17,10 +16,9 @@ export const useUpgrades = () => {
     ));
   }, [upgrades]);
 
-  const { reset } = useReset({
-    stateSetters: { upgardes: setUpgrades },
-    initialState: { upgardes: UpgradesParams }
-  });
+  const reset = (resetAdditionalStates) => {
+    setUpgrades(UpgradesParams)
+  };
 
   return {
     upgrades,

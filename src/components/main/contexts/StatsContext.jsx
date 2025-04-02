@@ -20,7 +20,7 @@ export const StatsProvider = ({ children }) => {
   const passiveIncome = usePassiveIncome();
   const dna = useDnk();
 
-  const [countDiamond, setCountDiamond] = useBigIntState('countDiamond', '0');
+  const [countDiamond, setCountDiamond] = useBigIntState('countDiamond', '20');
   const [minDelay, setMinDelay] = useState(() => {
     const loaded = loadState('minDelay');
     return loaded ? parseInt(loaded) : 10000;

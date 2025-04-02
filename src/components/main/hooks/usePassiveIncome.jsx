@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 export const usePassiveIncome = () => {
 
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useBigIntState('pasIncreaseMoney', '0');
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useBigIntState('pasIncreaseMoney', '1000000');
 
   const [isPassiveIncreaseChanged, setIsPassiveIncreaseChanged] = useState(() => {
     const loaded = loadState('isPassiveIncreaseChanged');
