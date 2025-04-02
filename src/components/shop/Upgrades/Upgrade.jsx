@@ -1,9 +1,7 @@
 import React from 'react';
 import '../../../css/Upgrade.css';
-import upgradeLevelUp from '../../../../public/sounds/upgradeLevelUp.mp3';
 import abbreviateNum from '../../../js/numberAbbreviator.js';
 import getTrainerImage from '../../../js/TrainerLevels.js';
-import { useStatsContext } from '../../main/contexts/StatsContext.jsx';
 import { useShopContext } from '../../main/contexts/ShopContext.jsx';
 import { useUIContext } from '../../main/contexts/UIContext.jsx';
 
@@ -12,20 +10,15 @@ function Upgrade({
   title,
   img,
   level,
-  isInvisible 
+  isInvisible
 }) {
-  const { 
-    end: { setEnd }
-  } = useStatsContext();
-  
-  const { 
-    upgrades: { upgrades, useUpgradeCalculations, useUpgradeVisibility, useUpgradeLevelChange },
+
+  const {
+    upgrades: { useUpgradeCalculations, useUpgradeVisibility, useUpgradeLevelChange },
   } = useShopContext();
-  
+
   const {
     tooltip: { handleTooltipMouseEnter, handleTooltipMouseLeave },
-    alert: { showAlert, setShowCustomAlert },
-    trainerImage: { setTrainerImage },
   } = useUIContext();
 
   // Правильный вызов хуков
@@ -35,28 +28,6 @@ function Upgrade({
 
   const priceWithMults = calculateUpgradePrice(id);
   const isEnoughMoney = isEnoughMoneyForUpgrade(id);
-  const isLastUpgrade = id === upgrades.length;
-
-  const handleUpgradeClick = () => {
-    if (isEnoughMoney && isLastUpgrade) {
-      showAlert(
-        "При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?",
-        () => {
-          setShowCustomAlert(false);
-          setEnd(true);
-        },
-        () => {
-          setShowCustomAlert(false);
-        }
-      );
-      return;
-    }
-    if (isEnoughMoney) {
-      handleUpgradeLevelChange(id);
-      id === 1 ? setTrainerImage(getTrainerImage(level + 1)) : ""
-      new Audio(upgradeLevelUp).play();
-    }
-  };
 
   return (
     <div
@@ -64,7 +35,7 @@ function Upgrade({
         ${!isEnoughMoney ? 'Upgrade--nonavailable' : ''} 
         ${isInvisible ? 'Upgrade--invisible' : ''}
       `}
-      onClick={handleUpgradeClick}
+      onClick={() => {handleUpgradeLevelChange(id)}}
       onMouseEnter={(event) => handleTooltipMouseEnter(event, id, 'upgrade')}
       onMouseLeave={handleTooltipMouseLeave}
     >

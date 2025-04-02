@@ -1,13 +1,16 @@
-import { updateArray } from '../../../../js/updateArray.js';
-import { useStatsContext } from '../../contexts/StatsContext';
-import { useShopContext } from '../../contexts/ShopContext';
+import { updateArray } from '../../../../js/updateArray.js'
+import getTrainerImage from '../../../../js/TrainerLevels.js';
+import upgradeLevelUp from '../../../../../public/sounds/upgradeLevelUp.mp3';
+import { useStatsContext } from '../../contexts/StatsContext'
+import { useShopContext } from '../../contexts/ShopContext'
+import { useUIContext } from '../../contexts/UIContext'
 
 export const useUpgradeLevelChange = () => {
 
   const {
-    busters:{ isDiscountExists, setIsDiscountExists },
+    busters:{ setIsDiscountExists },
     upgrades:{ upgrades, setUpgrades, useUpgradeCalculations },
-    dnk: { priceMultiplier, increaseMultiplier }
+    dnk: { increaseMultiplier }
   } = useShopContext()
 
   const {
@@ -17,15 +20,38 @@ export const useUpgradeLevelChange = () => {
       setPasIncreaseMoney,
       actIncreaseMoney,
       setActIncreaseMoney,
-    }
+    },
+    end: { setEnd }
   } = useStatsContext();
+
+  const {
+      alert: { showAlert, setShowCustomAlert },
+      trainerImage: { setTrainerImage },
+    } = useUIContext();
 
   const { calculateUpgradePrice} = useUpgradeCalculations();
 
   const handleUpgradeLevelChange = (id) => {
 
     const upgrade = upgrades.find(u => u.id === id);
-    if (!upgrade) return;
+
+    if (upgrade.price > countMoney) return
+
+    id === 1 ? setTrainerImage(getTrainerImage(upgrade.level + 1)) : ""
+    new Audio(upgradeLevelUp).play();
+
+    if (upgrade.id === upgrades.length) {
+      showAlert(
+        "При улучшении этой карточки игра будет завершена. Вы уверены, что хотите продолжить?",
+        () => {
+          setShowCustomAlert(false);
+          setEnd(true);
+        },
+        () => {
+          setShowCustomAlert(false);
+        }
+      );
+    }
 
     const isSmallNumber = upgrade.id < 7;
     const difference = !upgrade.isIncreaseMoney ? 0.035 : 0;
