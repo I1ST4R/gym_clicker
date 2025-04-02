@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useActiveIncome } from '../hooks/useActiveIncome.jsx';
-import { usePassiveIncome, usePassiveIncomeEffect } from '../hooks/usePassiveIncome.jsx';
+import { useActiveIncome } from '../hooks/Stats/useActiveIncome.jsx';
+import { usePassiveIncome} from '../hooks/Stats/usePassiveIncome.jsx';
 import { useDnk, useDnkCalculation } from '../hooks/Dnk/useDnkCalculation.jsx';
 import { useBigIntState } from '../hooks/useBigIntState.jsx';
 import { loadState, saveState } from '../../../js/storage.js';
@@ -35,7 +35,6 @@ export const StatsProvider = ({ children }) => {
   });
 
   // Подключение эффектов с проверкой
-  usePassiveIncomeEffect(passiveIncome.pasIncreaseMoney, activeIncome.setCountMoney, passiveIncome.isPassiveIncreaseChanged);
   useDnkCalculation(passiveIncome.pasIncreaseMoney, dna.setCountDnk);
 
   const resetStats = (resetAdditionalStates = false) => {
@@ -86,7 +85,8 @@ export const StatsProvider = ({ children }) => {
           actIncreaseMoney: activeIncome.actIncreaseMoney,
           setActIncreaseMoney: activeIncome.setActIncreaseMoney,
           isPassiveIncreaseChanged: passiveIncome.isPassiveIncreaseChanged,
-          setIsPassiveIncreaseChanged: passiveIncome.setIsPassiveIncreaseChanged
+          setIsPassiveIncreaseChanged: passiveIncome.setIsPassiveIncreaseChanged,
+          usePassiveIncomeEffect: passiveIncome.usePassiveIncomeEffect
         },
         delay: {
           minDelay,

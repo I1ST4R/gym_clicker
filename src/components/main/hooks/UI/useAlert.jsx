@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { loadState, saveState } from '../../../js/storage';
+import { loadState, saveState } from '../../../../js/storage';
 
 export const useAlert = () => {
   const [alertMessage, setAlertMessage] = useState('');

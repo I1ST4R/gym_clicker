@@ -1,8 +1,8 @@
 import React, { createContext, useContext } from 'react';
-import { useAlert } from '../hooks/useAlert';
-import { useTooltip } from '../hooks/useTooltip';
-import { useStory } from '../hooks/useStory';
-import { useImages } from '../hooks/useImages';
+import { useAlert } from '../hooks/UI/useAlert';
+import { useTooltip } from '../hooks/UI/useTooltip';
+import { useStory } from '../hooks/UI/useStory';
+import { useImages } from '../hooks/UI/useImages';
 import { useProgress } from '../hooks/Dnk/useProgress';
 import { useClient } from '../hooks/Client/useClient';
 

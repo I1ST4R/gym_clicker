@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { saveState } from '../../../js/storage';
-import abbreviateNum from '../../../js/numberAbbreviator.js';
+import { saveState } from '../../../../js/storage';
+import abbreviateNum from '../../../../js/numberAbbreviator.js';
 
 export const useTooltip = () => {
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, right: 530, id: 1 });

@@ -1,5 +1,5 @@
-// src/components/main/hooks/useActiveIncome.jsx
-import { useBigIntState } from './useBigIntState';
+
+import { useBigIntState } from '../useBigIntState';
 
 export const useActiveIncome = () => {
   const [actIncreaseMoney, setActIncreaseMoney] = useBigIntState('actIncreaseMoney', '1');

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { loadState, saveState } from '../../../js/storage';
+import { loadState, saveState } from '../../../../js/storage';
 
 export const useImages = () => {
   const [trainerImage, setTrainerImage] = useState(() => loadState('trainerImage', "Trainer/img1.png"));

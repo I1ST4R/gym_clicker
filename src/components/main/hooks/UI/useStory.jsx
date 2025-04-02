@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { loadState, saveState } from '../../../js/storage';
+import { loadState, saveState } from '../../../../js/storage';
 
 export const useStory = () => {
   const [storyIntroShown, setStoryIntroShown] = useState(() => loadState('storyIntroShown', false, JSON.parse));

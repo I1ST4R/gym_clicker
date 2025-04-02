@@ -4,7 +4,7 @@ import abbreviateNum from '../../js/numberAbbreviator.js';
 import DnkProgressBar from '../showingComponents/DnkProgressBar';
 import { useStatsContext } from '../main/contexts/StatsContext';
 import { useUIContext } from '../main/contexts/UIContext';
-import { getCountersData } from '../../js/CountersParams.js'; 
+import { getCountersParams } from '../../js/CountersParams.js'; 
 
 function Counters() {
   const {
@@ -23,7 +23,7 @@ function Counters() {
   useEffect(() => { countDiamond > 0 ? setDiamondPositive(true): "" }, [countDiamond]);
   useEffect(() => { pasIncreaseMoney > 0 ? setPasPositive(true): "" }, [pasIncreaseMoney]);
 
-  const counters = getCountersData(countDiamond, pasIncreaseMoney, countMoney, diamondPositive, pasPositive);
+  const counters = getCountersParams(countDiamond, pasIncreaseMoney, countMoney, diamondPositive, pasPositive);
 
   return (
     <div

@@ -19,25 +19,20 @@ import { useUIContext } from './contexts/UIContext';
 function App() {
 
   const {
-    counters: { countMoney, countDnk, setCountMoney, setCountDnk, incrementCountMoneyForClick },
-    increases: { pasIncreaseMoney, actIncreaseMoney },
-    end: { end, setEnd },
+    counters: { countDnk, setCountMoney},
+    increases: { usePassiveIncomeEffect },
+    end: { end},
     resetStats, 
   } = useStatsContext();
-
-  // Используем кастомный хук для доступа к данным из ShopContext
   const {
-    skins: { backgroundImage, setBackgroundImage },
     resetShop,
   } = useShopContext();
 
   // Используем кастомный хук для доступа к данным из UIContext
   const {
     alert: { alertMessage, alertOnConfirm, alertOnCancel },
-    tooltip: { tooltipPosition, isUpgradeHovered, isDnkHovered, isBusterHovered, isCounterHovered, isSkinHovered },
+    tooltip: { isUpgradeHovered, isDnkHovered, isBusterHovered, isCounterHovered, isSkinHovered },
     story: { storyIntroShown, storyAutroShown },
-    trainerImage: { trainerImage },
-    resultImages: { resultImages },
     resetUI,
   } = useUIContext();
 
@@ -49,6 +44,8 @@ function App() {
       resetUI()
     }
   }, [countDnk, storyAutroShown]);
+
+  usePassiveIncomeEffect(setCountMoney)
 
   return (
     <div className="App">

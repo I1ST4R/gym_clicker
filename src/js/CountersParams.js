@@ -1,5 +1,5 @@
 // countersData.js
-export const getCountersData = (countDiamond, pasIncreaseMoney, countMoney, diamondPositive, pasPositive) => {
+export const getCountersParams = (countDiamond, pasIncreaseMoney, countMoney, diamondPositive, pasPositive) => {
   return [
     { value: countDiamond, img: 'diamond.png', condition: diamondPositive || countDiamond > 0 },
     { value: pasIncreaseMoney, img: 'client.png', condition: pasPositive || pasIncreaseMoney > 0 },
