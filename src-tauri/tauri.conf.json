@@ -1,11 +1,11 @@
 {
-  "$schema": "https://schema.tauri.app/config/2.0.0-rc",
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "gym-clicker",
   "version": "0.1.0",
-  "identifier": "com.gym-clicker",
+  "identifier": "gum-clicker",
   "build": {
     "frontendDist": "../dist",
-    "devUrl": "http://localhost:3000",
+    "devUrl": "http://localhost:5173",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
   },
@@ -13,8 +13,8 @@
     "windows": [
       {
         "title": "gym-clicker",
-        "width": 800,
-        "height": 600,
+        "width": 1200,
+        "height": 900,
         "resizable": true,
         "fullscreen": false
       }
