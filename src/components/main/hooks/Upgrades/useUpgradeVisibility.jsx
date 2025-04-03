@@ -12,8 +12,9 @@ export const useUpgradeVisibility = () => {
         const previousHasLevel = index > 0 && array[index - 1].level > 0;
         const isAffordable = upgrade.initialPrice <= countMoney;
         const isFirstUpgrade = upgrade.id === 1
+        const isVisible = upgrade.isVisible
 
-        const shouldBeVisible = previousHasLevel || isAffordable || isFirstUpgrade;
+        const shouldBeVisible = previousHasLevel || isAffordable || isFirstUpgrade || isVisible;
 
         return {
           ...upgrade,

@@ -14,7 +14,7 @@ export const useUpgradeLevelChange = () => {
   } = useShopContext()
 
   const {
-    counters: { countMoney, setCountMoney },
+    counters: { countMoney, setCountMoney, setCountDiamond },
     increases: {
       pasIncreaseMoney,
       setPasIncreaseMoney,
@@ -31,11 +31,18 @@ export const useUpgradeLevelChange = () => {
 
   const { calculateUpgradePrice} = useUpgradeCalculations();
 
+  const increaseDiamond = () => {
+    const chanse = Math.random() * 100 > 97
+    chanse ? setCountDiamond(prev => prev + 1n) : ""
+  }
+
   const handleUpgradeLevelChange = (id) => {
 
     const upgrade = upgrades.find(u => u.id === id);
 
-    if (upgrade.price > countMoney) return
+    if (upgrade.initialPrice > countMoney) return
+
+    increaseDiamond()
 
     id === 1 ? setTrainerImage(getTrainerImage(upgrade.level + 1)) : ""
     new Audio(upgradeLevelUp).play();
