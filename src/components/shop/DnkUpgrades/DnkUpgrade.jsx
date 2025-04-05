@@ -16,14 +16,14 @@ function DnkUpgrade({
     dnk: { useDnkLevelChange },
   } = useShopContext();
 
-  const sosiska = useDnkLevelChange(id)
+  const handleDnkLevelChange = useDnkLevelChange(id)
 
   return (
     <div
       className='DnkUpgrade'
       onMouseEnter={(event) => handleTooltipMouseEnter(event, id, 'dnk')}
       onMouseLeave={handleTooltipMouseLeave}
-      onClick={()=> {useDnkLevelChange(id)}}
+      onClick={handleDnkLevelChange}
     >
       <img className='DnkUpgrade__img' src={img} alt="" />
     </div>

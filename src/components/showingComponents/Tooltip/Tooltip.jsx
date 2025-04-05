@@ -30,8 +30,6 @@ function Tooltip({ position }) {
 
   if (isDnkHovered && countDnk === 0n) return null;
 
-  /*console.log(tooltipType)*/
-
   return (
     <div
       className="Tooltip"

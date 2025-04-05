@@ -19,13 +19,14 @@ export const useBusterTimers = (id) => {
     
     busterActivate(id);
     
-    // Очищаем предыдущий таймер
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    // Устанавливаем новый таймер
+    const baseCooldown = Math.floor(targetBuster.cooldown * cooldownDiscount);
+    console.log(baseCooldown)
+    setCooldown(baseCooldown); 
+
     timeoutRef.current = setTimeout(() => {
-      const newCooldown = Math.floor(targetBuster.cooldown * cooldownDiscount);
-      setCooldown(newCooldown);
+      setCooldown(baseCooldown); 
     }, time);
   };
 

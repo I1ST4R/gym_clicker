@@ -35,7 +35,7 @@ export const StatsProvider = ({ children }) => {
   });
 
   // Подключение эффектов с проверкой
-  useDnkCalculation(passiveIncome.pasIncreaseMoney, dna.setCountDnk);
+  useDnkCalculation(passiveIncome.pasIncreaseMoney, dna.setCountDnk, end);
 
   const resetStats = (resetAdditionalStates = false) => {
     activeIncome.resetActiveIncome();

@@ -1,7 +1,7 @@
 import { updateArray } from '../../../../js/updateArray.js';
 import { useStatsContext } from '../../contexts/StatsContext';
 import { useShopContext } from '../../contexts/ShopContext';
-import { useState, useEffect } from 'react';
+import dnk from '../../../../../public/sounds/dnk.mp3';
 
 export const useDnkLevelChange = (id) => {
   const {
@@ -13,7 +13,6 @@ export const useDnkLevelChange = (id) => {
     multiplier, 
     setMultiplier, 
     setPriceMultiplier,
-    priceMultiplier, 
     setIncreaseMultiplier, 
     setCooldownDiscount, 
     setDnkUpgrades, 
@@ -21,6 +20,8 @@ export const useDnkLevelChange = (id) => {
   } } = useShopContext()
 
   const handleDnkLevelChange = () => {
+
+    new Audio(dnk).play();
 
     const dnkUpgrade = dnkUpgrades.find(d => d.id === id)
     const increase = Math.pow(1.01, dnkUpgrade.level);

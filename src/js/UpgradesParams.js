@@ -136,7 +136,7 @@ const UpgradesParams = [
   }
 
   if(id === 19){
-    initialPrice = 0
+    initialPrice = 0n
   }
 
   return {
