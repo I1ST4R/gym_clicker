@@ -9,11 +9,11 @@ export const useDnk = () => {
   const [multiplier, setMultiplier] = useState(() => 
     loadState('multiplier', 30, parseInt));
   const [priceMultiplier, setPriceMultiplier] = useState(() => 
-    loadState('priceMultiplier', 1, parseInt));
+    loadState('priceMultiplier', 1, parseFloat));
   const [increaseMultiplier, setIncreaseMultiplier] = useState(() => 
-    loadState('increaseMultiplier', 1, parseInt));
+    loadState('increaseMultiplier', 1, parseFloat));
   const [cooldownDiscount, setCooldownDiscount] = useState(() => 
-    loadState('cooldownDiscount', 1, parseInt));
+    loadState('cooldownDiscount', 1, parseFloat));
 
   useEffect(() => {
     saveState('dnkUpgrades', JSON.stringify(dnkUpgrades, (key, value) => 

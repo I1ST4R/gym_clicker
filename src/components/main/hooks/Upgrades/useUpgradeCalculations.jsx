@@ -1,5 +1,6 @@
 import { useShopContext } from '../../contexts/ShopContext';
 import { useStatsContext } from '../../contexts/StatsContext';
+import { loadState, saveState, bigIntParser } from '../../../../js/storage.js';
 
 export const useUpgradeCalculations = () => {
 
@@ -13,10 +14,9 @@ export const useUpgradeCalculations = () => {
 
   const calculateUpgradePrice = (id) => {
     const upgrade = upgrades.find((u) => u.id === id);
-    if (!upgrade) return BigInt(0);
 
     const discount = (isDiscountExists ? 1 : 2) / 2;
-
+    // let priceMultiplier = loadState('priceMultiplier', 1, parseInt)
     let priceWithMults, initialPrice;
 
     if (id < 7) {
