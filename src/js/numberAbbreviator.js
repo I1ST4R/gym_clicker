@@ -26,7 +26,7 @@ function abbreviateNumBigInt(n) {
 
     let formattedDecimalPart = decimalPart == 0 ? '' : '.' + decimalPart
 
-    return `${abbreviatedNumStr}${formattedDecimalPart}${unit}`;
+    return `${abbreviatedNumStr}${formattedDecimalPart} ${unit}`;
   }
 }
 

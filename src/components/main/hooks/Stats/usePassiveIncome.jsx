@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 export const usePassiveIncome = () => {
 
-  const [pasIncreaseMoney, setPasIncreaseMoney] = useBigIntState('pasIncreaseMoney', '1000000');
+  const [pasIncreaseMoney, setPasIncreaseMoney] = useBigIntState('pasIncreaseMoney', '10000000000000000000000000000');
 
   const [isPassiveIncreaseChanged, setIsPassiveIncreaseChanged] = useState(() => {
     const loaded = loadState('isPassiveIncreaseChanged');
@@ -12,7 +12,7 @@ export const usePassiveIncome = () => {
   });
 
   const resetPassiveIncome = () => {
-    setPasIncreaseMoney(BigInt('0'));
+    setPasIncreaseMoney(BigInt('10000000000000000000000000000'));
   };
 
   const usePassiveIncomeEffect = (setCountMoney) => {

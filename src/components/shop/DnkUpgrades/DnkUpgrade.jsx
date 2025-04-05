@@ -23,7 +23,7 @@ function DnkUpgrade({
       className='DnkUpgrade'
       onMouseEnter={(event) => handleTooltipMouseEnter(event, id, 'dnk')}
       onMouseLeave={handleTooltipMouseLeave}
-      onClick={sosiska}
+      onClick={()=> {useDnkLevelChange(id)}}
     >
       <img className='DnkUpgrade__img' src={img} alt="" />
     </div>

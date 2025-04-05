@@ -23,15 +23,15 @@ export const useTooltip = () => {
     });
 
     switch (type) {
-      /*
       case 'dnk':
-        setTooltipPosition({
+        setTooltipPosition(
+        { 
           top: 460,
           right: window.innerWidth - cardRect.right - 30,
+          id: id,
         });
         setIsDnkHovered(true);
         break;
-        */
       case 'skin': setIsSkinHovered(true); break;
       case 'upgrade': setIsUpgradeHovered(true); break;
       case 'buster': setIsBusterHovered(true); break;
